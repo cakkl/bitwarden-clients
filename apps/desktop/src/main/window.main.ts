@@ -184,12 +184,7 @@ export class WindowMain {
       }
     });
 
-    ipcMain.on("window-focus", () => {
-      this.withWindow((win) => {
-        win.show();
-        win.focus();
-      });
-    });
+    ipcMain.on("window-focus", () => this.showAndFocus());
 
     ipcMain.on("window-hide", () => {
       this.withWindow((win) => {
@@ -348,6 +343,47 @@ export class WindowMain {
       applyMainWindowStyles(win, this.windowStates[mainWindowSizeKey]);
       win.show();
     });
+  }
+
+  /**
+   * Brings the main window to the foreground.
+   *
+   * `show()` plus `focus()` is only a request: Windows and Linux refuse activation to a background
+   * process, and `show()` does not restore a minimised window.
+   */
+  showAndFocus() {
+    if (this.win == null || this.win.isDestroyed()) {
+      return;
+    }
+
+    if (this.win.isMinimized()) {
+      this.win.restore();
+    }
+
+    if (!this.win.isVisible()) {
+      this.win.show();
+    }
+
+    const wasAlwaysOnTop = this.win.isAlwaysOnTop();
+    if (!wasAlwaysOnTop) {
+      this.win.setAlwaysOnTop(true);
+    }
+
+    if (isWindows() || isLinux()) {
+      app.focus({ steal: true });
+    }
+
+    this.win.moveTop();
+    this.win.focus();
+
+    if (!wasAlwaysOnTop) {
+      // Restore the user's setting once the window is in front.
+      setTimeout(() => {
+        if (this.win != null && !this.win.isDestroyed()) {
+          this.win.setAlwaysOnTop(this.enableAlwaysOnTop);
+        }
+      }, 250);
+    }
   }
 
   private getWindowUrl(partial: Partial<url.UrlObject> = {}): string {

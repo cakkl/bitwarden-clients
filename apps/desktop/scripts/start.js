@@ -24,6 +24,11 @@ concurrently(
       prefixColor: "cyan",
     },
     {
+      name: "Appr",
+      command: "npm run build:approval:watch",
+      prefixColor: "blue",
+    },
+    {
       name: "Elec",
       command: `npx wait-on ./build/main.js ./build/index.html ./build/app/main.js && npx electron --no-sandbox --inspect=5858 --remote-debugging-port=9222 ${args.join(
         " ",

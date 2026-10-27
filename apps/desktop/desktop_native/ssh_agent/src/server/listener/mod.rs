@@ -38,6 +38,12 @@ pub(crate) fn create_listeners() -> Result<Vec<impl Listener>> {
     Ok(vec![windows::WindowsListener::new()?])
 }
 
+/// Creates a single Windows listener bound to `name` instead of the fixed OpenSSH path.
+#[cfg(windows)]
+pub(crate) fn create_listeners_with_name(name: &str) -> Result<Vec<impl Listener>> {
+    Ok(vec![windows::WindowsListener::with_name(name)?])
+}
+
 /// Spawns an independent tokio task for each listener in `listeners`.
 ///
 /// Each task loops calling `listener.accept()` and forwards accepted connections to `tx`.

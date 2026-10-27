@@ -47,10 +47,10 @@ pub trait ApprovalRequester: Send + Sync {
     ) -> Result<bool, ApprovalError>;
 
     /// Requests approval for a list-keys operation.
+    async fn request_list_approval(&self, request_id: u64) -> Result<bool, ApprovalError>;
+
+    /// Abandons a pending approval because its client disconnected.
     ///
-    /// # Returns
-    ///
-    /// * `Ok(true)` - Request was approved
-    /// * `Ok(false)` - Request was denied.
-    async fn request_list_approval(&self) -> Result<bool, ApprovalError>;
+    /// Default is a no-op: not every approver keeps per-request state.
+    async fn cancel_approval(&self, _request_id: u64) {}
 }
