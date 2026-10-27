@@ -1,0 +1,398 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <!--
+      The window only ever renders the bundled script and inline styles from this file: no network,
+      no remote frames, no inline scripts. `file:` is required for the bundled script because the
+      page itself is loaded from disk, which gives it an opaque origin where `'self'` does not match.
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src file:; style-src 'unsafe-inline'; img-src file: data:"
+    />
+    <title>Bitwarden</title>
+    <style>
+      /*
+       * Tokens mirror the Figma palette in libs/components/src/tw-theme.css. The theme is resolved by
+       * the main process from the user's setting (falling back to the OS) and applied as data-theme.
+       */
+      :root[data-theme="light"] {
+        color-scheme: light;
+        --background: #ffffff;
+        --surface: #f7f9fa;
+        --surface-strong: #eef2f6;
+        --border: #d5dde8;
+        --border-strong: #b4c2d4;
+        --text: #0f172b;
+        --text-muted: #62748e;
+        --accent: #175ddc;
+        --accent-text: #ffffff;
+        --accent-soft: #e8f0fe;
+        --track: #e6ecf2;
+        --warning-surface: #fff4d4;
+        --warning-border: #ffbf00;
+        --warning-text: #8e4000;
+        --focus-ring: #175ddc;
+      }
+
+      :root[data-theme="dark"] {
+        color-scheme: dark;
+        --background: #020618;
+        --surface: #0f172b;
+        --surface-strong: #1d293d;
+        --border: #1d293d;
+        --border-strong: #314158;
+        --text: #e6ecf2;
+        --text-muted: #8496b0;
+        --accent: #418bfb;
+        --accent-text: #020618;
+        --accent-soft: #16285a;
+        --track: #1d293d;
+        --warning-surface: #2a1f04;
+        --warning-border: #ffbf00;
+        --warning-text: #ffd98a;
+        --focus-ring: #8ec5ff;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      /*
+       * No fixed height: the window is sized to the content it reports, so a short prompt leaves no
+       * empty band and a long one is not clipped.
+       */
+      html,
+      body {
+        height: auto;
+        margin: 0;
+      }
+
+      body {
+        background: var(--background);
+        color: var(--text);
+        font-family:
+          system-ui,
+          -apple-system,
+          "Segoe UI",
+          Roboto,
+          Helvetica,
+          Arial,
+          sans-serif;
+        font-size: 14px;
+        line-height: 1.45;
+        /* Nothing here is reading material; selecting text only makes the buttons harder to hit. */
+        user-select: none;
+      }
+
+      .window {
+        display: flex;
+        flex-direction: column;
+      }
+
+      /* A single brand accent replaces a title bar the user cannot close. */
+      .accent {
+        height: 3px;
+        background: linear-gradient(
+          90deg,
+          var(--accent),
+          color-mix(in srgb, var(--accent) 45%, transparent)
+        );
+      }
+
+      .header {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 18px 20px 16px;
+        /* Frameless window: the header is the drag handle. */
+        -webkit-app-region: drag;
+      }
+
+      .header-mark {
+        flex: none;
+        width: 24px;
+        height: 24px;
+        margin-top: 1px;
+        color: var(--accent);
+      }
+
+      .header-text {
+        min-width: 0;
+      }
+
+      .question {
+        margin: 0;
+        font-size: 17px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+      }
+
+      .body {
+        display: flex;
+        flex-direction: column;
+        /* Spacing between the cards comes from the connector, so it can touch both of them. */
+        gap: 0;
+        padding: 0 20px 12px;
+      }
+
+      .card {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 11px 13px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--surface);
+      }
+
+      .card-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background: var(--accent-soft);
+        color: var(--accent);
+      }
+
+      .card-icon svg {
+        width: 17px;
+        height: 17px;
+      }
+
+      .card-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 0;
+        padding-top: 1px;
+      }
+
+      .card-title {
+        font-size: 14px;
+        font-weight: 600;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      .card-meta {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+        font-size: 11.5px;
+        color: var(--text-muted);
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+
+      /* Same secondary line as the key fingerprint, but proportional and allowed to wrap. */
+      .card-meta.is-sentence {
+        font-family: inherit;
+        white-space: normal;
+        overflow: visible;
+      }
+
+      /* Vertical thread tying the requester to the key it is about to use. */
+      .connector {
+        flex: none;
+        height: 12px;
+        /* Centred on the card icons: 13px card padding + half of the 32px icon. */
+        margin-left: 29px;
+        border-left: 2px solid var(--border-strong);
+      }
+
+      .warning-banner {
+        display: flex;
+        gap: 8px;
+        margin: 10px 0 0;
+        padding: 9px 11px;
+        border: 1px solid var(--warning-border);
+        border-radius: 8px;
+        background: var(--warning-surface);
+        color: var(--warning-text);
+        font-size: 12px;
+      }
+
+      .warning-banner svg {
+        flex: none;
+        width: 14px;
+        height: 14px;
+        margin-top: 2px;
+      }
+
+      /* Equal columns: neither answer is obviously the "right" one. */
+      .footer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+        padding: 4px 20px 18px;
+      }
+
+      button {
+        height: 40px;
+        padding: 0 16px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        font: inherit;
+        font-weight: 600;
+        /* Translations such as "Jetzt nicht" must not wrap and unbalance the pair. */
+        white-space: nowrap;
+        cursor: pointer;
+        transition:
+          background-color 90ms ease,
+          border-color 90ms ease;
+      }
+
+      button:focus-visible {
+        outline: 2px solid var(--focus-ring);
+        outline-offset: 2px;
+      }
+
+      button[disabled] {
+        cursor: default;
+        opacity: 0.55;
+      }
+
+      .deny {
+        border-color: var(--border-strong);
+        background: transparent;
+        color: var(--text);
+      }
+
+      .deny:hover:not([disabled]) {
+        background: var(--surface-strong);
+      }
+
+      .authorize {
+        background: var(--accent);
+        color: var(--accent-text);
+      }
+
+      .authorize:hover:not([disabled]) {
+        filter: brightness(1.06);
+      }
+
+      /* Time left before auto-deny. A bar needs no translation and no vertical space. */
+      .countdown {
+        height: 3px;
+        background: var(--track);
+        overflow: hidden;
+      }
+
+      .countdown-bar {
+        height: 100%;
+        background: var(--accent);
+        transform-origin: left center;
+        transition: transform 260ms linear;
+      }
+
+      [hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="window" id="window">
+      <div class="accent"></div>
+
+      <header class="header">
+        <svg
+          class="header-mark"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          aria-hidden="true"
+        >
+          <circle cx="8" cy="15" r="4"></circle>
+          <path d="M10.85 12.15 19 4"></path>
+          <path d="M18 5l2 2"></path>
+          <path d="M15 8l2 2"></path>
+        </svg>
+        <div class="header-text">
+          <h1 class="question" id="question"></h1>
+        </div>
+      </header>
+
+      <main class="body">
+        <div class="card">
+          <span class="card-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <rect x="3" y="4" width="18" height="16" rx="2"></rect>
+              <path d="M7 9l3 3-3 3"></path>
+              <path d="M13 15h4"></path>
+            </svg>
+          </span>
+          <div class="card-text">
+            <span class="card-title" id="application-name"></span>
+            <span class="card-meta is-sentence" id="purpose"></span>
+          </div>
+        </div>
+
+        <div class="connector" aria-hidden="true"></div>
+
+        <div class="card">
+          <span class="card-icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="7.5" cy="15.5" r="4.5"></circle>
+              <path d="M11 12 20 3"></path>
+              <path d="M17 6l3 3"></path>
+            </svg>
+          </span>
+          <div class="card-text">
+            <span class="card-title" id="cipher-name"></span>
+            <span class="card-meta" id="key-meta" hidden></span>
+          </div>
+        </div>
+
+        <p class="warning-banner" id="forwarding-warning" hidden>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 3 2 20h20L12 3z"></path>
+            <path d="M12 9v5"></path>
+            <path d="M12 17h.01"></path>
+          </svg>
+          <span>
+            <span id="forwarding-warning-text"></span>
+          </span>
+        </p>
+      </main>
+
+      <footer class="footer">
+        <button type="button" class="deny" id="deny"></button>
+        <button type="button" class="authorize" id="authorize"></button>
+      </footer>
+
+      <div class="countdown" aria-hidden="true">
+        <div class="countdown-bar" id="countdown-bar"></div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,6 +1,9 @@
 //! SSH agent client connection and connection handler
 
-use std::sync::Arc;
+use std::sync::{
+    atomic::{AtomicU64, Ordering},
+    Arc,
+};
 
 use tokio::io::{AsyncRead, AsyncReadExt, AsyncWrite, AsyncWriteExt};
 use tokio_util::sync::CancellationToken;
@@ -21,6 +24,9 @@ use crate::crypto::{PublicKey, SignablePrivateKey};
 // Guards against oversized allocations from untrusted length prefixes on the socket.
 const MAX_MESSAGE_LEN: usize = 256 * 1024;
 const SESSION_BIND_EXTENSION: &[u8] = b"session-bind@openssh.com";
+
+/// Lets a pending approval be traced back to the request it belongs to.
+static NEXT_REQUEST_ID: AtomicU64 = AtomicU64::new(1);
 
 /// An accepted connection from an SSH agent client, bundling the I/O stream
 /// with information about the connecting peer.
@@ -69,13 +75,22 @@ where
         debug!(peer_info = ?self.connection.peer_info, "handler starting");
 
         let mut session_bind_state = SessionBindState::default();
+        // Read while a decision was pending; replayed by the framing loop.
+        let mut buffered: Vec<u8> = Vec::new();
 
         loop {
             let mut len_buf = [0u8; 4];
 
             // Read the 4-byte length prefix, yielding to cancellation.
             debug!("handler reading length");
-            if read_or_cancel(&mut self.connection.stream, &mut len_buf, &self.token).await {
+            if read_or_cancel(
+                &mut self.connection.stream,
+                &mut len_buf,
+                &self.token,
+                &mut buffered,
+            )
+            .await
+            {
                 break;
             }
 
@@ -91,7 +106,14 @@ where
 
             // Read the message body, yielding to cancellation.
             debug!("handler reading message");
-            if read_or_cancel(&mut self.connection.stream, &mut msg, &self.token).await {
+            if read_or_cancel(
+                &mut self.connection.stream,
+                &mut msg,
+                &self.token,
+                &mut buffered,
+            )
+            .await
+            {
                 break;
             }
 
@@ -104,14 +126,46 @@ where
             let response = if msg.first() == Some(&EXTENSION) {
                 handle_extension_message(&msg[1..], &mut session_bind_state)
             } else {
-                handle_message(
+                let request_id = NEXT_REQUEST_ID.fetch_add(1, Ordering::Relaxed);
+
+                // Race the decision against the client going away, so an abandoned request does not
+                // keep its approval on screen.
+                let decision = handle_message(
                     &msg,
                     self.connection.peer_info.as_ref(),
                     &session_bind_state,
                     &self.keystore,
                     &self.auth_policy,
-                )
-                .await
+                    request_id,
+                );
+                tokio::pin!(decision);
+
+                let mut abandoned = false;
+                let response = loop {
+                    tokio::select! {
+                        response = &mut decision => break response,
+                        peer = watch_peer(&mut self.connection.stream, &mut buffered, &self.token) => {
+                            match peer {
+                                PeerState::Data => continue,
+                                PeerState::Closed => {
+                                    // The request already failed, so withdraw rather than leave the
+                                    // prompt up. Not awaited: an approver that never answers must not
+                                    // pin this task.
+                                    self.auth_policy.cancel(request_id).await;
+                                    abandoned = true;
+                                    break Vec::new();
+                                }
+                            }
+                        }
+                    }
+                };
+
+                if abandoned {
+                    info!("Client disconnected while a request was being authorized, closing");
+                    break;
+                }
+
+                response
             };
 
             if let Err(error) = self.connection.stream.write_all(&frame(response)).await {
@@ -124,19 +178,72 @@ where
     }
 }
 
-// Reads exactly `buf.len()` bytes from `stream`.
-// Returns `true` if the caller should break (cancelled or I/O error).
+/// What a watched socket did while a request was being authorized.
+enum PeerState {
+    /// More data arrived: a pipelined request, not a disconnect.
+    Data,
+    /// The client closed the connection, or the handler was cancelled.
+    Closed,
+}
+
+/// Waits for the peer to close the connection, or for the handler to be cancelled.
+///
+/// Any byte read is buffered so the framing loop can replay a pipelined request.
+async fn watch_peer<S: AsyncRead + Unpin>(
+    stream: &mut S,
+    buffered: &mut Vec<u8>,
+    token: &CancellationToken,
+) -> PeerState {
+    let mut byte = [0u8; 1];
+
+    tokio::select! {
+        () = token.cancelled() => {
+            debug!("handler received cancellation signal while awaiting a decision");
+            PeerState::Closed
+        }
+        result = stream.read(&mut byte) => match result {
+            Ok(0) => {
+                trace!("Connection closed while awaiting a decision");
+                PeerState::Closed
+            }
+            Ok(_) => {
+                buffered.push(byte[0]);
+                PeerState::Data
+            }
+            Err(error) if error.kind() == std::io::ErrorKind::Interrupted => PeerState::Data,
+            Err(error) => {
+                debug!(%error, "I/O error while awaiting a decision");
+                PeerState::Closed
+            }
+        },
+    }
+}
+
+/// Fills `buf` from `stream`, serving buffered bytes first. Returns `true` when the caller should
+/// break (cancelled or I/O error).
 async fn read_or_cancel<S: AsyncRead + Unpin>(
     stream: &mut S,
     buf: &mut [u8],
     token: &CancellationToken,
+    buffered: &mut Vec<u8>,
 ) -> bool {
+    let mut filled = 0;
+    while filled < buf.len() && !buffered.is_empty() {
+        let take = (buf.len() - filled).min(buffered.len());
+        buf[filled..filled + take].copy_from_slice(&buffered[..take]);
+        buffered.drain(..take);
+        filled += take;
+    }
+    if filled == buf.len() {
+        return false;
+    }
+
     tokio::select! {
         () = token.cancelled() => {
             debug!("handler received cancellation signal");
             true
         }
-        result = stream.read_exact(buf) => match result {
+        result = stream.read_exact(&mut buf[filled..]) => match result {
             Ok(_) => false,
             Err(error) if error.kind() == std::io::ErrorKind::UnexpectedEof => {
                 trace!("Connection closed");
@@ -181,6 +288,7 @@ async fn handle_message<K: KeyStore, A: AuthPolicy>(
     session_bind_state: &SessionBindState,
     keystore: &Arc<K>,
     auth_policy: &Arc<A>,
+    request_id: u64,
 ) -> Vec<u8> {
     let Some(message) = parse_message(msg) else {
         error!("Received malformed message");
@@ -188,7 +296,9 @@ async fn handle_message<K: KeyStore, A: AuthPolicy>(
     };
 
     match message {
-        AgentMessage::RequestIdentities => handle_list_request(keystore, auth_policy).await,
+        AgentMessage::RequestIdentities => {
+            handle_list_request(keystore, auth_policy, request_id).await
+        }
         AgentMessage::SignRequest {
             public_key,
             data,
@@ -198,10 +308,20 @@ async fn handle_message<K: KeyStore, A: AuthPolicy>(
                 public_key,
                 data,
                 flags,
-                peer_info,
-                session_bind_state,
+                ConnectionContext {
+                    process_name: peer_info.map(|p| p.process_name().to_string()),
+                    session_bind: if session_bind_state.host_fingerprint.is_empty() {
+                        None
+                    } else {
+                        Some(SessionBindContext {
+                            is_forwarding: session_bind_state.is_forwarding,
+                            host_fingerprint: session_bind_state.host_fingerprint.clone(),
+                        })
+                    },
+                },
                 keystore,
                 auth_policy,
+                request_id,
             )
             .await
         }
@@ -215,11 +335,12 @@ async fn handle_message<K: KeyStore, A: AuthPolicy>(
 async fn handle_list_request<K: KeyStore, A: AuthPolicy>(
     keystore: &Arc<K>,
     auth_policy: &Arc<A>,
+    request_id: u64,
 ) -> Vec<u8> {
     debug!("handling list request");
 
     let Ok(authorized) = auth_policy
-        .authorize(&AuthRequest::List)
+        .authorize(&AuthRequest::List { request_id })
         .await
         .inspect_err(|error| error!(%error, "Authorization error for list request"))
     else {
@@ -244,27 +365,18 @@ async fn handle_sign_request<K: KeyStore, A: AuthPolicy>(
     public_key: PublicKey,
     data: Vec<u8>,
     flags: Option<SignFlags>,
-    peer_info: Option<&PeerInfo>,
-    session_bind_state: &SessionBindState,
+    connection: ConnectionContext,
     keystore: &Arc<K>,
     auth_policy: &Arc<A>,
+    request_id: u64,
 ) -> Vec<u8> {
     debug!("handling sign request");
 
     let sign_request = SignRequest {
+        request_id,
         public_key: public_key.clone(),
         namespace: detect_namespace(&data),
-        connection: ConnectionContext {
-            process_name: peer_info.map(|p| p.process_name().to_string()),
-            session_bind: if session_bind_state.host_fingerprint.is_empty() {
-                None
-            } else {
-                Some(SessionBindContext {
-                    is_forwarding: session_bind_state.is_forwarding,
-                    host_fingerprint: session_bind_state.host_fingerprint.clone(),
-                })
-            },
-        },
+        connection,
     };
 
     let Ok(authorized) = auth_policy
@@ -382,6 +494,7 @@ mod tests {
             &SessionBindState::default(),
             &keystore,
             &auth_policy,
+            0,
         )
         .await;
 
@@ -411,6 +524,7 @@ mod tests {
             &SessionBindState::default(),
             &Arc::new(keystore),
             &auth_policy,
+            0,
         )
         .await;
 
@@ -429,6 +543,7 @@ mod tests {
             &SessionBindState::default(),
             &Arc::new(keystore),
             &auth_policy,
+            0,
         )
         .await;
 
@@ -450,6 +565,7 @@ mod tests {
             &SessionBindState::default(),
             &Arc::new(keystore),
             &auth_policy,
+            0,
         )
         .await;
 
@@ -484,6 +600,7 @@ mod tests {
             &SessionBindState::default(),
             &Arc::new(keystore),
             &auth_policy,
+            0,
         )
         .await;
 
@@ -503,6 +620,7 @@ mod tests {
             &SessionBindState::default(),
             &keystore,
             &auth_policy,
+            0,
         )
         .await;
 
@@ -522,6 +640,7 @@ mod tests {
             &SessionBindState::default(),
             &keystore,
             &auth_policy,
+            0,
         )
         .await;
 
@@ -546,6 +665,7 @@ mod tests {
             &SessionBindState::default(),
             &Arc::new(keystore),
             &auth_policy,
+            0,
         )
         .await;
 
@@ -570,6 +690,7 @@ mod tests {
             &SessionBindState::default(),
             &Arc::new(keystore),
             &auth_policy,
+            0,
         )
         .await;
 
@@ -597,7 +718,7 @@ mod tests {
             .return_once(move |_| Ok(Some(private_key)));
 
         let auth_policy = Arc::new(AlwaysAllowPolicy);
-        let msg = make_sign_request_msg(&blob, b"test data", 0); // no flags → would imply SHA-1
+        let msg = make_sign_request_msg(&blob, b"test data", 0); // no flags 鈫?would imply SHA-1
 
         let response = super::handle_message(
             &msg,
@@ -605,6 +726,7 @@ mod tests {
             &SessionBindState::default(),
             &Arc::new(keystore),
             &auth_policy,
+            0,
         )
         .await;
 
@@ -644,6 +766,7 @@ mod tests {
             &SessionBindState::default(),
             &Arc::new(keystore),
             &auth_policy,
+            0,
         )
         .await;
 
@@ -759,8 +882,15 @@ mod tests {
             captured: std::sync::Mutex::new(None),
         });
 
-        let _ =
-            super::handle_message(&msg, None, &state, &Arc::new(keystore), &capturing_policy).await;
+        let _ = super::handle_message(
+            &msg,
+            None,
+            &state,
+            &Arc::new(keystore),
+            &capturing_policy,
+            0,
+        )
+        .await;
 
         let captured = capturing_policy.captured.lock().unwrap();
         if let Some(AuthRequest::Sign(sign_req)) = captured.as_ref() {
@@ -803,8 +933,15 @@ mod tests {
             captured: std::sync::Mutex::new(None),
         });
 
-        let _ =
-            super::handle_message(&msg, None, &state, &Arc::new(keystore), &capturing_policy).await;
+        let _ = super::handle_message(
+            &msg,
+            None,
+            &state,
+            &Arc::new(keystore),
+            &capturing_policy,
+            0,
+        )
+        .await;
 
         let captured = capturing_policy.captured.lock().unwrap();
         if let Some(AuthRequest::Sign(sign_req)) = captured.as_ref() {
@@ -843,6 +980,7 @@ mod tests {
             &SessionBindState::default(),
             &Arc::new(keystore),
             &capturing_policy,
+            0,
         )
         .await;
 
@@ -887,5 +1025,69 @@ mod tests {
         tokio::time::timeout(std::time::Duration::from_secs(1), handler.handle())
             .await
             .expect("handler should exit, denying oversized message length");
+    }
+
+    #[tokio::test]
+    async fn client_disconnect_while_awaiting_a_decision_closes_the_handler() {
+        use tokio::io::{duplex, AsyncWriteExt};
+        use tokio_util::sync::CancellationToken;
+
+        /// Stands in for a prompt the user never answers.
+        struct PendingApprovalPolicy {
+            cancelled: std::sync::Mutex<Vec<u64>>,
+        }
+
+        #[async_trait::async_trait]
+        impl AuthPolicy for PendingApprovalPolicy {
+            async fn authorize(&self, _: &AuthRequest) -> Result<bool, AuthError> {
+                std::future::pending::<()>().await;
+                unreachable!("authorize never resolves")
+            }
+
+            async fn cancel(&self, request_id: u64) {
+                self.cancelled.lock().unwrap().push(request_id);
+            }
+        }
+
+        let (mut client, server) = duplex(1024);
+        let keystore = Arc::new(MockKeyStore::new());
+        let auth_policy = Arc::new(PendingApprovalPolicy {
+            cancelled: std::sync::Mutex::new(Vec::new()),
+        });
+
+        let handler = super::ConnectionHandler::new(
+            keystore,
+            auth_policy.clone(),
+            super::Connection {
+                stream: server,
+                peer_info: None,
+            },
+            CancellationToken::new(),
+        );
+
+        // The handler reads a 4-byte length prefix before the message body.
+        let body = make_sign_request_msg(&make_minimal_ed25519_blob(), b"test data", 0);
+        let mut framed = (body.len() as u32).to_be_bytes().to_vec();
+        framed.extend_from_slice(&body);
+
+        client.write_all(&framed).await.unwrap();
+
+        // Give the handler time to reach the authorization that never resolves.
+        tokio::time::sleep(std::time::Duration::from_millis(50)).await;
+
+        // The client gives up waiting for the signature.
+        drop(client);
+
+        // Without the peer watch this would stay parked until the approval timeout.
+        tokio::time::timeout(std::time::Duration::from_secs(1), handler.handle())
+            .await
+            .expect("handler should exit once the client disconnects");
+
+        // The pending approval must be withdrawn, not left for the user to answer.
+        assert_eq!(
+            auth_policy.cancelled.lock().unwrap().len(),
+            1,
+            "expected the abandoned request to be cancelled exactly once"
+        );
     }
 }

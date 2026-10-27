@@ -93,6 +93,8 @@ pub mod sshagent {
     #[napi(object)]
     #[derive(Debug)]
     pub struct SignRequestData {
+        /// Identifies this request so it can be withdrawn if the client goes away.
+        pub request_id: u32,
         pub sign_request: SignRequest,
         pub cipher_id: Option<String>,
     }
@@ -100,6 +102,8 @@ pub mod sshagent {
     impl From<SSHSignApprovalRequest> for SignRequestData {
         fn from(request: SSHSignApprovalRequest) -> Self {
             Self {
+                // Unique only while a prompt is open, so it fits in a JS number without loss.
+                request_id: request.sign_request.request_id as u32,
                 sign_request: request.sign_request.into(),
                 cipher_id: request.cipher_id,
             }
@@ -115,7 +119,9 @@ pub mod sshagent {
     /// Interface for the agent to request approval for ssh operations from Electron.
     struct ElectronApprovalRequester {
         sign_callback: Arc<ThreadsafeFunction<SignRequestData, Promise<bool>>>,
-        list_callback: Arc<ThreadsafeFunction<(), Promise<bool>>>,
+        list_callback: Arc<ThreadsafeFunction<u32, Promise<bool>>>,
+        /// Tells Electron that a pending approval is no longer needed, so its prompt can close.
+        cancel_callback: Arc<ThreadsafeFunction<u32, Promise<()>>>,
     }
 
     async fn invoke_callback<T: 'static + JsValuesTupleIntoVec>(
@@ -152,14 +158,26 @@ pub mod sshagent {
             Ok(is_approved)
         }
 
-        async fn request_list_approval(&self) -> Result<bool, ApprovalError> {
-            debug!("Sending list approval request to Electron.");
+        async fn request_list_approval(&self, request_id: u64) -> Result<bool, ApprovalError> {
+            debug!(request_id, "Sending list approval request to Electron.");
 
-            let is_approved = invoke_callback(&self.list_callback, ()).await?;
+            let is_approved = invoke_callback(&self.list_callback, request_id as u32).await?;
 
             debug!(%is_approved, "List approval response from Electron.");
 
             Ok(is_approved)
+        }
+
+        async fn cancel_approval(&self, request_id: u64) {
+            debug!(
+                request_id,
+                "Telling Electron to abandon a pending approval."
+            );
+
+            // Best effort: the client is already gone, so a failed delivery loses nothing.
+            if let Err(error) = self.cancel_callback.call_async(Ok(request_id as u32)).await {
+                debug!(%error, request_id, "Failed to deliver approval cancellation");
+            }
         }
     }
 
@@ -169,19 +187,22 @@ pub mod sshagent {
         ///
         /// # Arguments
         ///
-        /// * `sign_callback` - Allows agent to get approval for sign requests
-        /// * `list_callback` - Allows agent to get approval for list key requests
+        /// * `sign_callback` - Approval for sign requests
+        /// * `list_callback` - Approval for list-keys requests
+        /// * `cancel_callback` - Withdraws a pending approval whose client disconnected
         #[napi(factory)]
         #[allow(clippy::unused_async)]
         pub async fn serve(
             sign_callback: ThreadsafeFunction<SignRequestData, Promise<bool>>,
-            list_callback: ThreadsafeFunction<(), Promise<bool>>,
+            list_callback: ThreadsafeFunction<u32, Promise<bool>>,
+            cancel_callback: ThreadsafeFunction<u32, Promise<()>>,
         ) -> napi::Result<Self> {
             debug!("Creating agent and starting server.");
 
             let approval_handler = ElectronApprovalRequester {
                 sign_callback: Arc::new(sign_callback),
                 list_callback: Arc::new(list_callback),
+                cancel_callback: Arc::new(cancel_callback),
             };
 
             let keystore = InMemoryEncryptedKeyStore::default();
