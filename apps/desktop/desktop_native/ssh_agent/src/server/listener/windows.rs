@@ -16,25 +16,35 @@ const PIPE_NAME: &str = r"\\.\pipe\openssh-ssh-agent";
 /// Windows named pipe listener for the SSH agent server
 pub(crate) struct WindowsListener {
     inner: NamedPipeServer,
+    /// The name this listener binds, kept so `accept` can create the next instance.
+    name: String,
 }
 
 impl WindowsListener {
     /// Creates a new [`WindowsListener`], binding to the OpenSSH named pipe path.
     ///
-    /// The first pipe server instance is created synchronously so the pipe name is
-    /// registered in the OS before this function returns.
+    /// The first pipe instance is created synchronously, so the name is registered before this
+    /// returns.
     ///
     /// # Errors
     ///
     /// Returns an error if the named pipe cannot be created.
     pub(crate) fn new() -> Result<Self> {
+        Self::with_name(PIPE_NAME)
+    }
+
+    /// Like [`Self::new`], but binds to `name`. Tests use it so each test owns its own pipe.
+    pub(crate) fn with_name(name: &str) -> Result<Self> {
         let server = ServerOptions::new()
-            .create(PIPE_NAME)
-            .map_err(|e| anyhow!("Unable to create named pipe {PIPE_NAME}: {e}"))?;
+            .create(name)
+            .map_err(|e| anyhow!("Unable to create named pipe {name}: {e}"))?;
 
-        info!(pipe_name = PIPE_NAME, "Named pipe listener ready");
+        info!(pipe_name = name, "Named pipe listener ready");
 
-        Ok(Self { inner: server })
+        Ok(Self {
+            inner: server,
+            name: name.to_string(),
+        })
     }
 }
 
@@ -48,7 +58,7 @@ impl Listener for WindowsListener {
         // Create the next server instance before handing off the current one, so the
         // pipe name remains available for subsequent clients without a gap.
         let next = ServerOptions::new()
-            .create(PIPE_NAME)
+            .create(self.name.as_str())
             .map_err(|e| anyhow!("Failed to create next pipe instance after accept: {e}"))?;
 
         let stream = mem::replace(&mut self.inner, next);
@@ -82,18 +92,27 @@ mod tests {
 
     use super::*;
 
+    /// A pipe name that cannot collide with a real agent already running on this machine.
+    ///
+    /// These tests used the fixed `PIPE_NAME`, which a running Bitwarden also binds: the tests then
+    /// blocked on that instance (hanging for minutes) or connected to it instead of their own pipe.
+    fn test_pipe_name() -> String {
+        format!(r"\\.\pipe\bw-ssh-agent-unit-{}", std::process::id())
+    }
+
     #[serial_test::serial]
     #[tokio::test]
     async fn test_new_creates_pipe() {
-        WindowsListener::new().unwrap();
+        WindowsListener::with_name(&test_pipe_name()).unwrap();
     }
 
     #[serial_test::serial]
     #[tokio::test]
     async fn test_get_peer_info_connected_client_returns_some() {
-        let server = ServerOptions::new().create(PIPE_NAME).unwrap();
+        let pipe = test_pipe_name();
+        let server = ServerOptions::new().create(&pipe).unwrap();
         // Keep the client alive so the connection stays open for the duration of the check
-        let _client = ClientOptions::new().open(PIPE_NAME).unwrap();
+        let _client = ClientOptions::new().open(&pipe).unwrap();
         server.connect().await.unwrap();
 
         let peer_info = get_peer_info(&server);

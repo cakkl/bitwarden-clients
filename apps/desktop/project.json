@@ -78,6 +78,28 @@
         }
       }
     },
+    "build-approval": {
+      "executor": "nx:run-commands",
+      "outputs": ["{workspaceRoot}/dist/apps/desktop"],
+      "options": {
+        "command": "cross-env NODE_ENV=production webpack --config webpack.config.js --config-name approval",
+        "cwd": "apps/desktop"
+      },
+      "configurations": {
+        "oss": {
+          "command": "cross-env NODE_ENV=production webpack --config webpack.config.js --config-name approval"
+        },
+        "oss-dev": {
+          "command": "cross-env NODE_ENV=development webpack --config webpack.config.js --config-name approval"
+        },
+        "commercial": {
+          "command": "cross-env NODE_ENV=production webpack --config ../../bitwarden_license/bit-desktop/webpack.config.js --config-name approval"
+        },
+        "commercial-dev": {
+          "command": "cross-env NODE_ENV=development webpack --config ../../bitwarden_license/bit-desktop/webpack.config.js --config-name approval"
+        }
+      }
+    },
     "build": {
       "executor": "nx:run-commands",
       "dependsOn": ["build-native"],
@@ -87,7 +109,8 @@
         "commands": [
           "nx run desktop:build-main",
           "nx run desktop:build-preload",
-          "nx run desktop:build-renderer"
+          "nx run desktop:build-renderer",
+          "nx run desktop:build-approval"
         ]
       },
       "configurations": {
@@ -95,28 +118,32 @@
           "commands": [
             "nx run desktop:build-main --configuration=oss",
             "nx run desktop:build-preload --configuration=oss",
-            "nx run desktop:build-renderer --configuration=oss"
+            "nx run desktop:build-renderer --configuration=oss",
+            "nx run desktop:build-approval --configuration=oss"
           ]
         },
         "oss-dev": {
           "commands": [
             "nx run desktop:build-main --configuration=oss-dev",
             "nx run desktop:build-preload --configuration=oss-dev",
-            "nx run desktop:build-renderer --configuration=oss-dev"
+            "nx run desktop:build-renderer --configuration=oss-dev",
+            "nx run desktop:build-approval --configuration=oss-dev"
           ]
         },
         "commercial": {
           "commands": [
             "nx run desktop:build-main --configuration=commercial",
             "nx run desktop:build-preload --configuration=commercial",
-            "nx run desktop:build-renderer --configuration=commercial"
+            "nx run desktop:build-renderer --configuration=commercial",
+            "nx run desktop:build-approval --configuration=commercial"
           ]
         },
         "commercial-dev": {
           "commands": [
             "nx run desktop:build-main --configuration=commercial-dev",
             "nx run desktop:build-preload --configuration=commercial-dev",
-            "nx run desktop:build-renderer --configuration=commercial-dev"
+            "nx run desktop:build-renderer --configuration=commercial-dev",
+            "nx run desktop:build-approval --configuration=commercial-dev"
           ]
         }
       }

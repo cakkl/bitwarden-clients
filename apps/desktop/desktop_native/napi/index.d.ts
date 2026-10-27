@@ -444,10 +444,11 @@ export declare namespace sshagent {
      *
      * # Arguments
      *
-     * * `sign_callback` - Allows agent to get approval for sign requests
-     * * `list_callback` - Allows agent to get approval for list key requests
+     * * `sign_callback` - Approval for sign requests
+     * * `list_callback` - Approval for list-keys requests
+     * * `cancel_callback` - Withdraws a pending approval whose client disconnected
      */
-    static serve(signCallback: ((err: Error | null, arg: SignRequestData) => Promise<boolean>), listCallback: ((err: Error | null, ) => Promise<boolean>)): Promise<SshAgentState>
+    static serve(signCallback: ((err: Error | null, arg: SignRequestData) => Promise<boolean>), listCallback: ((err: Error | null, arg: number) => Promise<boolean>), cancelCallback: ((err: Error | null, arg: number) => Promise<undefined>)): Promise<SshAgentState>
     stop(): void
     isRunning(): boolean
     replace(newKeys: Array<SshKeyData>): void
@@ -474,6 +475,8 @@ export declare namespace sshagent {
   }
   /** Data for a sign request, including vault cipher context. */
   export interface SignRequestData {
+    /** Identifies this request so it can be withdrawn if the client goes away. */
+    requestId: number
     signRequest: SignRequest
     cipherId?: string
   }

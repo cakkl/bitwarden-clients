@@ -11,6 +11,7 @@ import {
   firstValueFrom,
   from,
   map,
+  mergeMap,
   of,
   skip,
   Subject,
@@ -33,11 +34,11 @@ import { UserId } from "@bitwarden/common/types/guid";
 import { CipherService } from "@bitwarden/common/vault/abstractions/cipher.service";
 import { CipherType } from "@bitwarden/common/vault/enums";
 import { CipherView } from "@bitwarden/common/vault/models/view/cipher.view";
-import { DialogService, ToastService } from "@bitwarden/components";
+import { ToastService } from "@bitwarden/components";
 
 import { DesktopSettingsService } from "../../platform/services/desktop-settings.service";
-import { ApproveSshRequestComponent } from "../components/approve-ssh-request";
 import { SSH_AGENT_IPC_CHANNELS } from "../models/ipc-channels";
+import { SshApprovalPrompt } from "../models/ssh-agent-approval";
 import { SshAgentPromptType } from "../models/ssh-agent-setting";
 
 /**
@@ -53,7 +54,11 @@ type AuthorizationScope = (typeof AuthorizationScope)[keyof typeof Authorization
   providedIn: "root",
 })
 export class SshAgentService implements OnDestroy {
-  SSH_VAULT_UNLOCK_REQUEST_TIMEOUT = 60_000;
+  /**
+   * How long to wait for the vault to unlock before refusing. Kept well below the agent's 60s budget,
+   * since the user still has to read and answer the prompt afterwards.
+   */
+  SSH_VAULT_UNLOCK_REQUEST_TIMEOUT = 20_000;
 
   // map of cipherId to set of host key fingerprints who's sign requests have been authorized.
   private authorizedHosts: Map<string, Set<string>> = new Map();
@@ -63,7 +68,6 @@ export class SshAgentService implements OnDestroy {
   constructor(
     private cipherService: CipherService,
     private logService: LogService,
-    private dialogService: DialogService,
     private messageListener: MessageListener,
     private authService: AuthService,
     private toastService: ToastService,
@@ -77,7 +81,7 @@ export class SshAgentService implements OnDestroy {
   }
 
   private async initListeners() {
-    // Sign request approval — renderer shows the approval dialog.
+    // Sign request approval, shown in the main process's approval window.
     this.messageListener
       .messages$(new CommandDefinition(SSH_AGENT_IPC_CHANNELS.SIGN_REQUEST))
       .pipe(
@@ -91,15 +95,14 @@ export class SshAgentService implements OnDestroy {
         }),
         filter((message) => message != null),
         withLatestFrom(this.authService.activeAccountStatus$, this.accountService.activeAccount$),
-        // This switchMap handles unlocking the vault if it is not unlocked:
-        //   - If the vault is locked or logged out, we will wait for it to be unlocked:
-        //   - If the vault is not unlocked in within the timeout, we will abort the flow.
-        //   - If the vault is unlocked, we will continue with the flow.
-        // switchMap is used here to prevent multiple requests from being processed at the same time,
-        // and will cancel the previous request if a new one is received.
+        // Waits for the vault to unlock, aborting if that takes too long.
         //
-        // Keys are retained in the agent's keystore across vault lock, so the agent can serve a sign request while the vault is locked without ever firing the list callback.
-        switchMap(([message, status, account]) => {
+        // mergeMap, not switchMap: concurrent SSH requests must not cancel each other's unlock wait.
+        // Prompts are serialized later, by the approval window.
+        //
+        // Keys survive vault lock in the agent's keystore, so a sign request can be served while
+        // locked without firing the list callback.
+        mergeMap(([message, status, account]) => {
           if (status !== AuthenticationStatus.Unlocked || account == null) {
             ipc.platform.focusWindow();
             this.toastService.showToast({
@@ -221,11 +224,14 @@ export class SshAgentService implements OnDestroy {
       )
       .subscribe(() => {
         this.authorizedHosts = new Map();
+
+        // A prompt for a key the vault can no longer show must not stay answerable.
+        void ipc.autofill.sshAgent.cancelApprovals().catch((e: unknown) => {
+          this.logService.error("Failed to cancel pending SSH sign approvals", e);
+        });
       });
 
-    // Handle list-keys requests when the vault is locked (BFU case).
-    // The Rust agent fires a list callback when its keystore is empty. The renderer then prompts
-    // for unlock, pushes keys once unlocked, and signals the agent to return them.
+    // List-keys requests while the vault is locked (BFU): prompt for unlock, push keys, then answer.
     this.messageListener
       .messages$(new CommandDefinition(SSH_AGENT_IPC_CHANNELS.LIST_KEYS_REQUEST))
       .pipe(
@@ -407,7 +413,9 @@ export class SshAgentService implements OnDestroy {
     let application = message.processName as string;
     const namespace = message.namespace as string;
     const isAgentForwarding = message.isAgentForwarding as boolean;
-    const hostFingerprint = message.hostFingerprint as string | undefined;
+    const hostFingerprint = (message.hostFingerprint as string) ?? null;
+    const keyFingerprint = (message.keyFingerprint as string) ?? null;
+    const receivedAt = (message.receivedAt as number) ?? Date.now();
 
     if (application == "") {
       application = this.i18nService.t("unknownApplication");
@@ -425,16 +433,16 @@ export class SshAgentService implements OnDestroy {
     }
 
     if (await this.needsAuthorization(cipherId, isAgentForwarding, hostFingerprint)) {
-      ipc.platform.focusWindow();
-      const dialogRef = ApproveSshRequestComponent.open(
-        this.dialogService,
-        cipher.name,
-        application,
+      const approved = await this.requestApproval({
+        cipherName: cipher.name,
+        applicationName: application,
         isAgentForwarding,
-        namespace,
-      );
+        actionI18nKey: SshAgentService.actionI18nKey(namespace),
+        keyFingerprint,
+        receivedAt,
+      });
 
-      if (await firstValueFrom(dialogRef.closed)) {
+      if (approved) {
         await this.storeAuthorizedHost(cipherId, isAgentForwarding, hostFingerprint);
         return ipc.autofill.sshAgent.signRequestResponse(requestId, true);
       } else {
@@ -443,6 +451,30 @@ export class SshAgentService implements OnDestroy {
     } else {
       return ipc.autofill.sshAgent.signRequestResponse(requestId, true);
     }
+  }
+
+  // Asks the user to approve the request in its own window. Never throws: a prompt that cannot be
+  // shown counts as a refusal.
+  private async requestApproval(prompt: SshApprovalPrompt): Promise<boolean> {
+    try {
+      return await ipc.autofill.sshAgent.requestApproval(prompt);
+    } catch (e: unknown) {
+      this.logService.error("Failed to show the SSH sign approval window", e);
+      return false;
+    }
+  }
+
+  // Names the operation so the user can tell a login apart from a git signature.
+  private static actionI18nKey(namespace: string): string {
+    if (namespace === "git") {
+      return "sshActionGitSign";
+    }
+
+    if (namespace != null && namespace !== "") {
+      return "sshActionSign";
+    }
+
+    return "sshActionLogin";
   }
 
   private async refuseSignRequest(requestId: number, context: string, error: unknown) {

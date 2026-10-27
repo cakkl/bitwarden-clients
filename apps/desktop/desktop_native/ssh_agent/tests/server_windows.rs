@@ -15,7 +15,47 @@ use common::{
 };
 use ssh_agent::{BitwardenSSHAgent, InMemoryEncryptedKeyStore};
 
-const PIPE_NAME: &str = r"\\.\pipe\openssh-ssh-agent";
+type Agent = BitwardenSSHAgent<InMemoryEncryptedKeyStore, MockApprovalRequester>;
+
+/// Returns a pipe name no other test uses.
+///
+/// Tests share one OS namespace, and a listener from a previous test can briefly outlive its agent
+/// while `stop()` winds down, making a later client connect to an instance being torn down.
+fn unique_pipe_name() -> String {
+    static COUNTER: std::sync::atomic::AtomicU32 = std::sync::atomic::AtomicU32::new(0);
+    format!(
+        r"\\.\pipe\bw-ssh-agent-test-{}-{}",
+        std::process::id(),
+        COUNTER.fetch_add(1, std::sync::atomic::Ordering::Relaxed)
+    )
+}
+
+/// Starts `agent` on a fresh pipe and returns its name.
+fn start(agent: &mut Agent) -> String {
+    let name = unique_pipe_name();
+    agent
+        .start_on_pipe(&name)
+        .expect("failed to start the agent on a test pipe");
+    name
+}
+
+/// Restarts an agent on a pipe it already used, retrying while the old listener still owns it.
+async fn restart(agent: &mut Agent, name: &str) {
+    let deadline = std::time::Instant::now() + std::time::Duration::from_secs(5);
+
+    loop {
+        match agent.start_on_pipe(name) {
+            Ok(()) => return,
+            Err(error) => {
+                assert!(
+                    std::time::Instant::now() < deadline,
+                    "restart failed: {error}"
+                );
+                tokio::time::sleep(std::time::Duration::from_millis(5)).await;
+            }
+        }
+    }
+}
 
 fn setup() {
     init_tracing();
@@ -27,11 +67,11 @@ async fn test_start_creates_pipe() {
     setup();
     let mut agent = always_approving_agent();
 
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
     // The pipe is created synchronously before start() returns,
     // so no sleep is needed — the OS accepts the connection immediately.
-    let result = ClientOptions::new().open(PIPE_NAME);
+    let result = ClientOptions::new().open(&pipe);
     assert!(
         result.is_ok(),
         "client connection to named pipe should succeed"
@@ -44,9 +84,9 @@ async fn test_start_creates_pipe() {
 async fn test_client_can_connect() {
     setup();
     let mut agent = always_approving_agent();
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let result = ClientOptions::new().open(PIPE_NAME);
+    let result = ClientOptions::new().open(&pipe);
 
     assert!(
         result.is_ok(),
@@ -60,7 +100,7 @@ async fn test_client_can_connect() {
 async fn test_stop_clears_running_state() {
     setup();
     let mut agent = always_approving_agent();
-    agent.start().unwrap();
+    let _pipe = start(&mut agent);
 
     agent.stop();
 
@@ -73,12 +113,12 @@ async fn test_server_can_restart() {
     setup();
     let mut agent = always_approving_agent();
 
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
     agent.stop();
-    agent.start().unwrap();
+    restart(&mut agent, &pipe).await;
 
     assert!(agent.is_running());
-    assert!(ClientOptions::new().open(PIPE_NAME).is_ok());
+    assert!(ClientOptions::new().open(&pipe).is_ok());
     agent.stop();
 }
 
@@ -87,9 +127,9 @@ async fn test_server_can_restart() {
 async fn test_list_keys_returns_empty_when_no_keys_set() {
     setup();
     let mut agent = always_approving_agent();
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_request_identities())
         .await
@@ -111,9 +151,9 @@ async fn test_list_keys_returns_empty_when_no_keys_set() {
 async fn test_list_keys_returns_keys_after_replace() {
     setup();
     let mut agent = agent_with_keys(vec![test_ed25519_key()]);
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_request_identities())
         .await
@@ -133,10 +173,10 @@ async fn test_list_keys_returns_keys_after_replace() {
 async fn test_list_keys_updates_after_replace() {
     setup();
     let mut agent = always_approving_agent();
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
     // Initially no keys
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_request_identities())
         .await
@@ -148,7 +188,7 @@ async fn test_list_keys_updates_after_replace() {
     agent.replace(vec![test_ed25519_key()]).unwrap();
 
     // New connection sees the key
-    let mut client2 = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client2 = ClientOptions::new().open(&pipe).unwrap();
     client2
         .write_all(&framed_request_identities())
         .await
@@ -165,10 +205,10 @@ async fn test_list_keys_updates_after_replace() {
 async fn test_list_keys_multiple_connections_see_same_keys() {
     setup();
     let mut agent = agent_with_keys(vec![test_ed25519_key()]);
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
     for _ in 0..3 {
-        let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+        let mut client = ClientOptions::new().open(&pipe).unwrap();
         client
             .write_all(&framed_request_identities())
             .await
@@ -185,9 +225,9 @@ async fn test_list_keys_multiple_connections_see_same_keys() {
 async fn test_sign_request_returns_sign_response() {
     setup();
     let mut agent = agent_with_keys(vec![test_ed25519_key()]);
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_sign_request(
             &test_ed25519_key_blob(),
@@ -209,9 +249,9 @@ async fn test_sign_request_denied_returns_failure() {
     setup();
     let mut agent = always_denying_agent();
     agent.replace(vec![test_ed25519_key()]).unwrap();
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_sign_request(
             &test_ed25519_key_blob(),
@@ -232,9 +272,9 @@ async fn test_sign_request_denied_returns_failure() {
 async fn test_sign_request_unknown_key_returns_failure() {
     setup();
     let mut agent = always_approving_agent();
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_sign_request(
             &test_ed25519_key_blob(),
@@ -255,9 +295,9 @@ async fn test_sign_request_unknown_key_returns_failure() {
 async fn test_sign_request_rsa_sha512_flag_produces_sha512_signature() {
     setup();
     let mut agent = agent_with_keys(vec![test_rsa_key()]);
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_sign_request(&test_rsa_key_blob(), b"test data", 4))
         .await
@@ -279,9 +319,9 @@ async fn test_sign_request_rsa_sha512_flag_produces_sha512_signature() {
 async fn test_sign_request_rsa_sha256_flag_produces_sha256_signature() {
     setup();
     let mut agent = agent_with_keys(vec![test_rsa_key()]);
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_sign_request(&test_rsa_key_blob(), b"test data", 2))
         .await
@@ -303,9 +343,9 @@ async fn test_sign_request_rsa_sha256_flag_produces_sha256_signature() {
 async fn test_sign_request_ecdsa_p256_produces_p256_signature() {
     setup();
     let mut agent = agent_with_keys(vec![test_ecdsa_p256_key()]);
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_sign_request(
             &test_ecdsa_p256_key_blob(),
@@ -331,9 +371,9 @@ async fn test_sign_request_ecdsa_p256_produces_p256_signature() {
 async fn test_sign_request_ecdsa_p384_produces_p384_signature() {
     setup();
     let mut agent = agent_with_keys(vec![test_ecdsa_p384_key()]);
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_sign_request(
             &test_ecdsa_p384_key_blob(),
@@ -359,9 +399,9 @@ async fn test_sign_request_ecdsa_p384_produces_p384_signature() {
 async fn test_sign_request_ecdsa_p521_produces_p521_signature() {
     setup();
     let mut agent = agent_with_keys(vec![test_ecdsa_p521_key()]);
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_sign_request(
             &test_ecdsa_p521_key_blob(),
@@ -389,9 +429,9 @@ async fn test_sign_request_unsupported_key_type_returns_failure() {
     // Agent has valid keys loaded; the sign request references a DSA key, which is
     // unsupported and can never be stored, so the agent must return FAILURE.
     let mut agent = agent_with_keys(vec![test_ed25519_key()]);
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_sign_request(
             &unsupported_dsa_key_blob(),
@@ -412,9 +452,9 @@ async fn test_sign_request_unsupported_key_type_returns_failure() {
 async fn test_session_bind_valid_returns_success() {
     setup();
     let mut agent = always_approving_agent();
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_session_bind_extension(false))
         .await
@@ -434,9 +474,9 @@ async fn test_session_bind_valid_returns_success() {
 async fn test_session_bind_forwarding_returns_success() {
     setup();
     let mut agent = always_approving_agent();
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_session_bind_extension(true))
         .await
@@ -456,9 +496,9 @@ async fn test_session_bind_forwarding_returns_success() {
 async fn test_session_bind_invalid_signature_returns_failure() {
     setup();
     let mut agent = always_approving_agent();
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
     client
         .write_all(&framed_invalid_session_bind_extension())
         .await
@@ -493,9 +533,9 @@ async fn test_session_bind_is_forwarding_reaches_approval_layer() {
 
     let mut agent = BitwardenSSHAgent::new(InMemoryEncryptedKeyStore::new(), requester);
     agent.replace(vec![test_ed25519_key()]).unwrap();
-    agent.start().unwrap();
+    let pipe = start(&mut agent);
 
-    let mut client = ClientOptions::new().open(PIPE_NAME).unwrap();
+    let mut client = ClientOptions::new().open(&pipe).unwrap();
 
     client
         .write_all(&framed_session_bind_extension(true))

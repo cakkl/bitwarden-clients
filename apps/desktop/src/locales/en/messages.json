@@ -5725,20 +5725,8 @@
   "deny": {
     "message": "Deny"
   },
-  "sshkeyApprovalTitle": {
-    "message": "Confirm SSH key usage"
-  },
-  "agentForwardingWarningTitle": {
-    "message": "Warning: Agent Forwarding"
-  },
   "agentForwardingWarningText": {
     "message": "This request comes from a remote device that you are logged into"
-  },
-  "sshkeyApprovalMessageInfix": {
-    "message": "is requesting access to"
-  },
-  "sshkeyApprovalMessageSuffix": {
-    "message": "in order to"
   },
   "sshActionLogin": {
     "message": "authenticate to a server"

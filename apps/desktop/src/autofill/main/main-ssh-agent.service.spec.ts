@@ -1,4 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+﻿/* eslint-disable @typescript-eslint/no-unsafe-function-type */
+
+import { createHash } from "node:crypto";
 
 import { ipcMain } from "electron";
 
@@ -34,7 +36,8 @@ describe("MainSshAgentService", () => {
   };
 
   let capturedSignCb: (err: Error | null, data: sshagent.SignRequestData) => Promise<boolean>;
-  let capturedListCb: (err: Error | null) => Promise<boolean>;
+  let capturedListCb: (err: Error | null, agentRequestId: number) => Promise<boolean>;
+  let capturedCancelCb: (err: Error | null, agentRequestId: number) => Promise<void>;
 
   beforeEach(async () => {
     ipcHandlers = new Map();
@@ -61,9 +64,10 @@ describe("MainSshAgentService", () => {
     });
 
     (sshagent.SshAgentState.serve as jest.Mock).mockImplementation(
-      (sign: Function, list: Function) => {
+      (sign: Function, list: Function, cancel: Function) => {
         capturedSignCb = sign as any;
         capturedListCb = list as any;
+        capturedCancelCb = cancel as any;
         return Promise.resolve(mockAgentState);
       },
     );
@@ -109,8 +113,9 @@ describe("MainSshAgentService", () => {
   });
 
   describe("sshagent.init IPC handler", () => {
-    it("should call sshagent.SshAgentState.serve with sign and list callbacks", () => {
+    it("should pass sign, list and cancellation callbacks to serve", () => {
       expect(sshagent.SshAgentState.serve).toHaveBeenCalledWith(
+        expect.any(Function),
         expect.any(Function),
         expect.any(Function),
       );
@@ -136,6 +141,7 @@ describe("MainSshAgentService", () => {
 
   describe("requestSign (via sign callback)", () => {
     const mockSignData = {
+      requestId: 7,
       cipherId: "cipher-abc",
       signRequest: {
         publicKey: { keyType: "Ed25519", keypair: "keypair-data" },
@@ -151,11 +157,43 @@ describe("MainSshAgentService", () => {
       expect(mockMessagingService.send).toHaveBeenCalledWith("sshagent.signrequest", {
         cipherId: "cipher-abc",
         requestId: 1,
+        // Stamped on arrival so the approval window can honour the agent's own 60s budget.
+        receivedAt: expect.any(Number),
         processName: "ssh",
         isAgentForwarding: false,
         namespace: "ssh",
         hostFingerprint: undefined,
+        keyFingerprint: null,
       });
+    });
+
+    it("should forward the key fingerprint in OpenSSH format", () => {
+      const blob = [0x0a, 0x0b, 0x0c];
+
+      void capturedSignCb(null, {
+        cipherId: "cipher-abc",
+        signRequest: {
+          publicKey: { alg: "ssh-ed25519", blob },
+          processName: "ssh",
+          isForwarding: true,
+          namespace: "git",
+          hostFingerprint: "SHA256:hostkey",
+        },
+      } as unknown as sshagent.SignRequestData);
+
+      // Same digest OpenSSH prints from `ssh-keygen -lf`: base64 of the SHA-256 of the key blob,
+      // without the trailing `=` padding.
+      const digest = createHash("sha256").update(Buffer.from(blob)).digest("base64");
+
+      expect(mockMessagingService.send).toHaveBeenCalledWith(
+        "sshagent.signrequest",
+        expect.objectContaining({
+          isAgentForwarding: true,
+          namespace: "git",
+          hostFingerprint: "SHA256:hostkey",
+          keyFingerprint: `SHA256:${digest.replace(/=+$/, "")}`,
+        }),
+      );
     });
 
     it("should resolve with true when the renderer accepts", async () => {
@@ -179,7 +217,7 @@ describe("MainSshAgentService", () => {
 
   describe("requestListKeys (via list callback)", () => {
     it("should send sshagent.listkeysrequest with a requestId", () => {
-      void capturedListCb(null);
+      void capturedListCb(null, 11);
 
       expect(mockMessagingService.send).toHaveBeenCalledWith("sshagent.listkeysrequest", {
         requestId: expect.any(Number),
@@ -187,7 +225,7 @@ describe("MainSshAgentService", () => {
     });
 
     it("should resolve with true when the renderer accepts", async () => {
-      const listPromise = capturedListCb(null);
+      const listPromise = capturedListCb(null, 11);
 
       const responseHandler = ipcHandlers.get("sshagent.listkeysresponse")!;
       await responseHandler({}, { requestId: 1, accepted: true });
@@ -196,12 +234,108 @@ describe("MainSshAgentService", () => {
     });
 
     it("should resolve with false when the renderer rejects", async () => {
-      const listPromise = capturedListCb(null);
+      const listPromise = capturedListCb(null, 11);
 
       const responseHandler = ipcHandlers.get("sshagent.listkeysresponse")!;
       await responseHandler({}, { requestId: 1, accepted: false });
 
       expect(await listPromise).toBe(false);
+    });
+  });
+
+  describe("abandoning parked requests", () => {
+    // The native agent stops waiting for an approval after 60s, so anything still parked here past
+    // that point can never be answered. These tests cover the two ways an entry stops leaking.
+
+    const parkedSignData = {
+      requestId: 7,
+      cipherId: "cipher-abc",
+      signRequest: {
+        publicKey: { alg: "ssh-ed25519", blob: [1, 2, 3] },
+        processName: "ssh",
+        isForwarding: false,
+        namespace: "ssh",
+      },
+    } as unknown as sshagent.SignRequestData;
+
+    it("resolves a request that nobody answers instead of leaving it parked", async () => {
+      jest.useFakeTimers();
+      try {
+        const signPromise = capturedSignCb(null, parkedSignData);
+        await Promise.resolve();
+
+        jest.advanceTimersByTime(65_000);
+
+        await expect(signPromise).resolves.toBe(false);
+      } finally {
+        jest.useRealTimers();
+      }
+    });
+
+    it("denies everything parked when the agent stops", async () => {
+      const first = capturedSignCb(null, parkedSignData);
+      const second = capturedSignCb(null, parkedSignData);
+      await Promise.resolve();
+
+      await ipcHandlers.get("sshagent.stop")!({});
+
+      await expect(first).resolves.toBe(false);
+      await expect(second).resolves.toBe(false);
+    });
+
+    it("settles a request only once when both an answer and a stop arrive", async () => {
+      const signPromise = capturedSignCb(null, parkedSignData);
+      await Promise.resolve();
+
+      await ipcHandlers.get("sshagent.signrequestresponse")!({}, { requestId: 1, accepted: true });
+      await ipcHandlers.get("sshagent.stop")!({});
+
+      await expect(signPromise).resolves.toBe(true);
+    });
+
+    // Without this the prompt stays on screen after the SSH client has gone away.
+    it("withdraws the approval when the agent reports the client disconnected", async () => {
+      const withdraw = jest.fn();
+      const service = new MainSshAgentService(mockLogService, mockMessagingService);
+      service.setApprovalWithdrawal(withdraw);
+      await ipcHandlers.get("sshagent.init")!({});
+      await Promise.resolve();
+
+      void capturedSignCb(null, parkedSignData);
+      await Promise.resolve();
+
+      await capturedCancelCb(null, parkedSignData.requestId);
+
+      // The agent's id is translated to the id used for the renderer round trip.
+      expect(withdraw).toHaveBeenCalledWith(1);
+    });
+
+    it("ignores a withdrawal for a request that is already settled", async () => {
+      const withdraw = jest.fn();
+      const service = new MainSshAgentService(mockLogService, mockMessagingService);
+      service.setApprovalWithdrawal(withdraw);
+      await ipcHandlers.get("sshagent.init")!({});
+      await Promise.resolve();
+
+      const signPromise = capturedSignCb(null, parkedSignData);
+      await Promise.resolve();
+      await ipcHandlers.get("sshagent.signrequestresponse")!({}, { requestId: 1, accepted: true });
+      await signPromise;
+
+      await capturedCancelCb(null, parkedSignData.requestId);
+
+      expect(withdraw).not.toHaveBeenCalled();
+    });
+
+    // A client can give up while the vault is still locked, before any prompt exists. Its key list
+    // will never be read, so waiting out the timeout would only leak the entry.
+    it("settles a parked list request when the client disconnects", async () => {
+      const listPromise = capturedListCb(null, 42);
+      await Promise.resolve();
+
+      await capturedCancelCb(null, 42);
+
+      await expect(listPromise).resolves.toBe(false);
     });
   });
 

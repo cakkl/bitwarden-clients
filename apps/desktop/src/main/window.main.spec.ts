@@ -124,6 +124,8 @@ describe("WindowMain", () => {
         requestSingleInstanceLock: jest.fn().mockReturnValue(true),
         on: jest.fn(),
         whenReady: jest.fn().mockResolvedValue(undefined),
+        // Used by showAndFocus to claim the foreground on Windows and Linux.
+        focus: jest.fn(),
       });
       Object.assign(session, { fromPartition: jest.fn() });
 
@@ -154,6 +156,61 @@ describe("WindowMain", () => {
       await sut.init(true);
 
       expect(createWindow).toHaveBeenCalledWith("full-app", true);
+    });
+
+    describe("showAndFocus", () => {
+      // Raising the main window is how the SSH agent asks the user to unlock the vault, so every
+      // step that makes the difference between "shown" and "actually in front" is asserted here.
+      const makeWin = (overrides: Record<string, jest.Mock> = {}) => {
+        const win = {
+          isDestroyed: jest.fn().mockReturnValue(false),
+          isMinimized: jest.fn().mockReturnValue(true),
+          isVisible: jest.fn().mockReturnValue(false),
+          isAlwaysOnTop: jest.fn().mockReturnValue(false),
+          restore: jest.fn(),
+          show: jest.fn(),
+          setAlwaysOnTop: jest.fn(),
+          moveTop: jest.fn(),
+          focus: jest.fn(),
+          ...overrides,
+        };
+        (sut as any).win = win;
+        return win;
+      };
+
+      it("restores, raises and focuses a minimised hidden window", () => {
+        const win = makeWin();
+
+        sut.showAndFocus();
+
+        expect(win.restore).toHaveBeenCalled();
+        expect(win.show).toHaveBeenCalled();
+        expect(win.moveTop).toHaveBeenCalled();
+        expect(win.focus).toHaveBeenCalled();
+      });
+
+      it("raises the window temporarily when the user has not pinned it", () => {
+        const win = makeWin();
+
+        sut.showAndFocus();
+
+        expect(win.setAlwaysOnTop).toHaveBeenNthCalledWith(1, true);
+      });
+
+      it("leaves a window the user already pinned on top", () => {
+        const win = makeWin({ isAlwaysOnTop: jest.fn().mockReturnValue(true) });
+
+        sut.showAndFocus();
+
+        // Nothing to restore, and nothing to undo later.
+        expect(win.setAlwaysOnTop).not.toHaveBeenCalled();
+      });
+
+      it("does nothing when the window is gone", () => {
+        (sut as any).win = null;
+
+        expect(() => sut.showAndFocus()).not.toThrow();
+      });
     });
   });
 });

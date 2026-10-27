@@ -50,11 +50,31 @@ function watchCommand(configName) {
 
 function killStrayClients() {
   try {
+    if (process.platform === "win32") {
+      // `pkill` does not exist on Windows, and concurrently only reaps the tree while it is the one
+      // shutting down. A crashed or force-killed session therefore leaves Electron running, holding
+      // desktop_napi.<platform>-<arch>.node open, and the next `npm run debug:desktop` fails while
+      // copying that artifact ("Internal Error: Failed to copy artifact").
+      //
+      // Match the marker so a plain `npm run electron` against the real app data dir is left alone.
+      execFileSync(
+        "powershell.exe",
+        [
+          "-NoProfile",
+          "-NonInteractive",
+          "-Command",
+          `Get-CimInstance Win32_Process -Filter "Name='electron.exe'" | Where-Object { $_.CommandLine -like '*${DEBUG_MARKER}*' } | ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }`,
+        ],
+        { stdio: "ignore" },
+      );
+      return;
+    }
+
     // Match on the marker, not just the binary: a plain `npm run electron` session runs the
     // same binary against the real app data dir and must be left alone.
     execFileSync("pkill", ["-9", "-f", `${electronBinary}.*${DEBUG_MARKER}`]);
   } catch {
-    // pkill exits non-zero when nothing matched, and does not exist on Windows.
+    // Nothing matched, or the tool is unavailable: either way there is nothing left to clean up.
   }
 }
 
@@ -79,6 +99,11 @@ const { commands } = concurrently(
       name: "Rend",
       command: watchCommand("renderer"),
       prefixColor: "cyan",
+    },
+    {
+      name: "Appr",
+      command: watchCommand("approval"),
+      prefixColor: "blue",
     },
     {
       name: "Elec",

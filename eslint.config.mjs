@@ -282,6 +282,15 @@ export default tseslint.config(
     },
   },
 
+  // The SSH approval window is a standalone page whose script fills every element in, so its
+  // markup is intentionally empty. It is not an Angular template.
+  {
+    files: ["apps/desktop/src/ssh-approval/**/*.html"],
+    rules: {
+      "@angular-eslint/template/elements-content": "off",
+    },
+  },
+
   // Global quirks
   {
     files: ["apps/browser/src/**/*.ts", "libs/**/*.ts"],

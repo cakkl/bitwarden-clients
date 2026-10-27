@@ -92,7 +92,7 @@ pub fn always_approving_agent(
         .returning(|_| Ok(true));
     requester
         .expect_request_list_approval()
-        .returning(|| Ok(true));
+        .returning(|_| Ok(true));
     BitwardenSSHAgent::new(InMemoryEncryptedKeyStore::new(), requester)
 }
 
@@ -247,7 +247,7 @@ pub fn always_denying_agent() -> BitwardenSSHAgent<InMemoryEncryptedKeyStore, Mo
         .returning(|_| Ok(false));
     requester
         .expect_request_list_approval()
-        .returning(|| Ok(false));
+        .returning(|_| Ok(false));
     BitwardenSSHAgent::new(InMemoryEncryptedKeyStore::new(), requester)
 }
 
@@ -296,7 +296,7 @@ mockall::mock! {
             request: SignApprovalRequest,
         ) -> Result<bool, ApprovalError>;
 
-        async fn request_list_approval(&self) -> Result<bool, ApprovalError>;
+        async fn request_list_approval(&self, request_id: u64) -> Result<bool, ApprovalError>;
     }
 }
 

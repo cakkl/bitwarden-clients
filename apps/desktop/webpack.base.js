@@ -401,5 +401,50 @@ module.exports.buildConfig = function buildConfig(params) {
     ],
   };
 
-  return [mainConfig, rendererConfig, preloadConfig];
+  // The SSH sign-approval prompt runs in its own window, so it gets its own tiny bundle instead of
+  // booting the full Angular app: it has to appear in milliseconds even when the main renderer is
+  // busy, locked or hidden. It is identical for the OSS and commercial builds, hence a fixed entry
+  // rather than a parameter.
+  const approvalTsConfig = path.resolve(__dirname, "tsconfig.ssh-approval.json");
+  const approvalConfig = {
+    name: "approval",
+    mode: NODE_ENV,
+    devtool: "source-map",
+    target: "web",
+    entry: {
+      "ssh-approval": path.resolve(__dirname, "src/ssh-approval/main.ts"),
+    },
+    output: {
+      filename: "[name].js",
+      path: params.outputPath,
+    },
+    module: {
+      rules: [
+        {
+          test: /\.tsx?$/,
+          use: {
+            loader: "ts-loader",
+            options: { configFile: approvalTsConfig },
+          },
+          exclude: /node_modules/,
+        },
+      ],
+    },
+    resolve: {
+      ...commonConfig.resolve,
+      plugins: [new TsconfigPathsPlugin({ configFile: approvalTsConfig })],
+    },
+    plugins: [
+      new HtmlWebpackPlugin({
+        template: path.resolve(__dirname, "src/ssh-approval/index.html"),
+        filename: "ssh-approval.html",
+        chunks: ["ssh-approval"],
+      }),
+      new webpack.DefinePlugin({
+        BIT_ENVIRONMENT: JSON.stringify(NODE_ENV),
+      }),
+    ],
+  };
+
+  return [mainConfig, rendererConfig, preloadConfig, approvalConfig];
 };
