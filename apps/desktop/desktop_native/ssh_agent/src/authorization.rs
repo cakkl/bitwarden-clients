@@ -63,7 +63,7 @@ where
 {
     async fn authorize(&self, request: &AuthRequest) -> Result<bool, AuthError> {
         match request {
-            AuthRequest::List => {
+            AuthRequest::List { request_id } => {
                 // The keystore being initialized means that the vault has been unlocked and keys
                 // received from the vault. The before keystore initialization is a case that arises
                 // in BFU (Before First Unlock)- where the vault state is logged into but hasn't
@@ -73,7 +73,7 @@ where
                         "Keystore not yet initialized on list request, requesting list approval."
                     );
                     self.approval_handler
-                        .request_list_approval()
+                        .request_list_approval(*request_id)
                         .await
                         .map_err(Into::into)
                 } else {
@@ -109,6 +109,11 @@ where
             }
         }
     }
+
+    async fn cancel(&self, request_id: u64) {
+        info!(request_id, "Client went away, abandoning pending approval.");
+        self.approval_handler.cancel_approval(request_id).await;
+    }
 }
 
 #[cfg(test)]
@@ -136,6 +141,7 @@ mod tests {
         namespace: Option<SIGNamespace>,
     ) -> AuthRequest {
         AuthRequest::Sign(crate::server::SignRequest {
+            request_id: 1,
             public_key,
             connection,
             namespace,
@@ -183,7 +189,7 @@ mod tests {
 
         let policy = BitwardenAuthPolicy::new(Arc::new(keystore), approval_handler);
 
-        let result = policy.authorize(&AuthRequest::List).await;
+        let result = policy.authorize(&AuthRequest::List { request_id: 1 }).await;
 
         assert!(
             matches!(result, Ok(true)),
@@ -199,11 +205,11 @@ mod tests {
         approval_handler
             .expect_request_list_approval()
             .once()
-            .returning(|| Ok(true));
+            .returning(|_| Ok(true));
 
         let policy = BitwardenAuthPolicy::new(Arc::new(keystore), approval_handler);
 
-        let result = policy.authorize(&AuthRequest::List).await;
+        let result = policy.authorize(&AuthRequest::List { request_id: 1 }).await;
 
         assert!(
             matches!(result, Ok(true)),
@@ -219,11 +225,11 @@ mod tests {
         approval_handler
             .expect_request_list_approval()
             .once()
-            .returning(|| Ok(false));
+            .returning(|_| Ok(false));
 
         let policy = BitwardenAuthPolicy::new(Arc::new(keystore), approval_handler);
 
-        let result = policy.authorize(&AuthRequest::List).await;
+        let result = policy.authorize(&AuthRequest::List { request_id: 1 }).await;
 
         assert!(
             matches!(result, Ok(false)),

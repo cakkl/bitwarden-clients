@@ -45,6 +45,15 @@ where
         self.server.start_with_default_listeners()
     }
 
+    /// Starts the ssh agent server on a Windows named pipe with the given name.
+    ///
+    /// Tests use this so each one owns its pipe. Real clients always use the fixed OpenSSH path.
+    #[cfg(windows)]
+    pub fn start_on_pipe(&mut self, name: &str) -> Result<()> {
+        debug!(pipe_name = name, "Starting the server on a named pipe.");
+        self.server.start_with_named_pipe(name)
+    }
+
     /// Stops the server and clears the keystore.
     pub fn stop(&mut self) {
         debug!("Stopping server and clearing keys.");

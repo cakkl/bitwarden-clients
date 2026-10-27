@@ -25,6 +25,8 @@ pub struct ConnectionContext {
 /// Request to sign data using an SSH key.
 #[derive(Debug, Clone)]
 pub struct SignRequest {
+    /// Identifies this request so a pending approval can be withdrawn if the client disconnects.
+    pub request_id: u64,
     /// The public key identifying which key to use for signing.
     pub public_key: PublicKey,
     /// The parsed representation of the sign request's SIG namespace. For authentications to a
@@ -38,7 +40,10 @@ pub struct SignRequest {
 #[derive(Debug, Clone)]
 pub enum AuthRequest {
     /// Request to list available SSH keys
-    List,
+    List {
+        /// Identifies this request so a pending approval can be withdrawn on disconnect.
+        request_id: u64,
+    },
     /// Request to sign data with a specific key
     Sign(SignRequest),
 }
@@ -62,4 +67,8 @@ pub trait AuthPolicy: Send + Sync {
     ///
     /// * `AuthError` if an error occurred during authorization
     async fn authorize(&self, request: &AuthRequest) -> Result<bool, AuthError>;
+
+    /// Abandons any pending authorization for `request_id`, e.g. when its client disconnects.
+    /// Policies that authorize synchronously have nothing to cancel.
+    async fn cancel(&self, _request_id: u64) {}
 }

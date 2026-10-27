@@ -182,8 +182,10 @@ apps/desktop/src/autofill/services/ssh-agent.service.spec.ts   @bitwarden/team-d
 apps/desktop/src/autofill/main/main-ssh-agent.service.ts       @bitwarden/team-desktop-native-dev  @bitwarden/wg-ssh-keys
 apps/desktop/src/autofill/main/main-ssh-agent.service.spec.ts  @bitwarden/team-desktop-native-dev  @bitwarden/wg-ssh-keys
 apps/desktop/src/autofill/models/ssh-agent-setting.ts          @bitwarden/team-desktop-native-dev  @bitwarden/wg-ssh-keys
-apps/desktop/src/autofill/components/approve-ssh-request.html  @bitwarden/team-desktop-native-dev  @bitwarden/wg-ssh-keys
-apps/desktop/src/autofill/components/approve-ssh-request.ts    @bitwarden/team-desktop-native-dev  @bitwarden/wg-ssh-keys
+apps/desktop/src/autofill/models/ssh-agent-approval.ts         @bitwarden/team-desktop-native-dev  @bitwarden/wg-ssh-keys
+apps/desktop/src/main/ssh-approval.window.ts                   @bitwarden/team-desktop-native-dev  @bitwarden/wg-ssh-keys
+apps/desktop/src/main/ssh-approval.window.spec.ts              @bitwarden/team-desktop-native-dev  @bitwarden/wg-ssh-keys
+apps/desktop/src/ssh-approval                                 @bitwarden/team-desktop-native-dev  @bitwarden/wg-ssh-keys
 
 ## Native Passkey files
 apps/desktop/desktop_native/autofill_provider                   @bitwarden/team-skunkworks

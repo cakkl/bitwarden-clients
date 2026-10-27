@@ -1,0 +1,4 @@
+{
+  "extends": "./tsconfig",
+  "include": ["src/ssh-approval/main.ts", "src/global.d.ts"]
+}

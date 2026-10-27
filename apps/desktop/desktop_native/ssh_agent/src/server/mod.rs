@@ -66,6 +66,16 @@ where
         self.start(listeners)
     }
 
+    /// Starts the server on a Windows named pipe with the given name.
+    ///
+    /// Used by tests, which each need their own pipe: they share one OS namespace, and a listener
+    /// from a previous test can briefly outlive its agent while `stop()` winds down.
+    #[cfg(windows)]
+    pub(crate) fn start_with_named_pipe(&mut self, name: &str) -> Result<()> {
+        let listeners = listener::create_listeners_with_name(name)?;
+        self.start(listeners)
+    }
+
     /// Starts the server, listening on the provided listeners.
     ///
     /// Each listener runs in its own task and sends accepted connections to a shared
