@@ -99,8 +99,8 @@ function render(view: SshApprovalView): void {
   startCountdown(view);
   requestResize();
 
-  // Focus the safe answer, so a stray Enter or Space refuses instead of authorizing.
-  elements.deny.focus();
+  // Park focus on the container: a focused button would answer whatever key the user presses next.
+  elements.window.focus();
 }
 
 async function respond(accepted: boolean): Promise<void> {

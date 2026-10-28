@@ -192,12 +192,12 @@ describe("SSH approval window renderer", () => {
     expect(escape.defaultPrevented).toBe(true);
   });
 
-  // A stray Enter or Space then refuses instead of authorizing.
-  it("focuses the deny button", async () => {
+  // A focused button would answer whatever key the user presses next.
+  it("parks focus on the container rather than a button", async () => {
     getApproval.mockResolvedValue(makeView());
     await load();
 
-    expect(document.activeElement).toBe(element("deny"));
+    expect(document.activeElement).toBe(element("window"));
   });
 
   it("reports the height its content needs so the window can match it", async () => {

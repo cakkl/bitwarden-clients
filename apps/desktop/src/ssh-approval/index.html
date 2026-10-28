@@ -3,16 +3,23 @@
   <head>
     <meta charset="utf-8" />
     <!--
-      The window only ever renders the bundled script and inline styles from this file: no network,
-      no remote frames, no inline scripts. `file:` is required for the bundled script because the
-      page itself is loaded from disk, which gives it an opaque origin where `'self'` does not match.
+      Only the bundled script, inline styles and the bundled font may load: no network, no remote
+      frames. `file:` is required instead of `'self'` because the page is loaded from disk, which
+      gives it an opaque origin.
     -->
     <meta
       http-equiv="Content-Security-Policy"
-      content="default-src 'none'; script-src file:; style-src 'unsafe-inline'; img-src file: data:"
+      content="default-src 'none'; script-src file:; style-src 'unsafe-inline'; img-src file: data:; font-src file:"
     />
     <title>Bitwarden</title>
     <style>
+      @font-face {
+        font-family: Inter;
+        src: url("./fonts/inter.woff2") format("woff2") tech(variations);
+        font-display: swap;
+        font-weight: 100 900;
+      }
+
       /*
        * Tokens mirror the Figma palette in libs/components/src/tw-theme.css. The theme is resolved by
        * the main process from the user's setting (falling back to the OS) and applied as data-theme.
@@ -38,7 +45,8 @@
 
       :root[data-theme="dark"] {
         color-scheme: dark;
-        --background: #020618;
+        /* Matches --color-background in .theme_dark, which dialogs use. */
+        --background: #202733;
         --surface: #0f172b;
         --surface-strong: #1d293d;
         --border: #1d293d;
@@ -72,16 +80,12 @@
       body {
         background: var(--background);
         color: var(--text);
+        /* Same stack as --font-sans in libs/components/src/theme.css. */
         font-family:
-          system-ui,
-          -apple-system,
-          "Segoe UI",
-          Roboto,
-          Helvetica,
-          Arial,
-          sans-serif;
+          Inter, "Helvetica Neue", Helvetica, Arial, sans-serif, "Apple Color Emoji",
+          "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
         font-size: 14px;
-        line-height: 1.45;
+        line-height: 1.5;
         /* Nothing here is reading material; selecting text only makes the buttons harder to hit. */
         user-select: none;
       }
@@ -89,6 +93,8 @@
       .window {
         display: flex;
         flex-direction: column;
+        /* Focus target for the renderer. No ring: it is outside the tab order. */
+        outline: none;
       }
 
       /* A single brand accent replaces a title bar the user cannot close. */
@@ -124,7 +130,8 @@
 
       .question {
         margin: 0;
-        font-size: 17px;
+        /* lg in the shared scale. */
+        font-size: 18px;
         font-weight: 600;
         letter-spacing: -0.01em;
       }
@@ -143,7 +150,8 @@
         gap: 12px;
         padding: 11px 13px;
         border: 1px solid var(--border);
-        border-radius: 10px;
+        /* rounded-xl, same as base-card. */
+        border-radius: 12px;
         background: var(--surface);
       }
 
@@ -182,7 +190,8 @@
 
       .card-meta {
         font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-        font-size: 11.5px;
+        /* xs in the shared scale. */
+        font-size: 12px;
         color: var(--text-muted);
         overflow: hidden;
         text-overflow: ellipsis;
@@ -211,7 +220,8 @@
         margin: 10px 0 0;
         padding: 9px 11px;
         border: 1px solid var(--warning-border);
-        border-radius: 8px;
+        /* rounded-xl, like the cards above it. */
+        border-radius: 12px;
         background: var(--warning-surface);
         color: var(--warning-text);
         font-size: 12px;
@@ -236,7 +246,8 @@
         height: 40px;
         padding: 0 16px;
         border: 1px solid transparent;
-        border-radius: 8px;
+        /* rounded-xl, same as the shared button component. */
+        border-radius: 12px;
         font: inherit;
         font-weight: 600;
         /* Translations such as "Jetzt nicht" must not wrap and unbalance the pair. */
@@ -296,7 +307,7 @@
     </style>
   </head>
   <body>
-    <div class="window" id="window">
+    <div class="window" id="window" tabindex="-1">
       <div class="accent"></div>
 
       <header class="header">

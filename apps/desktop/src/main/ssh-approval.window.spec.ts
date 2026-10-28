@@ -1,4 +1,4 @@
-﻿import { app, BrowserWindow, ipcMain } from "electron";
+﻿import { BrowserWindow, ipcMain } from "electron";
 import { mock } from "jest-mock-extended";
 import { BehaviorSubject } from "rxjs";
 
@@ -10,7 +10,6 @@ import { ThemeStateService } from "@bitwarden/common/platform/theming/theme-stat
 // The service under test builds a real BrowserWindow; only the Electron surface it touches needs
 // to exist for the module to load in Jest.
 jest.mock("electron", () => ({
-  app: { focus: jest.fn() },
   BrowserWindow: jest.fn(),
   ipcMain: { handle: jest.fn(), removeHandler: jest.fn() },
   nativeTheme: { shouldUseDarkColors: false },
@@ -67,6 +66,7 @@ function createBrowserWindowStub() {
     center: jest.fn(),
     isVisible: jest.fn().mockReturnValue(false),
     show: jest.fn(),
+    showInactive: jest.fn(),
     moveTop: jest.fn(),
     focus: jest.fn(),
     flashFrame: jest.fn(),
@@ -148,8 +148,9 @@ describe("SshApprovalWindow", () => {
 
     expect(view.requestId).toBe(1);
     await reportContentHeight();
-    expect(win.show).toHaveBeenCalled();
-    expect(win.focus).toHaveBeenCalled();
+    expect(win.showInactive).toHaveBeenCalled();
+    expect(win.show).not.toHaveBeenCalled();
+    expect(win.focus).not.toHaveBeenCalled();
 
     await handlerFor(SSH_AGENT_IPC_CHANNELS.APPROVAL_RESPONSE)(
       {},
@@ -196,7 +197,7 @@ describe("SshApprovalWindow", () => {
 
     await expect(decided).resolves.toBe(false);
     // Nothing left to ask: the SSH client has already been told the signature failed.
-    expect(win.show).not.toHaveBeenCalled();
+    expect(win.showInactive).not.toHaveBeenCalled();
     expect(await handlerFor(SSH_AGENT_IPC_CHANNELS.APPROVAL_GET)({})).toBeNull();
   });
 
@@ -219,7 +220,7 @@ describe("SshApprovalWindow", () => {
     await flushMicrotasks();
 
     await expect(decided).resolves.toBe(false);
-    expect(win.show).not.toHaveBeenCalled();
+    expect(win.showInactive).not.toHaveBeenCalled();
   });
 
   it("falls back to the OS appearance when the user follows the system theme", async () => {
@@ -420,24 +421,17 @@ describe("SshApprovalWindow", () => {
     expect(ipcMain.removeHandler).toHaveBeenCalledWith(SSH_AGENT_IPC_CHANNELS.APPROVAL_RESIZE);
   });
 
-  it("asks the OS to activate the app so the prompt is not left behind another window", async () => {
+  it("stacks the prompt on top without taking focus from the user's window", async () => {
     void sut.requestApproval(prompt());
     await flushMicrotasks();
     await reportContentHeight();
 
     expect(win.setAlwaysOnTop).toHaveBeenCalledWith(true, "screen-saver");
     expect(win.moveTop).toHaveBeenCalled();
-  });
 
-  it("app is only asked to steal focus where the platform needs it", async () => {
-    void sut.requestApproval(prompt());
-    await flushMicrotasks();
-    await reportContentHeight();
-
-    if (process.platform === "win32" || process.platform === "linux") {
-      expect(app.focus).toHaveBeenCalledWith({ steal: true });
-    } else {
-      expect(app.focus).not.toHaveBeenCalled();
-    }
+    // The user is usually mid-sentence elsewhere; activating this window would eat their keystrokes.
+    expect(win.showInactive).toHaveBeenCalled();
+    expect(win.show).not.toHaveBeenCalled();
+    expect(win.focus).not.toHaveBeenCalled();
   });
 });
