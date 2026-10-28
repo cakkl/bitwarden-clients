@@ -49,6 +49,8 @@ function createBrowserWindowStub() {
     on: jest.fn(),
     send: jest.fn(),
     getURL: jest.fn().mockReturnValue(""),
+    // Stands in for the paint handshake, which main only uses as a barrier.
+    executeJavaScript: jest.fn().mockResolvedValue(undefined),
   };
 
   const win = {
@@ -93,10 +95,10 @@ describe("SshApprovalWindow", () => {
     return call[1] as Handler;
   };
 
-  // `requestApproval` reaches the window through a couple of awaited promises, so the assertions
-  // have to let those microtasks run.
+  // Showing spans a chain of awaits (theme, load, layout, paint), so the assertions have to let
+  // those microtasks run.
   const flushMicrotasks = async () => {
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 20; i++) {
       await Promise.resolve();
     }
   };
@@ -453,5 +455,28 @@ describe("SshApprovalWindow", () => {
     expect(win.showInactive).toHaveBeenCalled();
     expect(win.show).not.toHaveBeenCalled();
     expect(win.focus).not.toHaveBeenCalled();
+  });
+
+  // Showing before the resized content has been painted is what produced an empty first frame.
+  it("waits for the resized content to be painted before showing", async () => {
+    void sut.requestApproval(prompt());
+    await flushMicrotasks();
+    await reportContentHeight();
+
+    expect(win.webContents.executeJavaScript).toHaveBeenCalledWith(
+      expect.stringContaining("document.fonts.ready"),
+    );
+    expect(win.showInactive).toHaveBeenCalled();
+  });
+
+  it("still shows the prompt when the paint check fails", async () => {
+    win.webContents.executeJavaScript.mockRejectedValue(new Error("renderer gone"));
+
+    void sut.requestApproval(prompt());
+    await flushMicrotasks();
+    await reportContentHeight();
+
+    // A prompt that never appears is far worse than one shown a frame early.
+    expect(win.showInactive).toHaveBeenCalled();
   });
 });
