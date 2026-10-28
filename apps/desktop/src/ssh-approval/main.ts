@@ -46,8 +46,10 @@ function setBusy(busy: boolean): void {
 }
 
 /**
- * Reports the height the content needs. Measured synchronously on purpose: `requestAnimationFrame`
- * is throttled while the window is still hidden.
+ * Reports the height the content needs so the window can match it.
+ *
+ * Measured straight after the DOM update; whether it has actually been painted is main's concern,
+ * and it checks that itself before showing the window.
  */
 function requestResize(): void {
   const height = Math.ceil(elements.window.getBoundingClientRect().height);
