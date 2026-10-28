@@ -158,6 +158,32 @@ describe("WindowMain", () => {
       expect(createWindow).toHaveBeenCalledWith("full-app", true);
     });
 
+    it("marks the app as quitting before before-quit awaits storage", async () => {
+      await sut.init(true);
+
+      const beforeQuit = (app.on as jest.Mock).mock.calls.find(
+        ([event]) => event === "before-quit",
+      )?.[1] as () => Promise<void>;
+      expect(beforeQuit).toBeDefined();
+
+      // Holding the reset open keeps before-quit suspended, which is the window in which a window's
+      // close handler runs. It reads isQuitting to tell a quit apart from a close to the tray.
+      let finishReset: () => void = () => {};
+      const biometrics = (sut as unknown as { biometricStateService: BiometricStateService })
+        .biometricStateService;
+      (biometrics.resetAllPromptCancelled as jest.Mock).mockReturnValue(
+        new Promise<void>((resolve) => {
+          finishReset = resolve;
+        }),
+      );
+
+      const pending = beforeQuit();
+      expect(sut.isQuitting).toBe(true);
+
+      finishReset();
+      await pending;
+    });
+
     describe("showAndFocus", () => {
       // Raising the main window is how the SSH agent asks the user to unlock the vault, so every
       // step that makes the difference between "shown" and "actually in front" is asserted here.
