@@ -2,7 +2,7 @@
 // @ts-strict-ignore
 import * as path from "path";
 
-import { app, BrowserWindow, ipcMain, nativeTheme, screen } from "electron";
+import { BrowserWindow, ipcMain, nativeTheme, screen } from "electron";
 import { firstValueFrom } from "rxjs";
 
 import { I18nService } from "@bitwarden/common/platform/abstractions/i18n.service";
@@ -33,7 +33,7 @@ const LAYOUT_TIMEOUT_MS = 400;
 
 /** Must match the page background tokens in ssh-approval/index.html to avoid a white flash. */
 function backgroundColor(theme: SshApprovalTheme): string {
-  return theme === "dark" ? "#020618" : "#ffffff";
+  return theme === "dark" ? "#202733" : "#ffffff";
 }
 
 interface PendingApproval {
@@ -359,7 +359,12 @@ export class SshApprovalWindow {
     await win.loadFile(path.join(__dirname, "ssh-approval.html"));
   }
 
-  /** Brings the prompt to the front. Windows and Linux only focus once the OS activates the app. */
+  /**
+   * Brings the prompt to the front without taking focus.
+   *
+   * A sign request usually arrives while the user is working in another application, and activating
+   * this window would swallow what they were typing.
+   */
   private present(win: BrowserWindow): void {
     if (win.isMinimized()) {
       win.restore();
@@ -369,16 +374,11 @@ export class SshApprovalWindow {
     win.center();
 
     if (!win.isVisible()) {
-      win.show();
+      win.showInactive();
     }
 
+    // z-order only; it does not touch focus.
     win.moveTop();
-
-    if (isWindows() || isLinux()) {
-      app.focus({ steal: true });
-    }
-
-    win.focus();
 
     if (isWindows() || isLinux()) {
       win.flashFrame(true);
