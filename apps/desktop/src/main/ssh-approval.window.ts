@@ -28,8 +28,13 @@ const WINDOW_WIDTH = 520;
 const MIN_WINDOW_HEIGHT = 220;
 /** Only used before the content height is known. */
 const INITIAL_WINDOW_HEIGHT = 320;
-/** How long to wait for the content height before showing anyway. */
-const LAYOUT_TIMEOUT_MS = 400;
+/**
+ * How long to wait for the content height before showing anyway. The renderer reports late by design
+ * (font settled, content painted), and showing before that is what produced an empty window.
+ */
+const LAYOUT_TIMEOUT_MS = 1_000;
+/** Fallback for the paint handshake, in case the renderer never gets a frame. */
+const REPAINT_TIMEOUT_MS = 500;
 
 /** Must match the page background tokens in ssh-approval/index.html to avoid a white flash. */
 function backgroundColor(theme: SshApprovalTheme): string {
@@ -261,6 +266,11 @@ export class SshApprovalWindow {
         return;
       }
 
+      await this.waitForContentReady(win);
+      if (!this.isStillCurrent(next)) {
+        return;
+      }
+
       this.logService.info(
         `Showing SSH sign request ${next.requestId} with ${Math.max(
           0,
@@ -275,12 +285,35 @@ export class SshApprovalWindow {
     }
   }
 
+  /**
+   * Waits until the prompt is ready to be looked at: the resized content has been painted and the
+   * bundled font has loaded. Showing sooner reveals the previous frame, then swaps the text once the
+   * font arrives. Never rejects: a prompt a frame early beats one that never appears.
+   */
+  private async waitForContentReady(win: BrowserWindow): Promise<void> {
+    try {
+      await win.webContents.executeJavaScript(
+        `new Promise((resolve) => {
+           const painted = () => requestAnimationFrame(() => requestAnimationFrame(resolve));
+           if (document.fonts == null) {
+             painted();
+             return;
+           }
+           document.fonts.ready.then(painted);
+           setTimeout(resolve, ${REPAINT_TIMEOUT_MS});
+         })`,
+      );
+    } catch (e: unknown) {
+      this.logService.warning("Could not confirm the approval window finished rendering", e);
+    }
+  }
+
   /** Showing spans several awaits, and a cancellation can land in between. */
   private isStillCurrent(pending: PendingApproval): boolean {
     return this.current === pending;
   }
 
-  /** Resolves when the renderer reports its height, or after a short timeout. */
+  /** Resolves when the renderer reports its height, or when the layout timeout elapses. */
   private waitForLayoutReady(): Promise<void> {
     return new Promise<void>((resolve) => {
       const finish = () => {
@@ -329,6 +362,9 @@ export class SshApprovalWindow {
         sandbox: true,
         spellcheck: false,
         devTools: isDev(),
+        // The prompt is laid out while the window is still hidden, so its first paint must not be
+        // deferred the way a backgrounded page's would be.
+        backgroundThrottling: false,
       },
     });
 
@@ -361,6 +397,8 @@ export class SshApprovalWindow {
       return;
     }
 
+    // Nothing is shown here: waiting for the first paint as well would only delay the handshake in
+    // `waitForContentReady`, which already waits for a paint that includes the content.
     await win.loadFile(path.join(__dirname, "ssh-approval.html"));
   }
 
