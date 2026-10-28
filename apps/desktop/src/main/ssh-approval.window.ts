@@ -2,7 +2,7 @@
 // @ts-strict-ignore
 import * as path from "path";
 
-import { BrowserWindow, ipcMain, nativeTheme, screen } from "electron";
+import { app, BrowserWindow, ipcMain, nativeTheme, screen } from "electron";
 import { firstValueFrom } from "rxjs";
 
 import { I18nService } from "@bitwarden/common/platform/abstractions/i18n.service";
@@ -60,6 +60,11 @@ export class SshApprovalWindow {
     private themeStateService: ThemeStateService,
   ) {
     this.registerIpcHandlers();
+
+    // The window is not closable, which also stops `app.quit()`: Electron closes windows through the
+    // normal path and this one refuses. Disposing here unblocks quitting before any window closes,
+    // because `will-quit` only fires once every window is gone.
+    app.on("before-quit", () => this.dispose());
   }
 
   /** Queues a prompt and resolves with the decision. Never rejects; an unshowable request is denied. */
