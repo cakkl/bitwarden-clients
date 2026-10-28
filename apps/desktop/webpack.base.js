@@ -440,6 +440,16 @@ module.exports.buildConfig = function buildConfig(params) {
         filename: "ssh-approval.html",
         chunks: ["ssh-approval"],
       }),
+      // The page inlines its own CSS, so webpack never resolves the @font-face url. Copy the one font
+      // it names instead of adding an asset/resource rule that nothing would import.
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, "../../libs/components/src/webfonts/inter.woff2"),
+            to: "fonts/inter.woff2",
+          },
+        ],
+      }),
       new webpack.DefinePlugin({
         BIT_ENVIRONMENT: JSON.stringify(NODE_ENV),
       }),
