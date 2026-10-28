@@ -1,4 +1,4 @@
-﻿import { BrowserWindow, ipcMain } from "electron";
+﻿import { app, BrowserWindow, ipcMain } from "electron";
 import { mock } from "jest-mock-extended";
 import { BehaviorSubject } from "rxjs";
 
@@ -10,6 +10,7 @@ import { ThemeStateService } from "@bitwarden/common/platform/theming/theme-stat
 // The service under test builds a real BrowserWindow; only the Electron surface it touches needs
 // to exist for the module to load in Jest.
 jest.mock("electron", () => ({
+  app: { on: jest.fn() },
   BrowserWindow: jest.fn(),
   ipcMain: { handle: jest.fn(), removeHandler: jest.fn() },
   nativeTheme: { shouldUseDarkColors: false },
@@ -419,6 +420,25 @@ describe("SshApprovalWindow", () => {
     expect(ipcMain.removeHandler).toHaveBeenCalledWith(SSH_AGENT_IPC_CHANNELS.APPROVAL_RESPONSE);
     expect(ipcMain.removeHandler).toHaveBeenCalledWith(SSH_AGENT_IPC_CHANNELS.APPROVAL_CANCEL);
     expect(ipcMain.removeHandler).toHaveBeenCalledWith(SSH_AGENT_IPC_CHANNELS.APPROVAL_RESIZE);
+  });
+
+  // `closable: false` blocks app.quit() outright and Electron skips the close event, so waiting for
+  // 'will-quit' to dispose this window deadlocks: that event only fires once every window is gone.
+  it("destroys its window before-quit so it cannot block quitting", async () => {
+    void sut.requestApproval(prompt());
+    await flushMicrotasks();
+    await reportContentHeight();
+
+    const beforeQuit = (app.on as jest.Mock).mock.calls.find(
+      ([event]) => event === "before-quit",
+    )?.[1] as () => void;
+
+    expect(beforeQuit).toBeDefined();
+    expect(win.destroy).not.toHaveBeenCalled();
+
+    beforeQuit();
+
+    expect(win.destroy).toHaveBeenCalled();
   });
 
   it("stacks the prompt on top without taking focus from the user's window", async () => {

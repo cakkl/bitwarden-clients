@@ -241,9 +241,11 @@ export class WindowMain {
         // This method will be called when Electron is shutting
         // down the application.
         app.on("before-quit", async () => {
+          // Set before the first await: a close handler runs while this yields, and it checks this
+          // flag to tell a quit apart from the user closing the window.
+          this.isQuitting = true;
           // Allow biometric to auto-prompt on reload
           await this.biometricStateService.resetAllPromptCancelled();
-          this.isQuitting = true;
         });
 
         // This method will be called when Electron has finished
