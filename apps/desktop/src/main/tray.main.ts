@@ -101,8 +101,9 @@ export class TrayMain {
         this.hideToTray();
       } else {
         // Not running in the background: closing the window quits the application.
-        // Setting isQuitting ensures macOS also quits via the window-all-closed handler.
+        // Quit explicitly: `window-all-closed` never fires while the SSH approval window is alive.
         this.windowMain.isQuitting = true;
+        app.quit();
       }
     });
   }
@@ -196,10 +197,11 @@ export class TrayMain {
   }
 
   private closeWindow() {
+    // Quit explicitly rather than closing the window and hoping `window-all-closed` fires: the
+    // SSH approval window is kept warm and is not closable, so that event never fires and the
+    // process would live on with only a tray icon.
     this.windowMain.isQuitting = true;
-    if (this.windowMain.win != null) {
-      this.windowMain.win.close();
-    }
+    app.quit();
   }
 
   /**
