@@ -2162,9 +2162,6 @@
     "message": "Kopiera",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Sök efter uppdateringar…"
-  },
   "version": {
     "message": "Version $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Starta om för att uppdatera"
-  },
-  "restartToUpdateDesc": {
-    "message": "Version $VERSION_NUM$ är redo att installeras. Du måste starta om programmet för att slutföra installationen. Vill du starta om och uppdatera nu?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Uppdatering tillgänglig"
-  },
-  "updateAvailableDesc": {
-    "message": "En uppdatering hittades. Vill du hämta den nu?"
-  },
   "restart": {
     "message": "Starta om"
   },
   "later": {
     "message": "Senare"
-  },
-  "noUpdatesAvailable": {
-    "message": "Inga uppdateringar tillgängliga. Du använder den senaste versionen."
-  },
-  "updateError": {
-    "message": "Fel vid uppdatering"
   },
   "unknown": {
     "message": "Okänd"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Osparade ändringar"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Om du lämnar nu kommer dina ändringar inte att sparas. Installera uppdateringen senare så att du kan stanna och spara dina ändringar."
-  },
-  "installLater": {
-    "message": "Installera senare"
-  },
-  "continueWithInstall": {
-    "message": "Fortsätt med installationen"
   },
   "clone": {
     "message": "Klona"

@@ -2162,9 +2162,6 @@
     "message": "కాపీ చేయండి",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "నవీకరణల కోసం తనిఖీ చేయండి…"
-  },
   "version": {
     "message": "వెర్షన్ $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "నవీకరించడానికి పునఃప్రారంభించండి"
-  },
-  "restartToUpdateDesc": {
-    "message": "వెర్షన్ $VERSION_NUM$ ఇన్‌స్టాల్ చేయడానికి సిద్ధంగా ఉంది. ఇన్‌స్టాలేషన్ పూర్తి చేయడానికి మీరు తప్పనిసరిగా అప్లికేషన్‌ను పునఃప్రారంభించాలి. మీరు ఇప్పుడు పునఃప్రారంభించి నవీకరించాలనుకుంటున్నారా?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "నవీకరణ అందుబాటులో ఉంది"
-  },
-  "updateAvailableDesc": {
-    "message": "ఒక నవీకరణ కనుగొనబడింది. మీరు దానిని ఇప్పుడు డౌన్‌లోడ్ చేయాలనుకుంటున్నారా?"
-  },
   "restart": {
     "message": "పునఃప్రారంభించండి"
   },
   "later": {
     "message": "తరువాత"
-  },
-  "noUpdatesAvailable": {
-    "message": "ప్రస్తుతం నవీకరణలు అందుబాటులో లేవు. మీరు తాజా వెర్షన్‌ను ఉపయోగిస్తున్నారు."
-  },
-  "updateError": {
-    "message": "నవీకరణ లోపం"
   },
   "unknown": {
     "message": "తెలియదు"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "సేవ్ చేయని మార్పులు"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "మీరు ఇప్పుడు నిష్క్రమిస్తే, మీ మార్పులు సేవ్ చేయబడవు. మీరు ఉండి మీ మార్పులను సేవ్ చేయడానికి నవీకరణను తరువాత ఇన్‌స్టాల్ చేయండి."
-  },
-  "installLater": {
-    "message": "తరువాత ఇన్‌స్టాల్ చేయండి"
-  },
-  "continueWithInstall": {
-    "message": "ఇన్‌స్టాల్‌తో కొనసాగించండి"
   },
   "clone": {
     "message": "క్లోన్ చేయండి"

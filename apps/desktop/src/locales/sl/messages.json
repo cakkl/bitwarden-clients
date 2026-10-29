@@ -2162,9 +2162,6 @@
     "message": "Kopiraj",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Preveri za posodobitve"
-  },
   "version": {
     "message": "Različica $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Ponovno zaženi za posodobitev"
-  },
-  "restartToUpdateDesc": {
-    "message": "Različica $VERSION_NUM$ je pripravljena za namestitev. Za dokončanje namestitve morate znova zagnati aplikacijo. Ali želite zdaj znova zagnati in posodobiti?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Posodobitev je na voljo"
-  },
-  "updateAvailableDesc": {
-    "message": "Najdena je bila posodobitev. Ali jo želite prenesti zdaj?"
-  },
   "restart": {
     "message": "Ponovno zaženi"
   },
   "later": {
     "message": "Pozneje"
-  },
-  "noUpdatesAvailable": {
-    "message": "Trenutno ni na voljo nobenih posodobitev. Uporabljate najnovejšo različico."
-  },
-  "updateError": {
-    "message": "Napaka pri posodabljanju"
   },
   "unknown": {
     "message": "Neznano"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Neshranjene spremembe"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Če zdaj zapustite, vaše spremembe ne bodo shranjene. Posodobitev namestite pozneje, da lahko ostanete in shranite svoje spremembe."
-  },
-  "installLater": {
-    "message": "Namesti pozneje"
-  },
-  "continueWithInstall": {
-    "message": "Nadaljuj z namestitvijo"
   },
   "clone": {
     "message": "Kloniraj"

@@ -2162,9 +2162,6 @@
     "message": "ನಕಲಿಸಿ",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "ನವೀಕರಣೆಗಳಿಗಾಗಿ ಪರೀಕ್ಷಿಸಿ"
-  },
   "version": {
     "message": "ಸಂವಹನ $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "ನವೀಕರಿಸಲು ಮರುಪ್ರಾರಂಭಿಸಿ"
-  },
-  "restartToUpdateDesc": {
-    "message": "ಆವೃತ್ತಿ $VERSION_NUM$ ಸ್ಥಾಪಿಸಲು ಸಿದ್ಧವಾಗಿದೆ. ಅನುಸ್ಥಾಪನೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ನೀವು ಅಪ್ಲಿಕೇಶನ್ ಅನ್ನು ಮರುಪ್ರಾರಂಭಿಸಬೇಕು. ನೀವು ಈಗ ಮರುಪ್ರಾರಂಭಿಸಲು ಮತ್ತು ನವೀಕರಿಸಲು ಬಯಸುವಿರಾ?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "ನವೀಕರಣ ಲಭ್ಯವಿದೆ"
-  },
-  "updateAvailableDesc": {
-    "message": "ಒಂದು ಅಪ್ಡೇಟ್ ಕಂಡುಬಂದಿದೆ. ನೀವು ಈಗ ಅದನ್ನು ಡೌನ್ಲೋಡ್ ಮಾಡಲು ಬಯಸುತ್ತೀರಾ?"
-  },
   "restart": {
     "message": "ಪುನರಾರಂಭ"
   },
   "later": {
     "message": "ನಂತರ"
-  },
-  "noUpdatesAvailable": {
-    "message": "ಯಾವುದೇ ನವೀಕರಣಗಳು ಪ್ರಸ್ತುತ ಲಭ್ಯವಿಲ್ಲ. ನೀವು ಇತ್ತೀಚಿನ ಆವೃತ್ತಿಯನ್ನು ಬಳಸುತ್ತಿರುವಿರಿ."
-  },
-  "updateError": {
-    "message": "ದೋಷವನ್ನು ನವೀಕರಿಸಿ"
   },
   "unknown": {
     "message": "ಅಪರಿಚಿತ"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "ಉಳಿಸದ ಬದಲಾವಣೆಗಳು"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "ನೀವು ಈಗ ಹೊರಟುಹೋದರೆ, ನಿಮ್ಮ ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಲಾಗುವುದಿಲ್ಲ. ನೀವು ಉಳಿದುಕೊಂಡು ನಿಮ್ಮ ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಲು ನಂತರ ನವೀಕರಣವನ್ನು ಸ್ಥಾಪಿಸಿ."
-  },
-  "installLater": {
-    "message": "ನಂತರ ಸ್ಥಾಪಿಸಿ"
-  },
-  "continueWithInstall": {
-    "message": "ಸ್ಥಾಪನೆಯೊಂದಿಗೆ ಮುಂದುವರಿಯಿರಿ"
   },
   "clone": {
     "message": "ಕ್ಲೋನ್"

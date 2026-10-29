@@ -2162,9 +2162,6 @@
     "message": "କପି କରନ୍ତୁ",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "ଅପଡେଟ୍ ପାଇଁ ଯାଞ୍ଚ କରନ୍ତୁ…"
-  },
   "version": {
     "message": "ସଂସ୍କରଣ $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "ଅପଡେଟ୍ କରିବାକୁ ପୁନରାରମ୍ଭ କରନ୍ତୁ"
-  },
-  "restartToUpdateDesc": {
-    "message": "ସଂସ୍କରଣ $VERSION_NUM$ ଇନଷ୍ଟଲ୍ କରିବାକୁ ପ୍ରସ୍ତୁତ। ଇନଷ୍ଟଲେସନ ସମାପ୍ତ କରିବାକୁ ଆପଣଙ୍କୁ ଆପ୍ଲିକେସନ ପୁନରାରମ୍ଭ କରିବାକୁ ହେବ। ଆପଣ ବର୍ତ୍ତମାନ ପୁନରାରମ୍ଭ ଏବଂ ଅପଡେଟ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "ଅପଡେଟ୍ ଉପଲବ୍ଧ"
-  },
-  "updateAvailableDesc": {
-    "message": "ଏକ ଅପଡେଟ୍ ମିଳିଛି। ଆପଣ ବର୍ତ୍ତମାନ ଏହାକୁ ଡାଉନଲୋଡ୍ କରିବାକୁ ଚାହୁଁଛନ୍ତି କି?"
-  },
   "restart": {
     "message": "ପୁନରାରମ୍ଭ"
   },
   "later": {
     "message": "ପରେ"
-  },
-  "noUpdatesAvailable": {
-    "message": "ବର୍ତ୍ତମାନ କୌଣସି ଅପଡେଟ୍ ଉପଲବ୍ଧ ନାହିଁ। ଆପଣ ସର୍ବଶେଷ ସଂସ୍କରଣ ବ୍ୟବହାର କରୁଛନ୍ତି।"
-  },
-  "updateError": {
-    "message": "ଅପଡେଟ୍ ତ୍ରୁଟି"
   },
   "unknown": {
     "message": "ଅଜଣା"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "ଅସଞ୍ଚିତ ପରିବର୍ତ୍ତନ"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "ଯଦି ଆପଣ ବର୍ତ୍ତମାନ ଛାଡ଼ନ୍ତି, ଆପଣଙ୍କ ପରିବର୍ତ୍ତନ ଗୁଡ଼ିକ ସଞ୍ଚିତ ହେବ ନାହିଁ। ଆପଣ ରହି ଆପଣଙ୍କ ପରିବର୍ତ୍ତନ ଗୁଡ଼ିକୁ ସଞ୍ଚୟ କରିପାରିବେ ବୋଲି ଅପଡେଟ୍ ପରେ ଇନଷ୍ଟଲ୍ କରନ୍ତୁ।"
-  },
-  "installLater": {
-    "message": "ପରେ ଇନଷ୍ଟଲ୍ କରନ୍ତୁ"
-  },
-  "continueWithInstall": {
-    "message": "ଇନଷ୍ଟଲ୍ ସହ ଜାରି ରଖନ୍ତୁ"
   },
   "clone": {
     "message": "କ୍ଲୋନ୍ କରନ୍ତୁ"

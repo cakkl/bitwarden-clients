@@ -2162,9 +2162,6 @@
     "message": "კოპირება",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "განახლებების შემოწმება…"
-  },
   "version": {
     "message": "ვერსია $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "განახლებისთვის გადატვირთვა"
-  },
-  "restartToUpdateDesc": {
-    "message": "ვერსია $VERSION_NUM$ მზადაა ინსტალაციისთვის. ინსტალაციის დასასრულებლად უნდა გადატვირთოთ აპლიკაცია. გსურთ ახლავე გადატვირთვა და განახლება?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "განახლება ხელმისაწვდომია"
-  },
-  "updateAvailableDesc": {
-    "message": "ნაპოვნია განახლება. გსურთ მისი ახლავე ჩამოტვირთვა?"
-  },
   "restart": {
     "message": "თავიდან გაშვება"
   },
   "later": {
     "message": "გვიან"
-  },
-  "noUpdatesAvailable": {
-    "message": "ამჟამად განახლებები არ არის ხელმისაწვდომი. თქვენ იყენებთ უახლეს ვერსიას."
-  },
-  "updateError": {
-    "message": "განახლების შეცდომა"
   },
   "unknown": {
     "message": "უცნობი"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "შეუნახავი ცვლილებები"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "თუ ახლა გახვალთ, თქვენი ცვლილებები არ შეინახება. დააინსტალირეთ განახლება მოგვიანებით, რათა დარჩეთ და შეინახოთ თქვენი ცვლილებები."
-  },
-  "installLater": {
-    "message": "მოგვიანებით ინსტალაცია"
-  },
-  "continueWithInstall": {
-    "message": "ინსტალაციის გაგრძელება"
   },
   "clone": {
     "message": "კლონი"

@@ -1,10 +1,7 @@
-import { BrowserWindow, dialog, MenuItem, MenuItemConstructorOptions } from "electron";
+import { BrowserWindow, dialog, MenuItemConstructorOptions } from "electron";
 
 import { I18nService } from "@bitwarden/common/platform/abstractions/i18n.service";
 import { MessagingService } from "@bitwarden/common/platform/abstractions/messaging.service";
-
-import { isMacAppStore, isSnapStore, isWindowsStore } from "../platform-utils.main";
-import { UpdaterMain } from "../updater.main";
 
 import { MenuAccount } from "./menu.updater";
 
@@ -12,7 +9,6 @@ export class FirstMenu {
   constructor(
     protected readonly _i18nService: I18nService,
     protected readonly _messagingService: MessagingService,
-    protected readonly _updater: UpdaterMain,
     protected readonly _window: BrowserWindow,
     protected readonly _accounts: { [userId: string]: MenuAccount },
     protected readonly _isLocked: boolean,
@@ -32,15 +28,6 @@ export class FirstMenu {
 
   protected get hasAuthenticatedAccounts(): boolean {
     return this._accounts != null && Object.values(this._accounts).some((a) => a.isAuthenticated);
-  }
-
-  protected get checkForUpdates(): MenuItemConstructorOptions {
-    return {
-      id: "checkForUpdates",
-      label: this.localize("checkForUpdates"),
-      click: (menuItem) => this.checkForUpdate(menuItem),
-      visible: !isMacAppStore() && !isWindowsStore() && !isSnapStore(),
-    };
   }
 
   protected get separator(): MenuItemConstructorOptions {
@@ -147,14 +134,6 @@ export class FirstMenu {
 
   protected localize(s: string) {
     return this._i18nService.t(s);
-  }
-
-  protected async checkForUpdate(menuItem: MenuItem) {
-    menuItem.enabled = false;
-    // FIXME: Verify that this floating promise is intentional. If it is, add an explanatory comment and ensure there is proper error handling.
-    // eslint-disable-next-line @typescript-eslint/no-floating-promises
-    this._updater.checkForUpdate(true);
-    menuItem.enabled = true;
   }
 
   protected sendMessage(message: string, args?: any) {

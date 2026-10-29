@@ -2162,9 +2162,6 @@
     "message": "Kopyahin",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Check mo kung may updates..."
-  },
   "version": {
     "message": "Bersyon $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Muling magsimula para mag-update"
-  },
-  "restartToUpdateDesc": {
-    "message": "Version $VERSION_NUM$ ay handa nang i-install. Kailangan mong i restart ang application upang makumpleto ang pag install. Gusto mo bang mag-restart at mag-update ngayon?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Magagamit ang update"
-  },
-  "updateAvailableDesc": {
-    "message": "Isang update ang natagpuan. Gusto mo bang i-download ito ngayon?"
-  },
   "restart": {
     "message": "Muling magsimula"
   },
   "later": {
     "message": "Mamaya"
-  },
-  "noUpdatesAvailable": {
-    "message": "Walang mga update na kasalukuyang magagamit. Gumagamit ka ng pinakabagong bersyon."
-  },
-  "updateError": {
-    "message": "Mali sa pag-update"
   },
   "unknown": {
     "message": "Hindi kilala"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Mga hindi na-save na pagbabago"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Kung aalis ka ngayon, hindi mai-save ang iyong mga pagbabago. I-install ang update mamaya upang manatili ka at mai-save ang iyong mga pagbabago."
-  },
-  "installLater": {
-    "message": "I-install mamaya"
-  },
-  "continueWithInstall": {
-    "message": "Magpatuloy sa pag-install"
   },
   "clone": {
     "message": "Kopyahin ang item"

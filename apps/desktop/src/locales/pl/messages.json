@@ -2162,9 +2162,6 @@
     "message": "Kopiuj",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Sprawdź dostępność aktualizacji…"
-  },
   "version": {
     "message": "Wersja $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Uruchom ponownie, aby zaktualizować"
-  },
-  "restartToUpdateDesc": {
-    "message": "Wersja $VERSION_NUM$ jest gotowa do zainstalowania. Czy chcesz uruchomić ponownie aplikację i ją zaktualizować?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Dostępna jest aktualizacja"
-  },
-  "updateAvailableDesc": {
-    "message": "Aktualizacja została znaleziona. Czy chcesz pobrać ją teraz?"
-  },
   "restart": {
     "message": "Uruchom ponownie"
   },
   "later": {
     "message": "Później"
-  },
-  "noUpdatesAvailable": {
-    "message": "Brak dostępnych aktualizacji. Korzystasz z najnowszej wersji."
-  },
-  "updateError": {
-    "message": "Błąd aktualizacji"
   },
   "unknown": {
     "message": "Nieznane"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Niezapisane zmiany"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Jeśli wyjdziesz teraz, zmiany nie zostaną zapisane. Zainstaluj aktualizację później, abyś mógł pozostać na stronie i zapisać zmiany."
-  },
-  "installLater": {
-    "message": "Zainstaluj później"
-  },
-  "continueWithInstall": {
-    "message": "Kontynuuj instalację"
   },
   "clone": {
     "message": "Klonuj"
