@@ -1,6 +1,6 @@
 import { EventEmitter } from "node:events";
 
-import { BrowserWindow } from "electron";
+import { app, BrowserWindow, Menu } from "electron";
 import { mock } from "jest-mock-extended";
 import { BehaviorSubject } from "rxjs";
 
@@ -11,8 +11,8 @@ import { BiometricsService } from "@bitwarden/key-management";
 import { DesktopSettingsService } from "../platform/services/desktop-settings.service";
 
 jest.mock("electron", () => ({
-  app: { dock: { hide: jest.fn(), show: jest.fn() } },
-  Menu: { buildFromTemplate: jest.fn() },
+  app: { quit: jest.fn(), dock: { hide: jest.fn(), show: jest.fn() } },
+  Menu: { buildFromTemplate: jest.fn((template: unknown) => ({ template })) },
   nativeImage: {
     createFromPath: jest.fn(() => ({ setTemplateImage: jest.fn() })),
   },
@@ -98,6 +98,55 @@ describe("TrayMain", () => {
 
       expect(event.preventDefault).not.toHaveBeenCalled();
       expect(win.hide).not.toHaveBeenCalled();
+    });
+  });
+
+  // The SSH approval window is kept warm and is not closable, so `window-all-closed` never fires.
+  // Quitting therefore has to be asked for explicitly, whether from the tray menu or by closing
+  // the main window with "run in background" off.
+  describe("quitting explicitly", () => {
+    const makeSut = async () => {
+      globalThis.BIT_ENVIRONMENT = "production";
+
+      const windowMain = { isQuitting: false, win: null } as unknown as WindowMain;
+      const desktopSettingsService = mock<DesktopSettingsService>();
+      desktopSettingsService.runInBackground$ = new BehaviorSubject(false);
+
+      // `init()` builds the tray menu, and I18nService is mocked, so map keys back to themselves
+      // to find the "exit" entry by name.
+      const i18nService = mock<I18nService>();
+      i18nService.t.mockImplementation((key: string) => key);
+
+      const sut = new TrayMain(
+        windowMain,
+        i18nService,
+        desktopSettingsService,
+        mock<MessagingService>(),
+        mock<BiometricsService>(),
+      );
+      await sut.init("Bitwarden");
+
+      const template = (Menu.buildFromTemplate as jest.Mock).mock.calls.at(-1)[0] as {
+        label?: string;
+      }[];
+      return { sut, windowMain, template };
+    };
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it("asks the app to quit from the tray menu", async () => {
+      const { windowMain, template } = await makeSut();
+
+      const exitItem = template.find((item) => item.label === "exit") as {
+        click?: () => void;
+      };
+      expect(exitItem?.click).toBeDefined();
+      exitItem.click();
+
+      expect(windowMain.isQuitting).toBe(true);
+      expect(app.quit).toHaveBeenCalled();
     });
   });
 });
