@@ -2162,9 +2162,6 @@
     "message": "പകർത്തുക",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "അപ്‌ഡേറ്റുകൾക്കായി പരിശോധിക്കുക"
-  },
   "version": {
     "message": "വേർഷൻ $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "അപ്‌ഡേറ്റുചെയ്യാൻ പുനരാരംഭിക്കുക"
-  },
-  "restartToUpdateDesc": {
-    "message": "വേർഷൻ $VERSION_NUM$ ഇൻസ്റ്റാൾ ചെയ്യാൻ തയ്യാറാണ്. ഇൻസ്റ്റാളേഷൻ പൂർത്തിയാക്കുന്നതിന് നിങ്ങൾ അപ്ലിക്കേഷൻ പുനരാരംഭിക്കണം. ഇപ്പോൾ പുനരാരംഭിച്ച് അപ്‌ഡേറ്റ് ചെയ്യാൻ നിങ്ങൾ ആഗ്രഹിക്കുന്നുണ്ടോ?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "അപ്ഡേറ്റ് ലഭ്യമാണ്"
-  },
-  "updateAvailableDesc": {
-    "message": "ഒരു അപ്‌ഡേറ്റ് കണ്ടെത്തി. നിങ്ങൾക്കിപ്പോൾ ഇത് ഡൌൺലോഡ് ചെയ്യണോ?"
-  },
   "restart": {
     "message": "പുനരാരംഭിക്കുക"
   },
   "later": {
     "message": "പിന്നീട്"
-  },
-  "noUpdatesAvailable": {
-    "message": "അപ്‌ഡേറ്റുകളൊന്നും നിലവിൽ ലഭ്യമല്ല. നിങ്ങൾ ഏറ്റവും പുതിയ വേർഷൻ ഉപയോഗിക്കുന്നു."
-  },
-  "updateError": {
-    "message": "അപ്ഡേറ്റിൽ പിശക് സംഭവിച്ചു"
   },
   "unknown": {
     "message": "അറിയപ്പെടാത്ത"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "സ്ഥിരപ്പെടാത്ത മാറ്റങ്ങൾ"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "നിങ്ങൾ ഇപ്പോൾ പോകുകയാണെങ്കിൽ, നിങ്ങളുടെ മാറ്റങ്ങൾ സംരക്ഷിക്കപ്പെടില്ല. നിങ്ങൾക്ക് തുടരാനും നിങ്ങളുടെ മാറ്റങ്ങൾ സംരക്ഷിക്കാനും വേണ്ടി അപ്ഡേറ്റ് പിന്നീട് ഇൻസ്റ്റാൾ ചെയ്യുക."
-  },
-  "installLater": {
-    "message": "പിന്നീട് ഇൻസ്റ്റാൾ ചെയ്യുക"
-  },
-  "continueWithInstall": {
-    "message": "ഇൻസ്റ്റാളേഷനുമായി തുടരുക"
   },
   "clone": {
     "message": "ക്ലോൺ"

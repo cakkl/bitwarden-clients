@@ -2162,9 +2162,6 @@
     "message": "Kopírovať",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Skontrolovať aktualizácie…"
-  },
   "version": {
     "message": "Verzia $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Reštartovať na dokončenie aktualizácie"
-  },
-  "restartToUpdateDesc": {
-    "message": "Verzia $VERSION_NUM$ je pripravená na inštaláciu. Je nutné reštartovať aplikáciu, aby sa inštalácia mohla dokončiť. Chcete ju reštartovať a aktualizovať teraz?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "K dispozícii je nová aktualizácia"
-  },
-  "updateAvailableDesc": {
-    "message": "Je dostupná nová aktualizácia. Chcete ju stiahnuť teraz?"
-  },
   "restart": {
     "message": "Reštartovať"
   },
   "later": {
     "message": "Neskôr"
-  },
-  "noUpdatesAvailable": {
-    "message": "K dispozícii nie sú žiadne aktualizácie. Používate poslednú verziu."
-  },
-  "updateError": {
-    "message": "Chyba aktualizácie"
   },
   "unknown": {
     "message": "Neznáme"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Neuložené zmeny"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Ak teraz odídete, zmeny sa neuložia. Aktualizáciu nainštalujte neskôr, aby ste mohli zostať na stránke a uložiť zmeny."
-  },
-  "installLater": {
-    "message": "Inštalovať neskôr"
-  },
-  "continueWithInstall": {
-    "message": "Pokračovať v inštalácii"
   },
   "clone": {
     "message": "Klonovať"

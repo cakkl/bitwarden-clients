@@ -2162,9 +2162,6 @@
     "message": "Copiar",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Buscar actualizacións…"
-  },
   "version": {
     "message": "Versión $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Reiniciar para actualizar"
-  },
-  "restartToUpdateDesc": {
-    "message": "A versión $VERSION_NUM$ está lista para instalar. Debes reiniciar a aplicación para completar a instalación. Queres reiniciar e actualizar agora?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Actualización dispoñible"
-  },
-  "updateAvailableDesc": {
-    "message": "Atopouse unha actualización. Queres descargala agora?"
-  },
   "restart": {
     "message": "Reiniciar"
   },
   "later": {
     "message": "Máis tarde"
-  },
-  "noUpdatesAvailable": {
-    "message": "Non hai actualizacións dispoñibles. Estás usando a última versión."
-  },
-  "updateError": {
-    "message": "Erro de actualización"
   },
   "unknown": {
     "message": "Descoñecido"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Cambios non gardados"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Se saes agora, os teus cambios non se gardarán. Instala a actualización máis tarde para poder quedar e gardar os cambios."
-  },
-  "installLater": {
-    "message": "Instalar máis tarde"
-  },
-  "continueWithInstall": {
-    "message": "Continuar coa instalación"
   },
   "clone": {
     "message": "Clonar"

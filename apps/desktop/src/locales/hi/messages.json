@@ -2162,9 +2162,6 @@
     "message": "कॉपी करें",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "अपडेट के लिए जाँच करें…"
-  },
   "version": {
     "message": "संस्करण $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "अपडेट करने के लिए पुनः आरंभ करें"
-  },
-  "restartToUpdateDesc": {
-    "message": "संस्करण $VERSION_NUM$ इंस्टॉल के लिए तैयार है। इंस्टॉलेशन पूरा करने के लिए आपको एप्लिकेशन को पुनः आरंभ करना होगा। क्या आप अभी पुनः आरंभ करके अपडेट करना चाहते हैं?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "अपडेट उपलब्ध है"
-  },
-  "updateAvailableDesc": {
-    "message": "एक अपडेट मिला है। क्या आप इसे अभी डाउनलोड करना चाहते हैं?"
-  },
   "restart": {
     "message": "पुनः आरंभ करें"
   },
   "later": {
     "message": "बाद में"
-  },
-  "noUpdatesAvailable": {
-    "message": "वर्तमान में कोई अपडेट उपलब्ध नहीं है। आप नवीनतम संस्करण का उपयोग कर रहे हैं।"
-  },
-  "updateError": {
-    "message": "अपडेट त्रुटि"
   },
   "unknown": {
     "message": "अज्ञात"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "सहेजे नहीं गए परिवर्तन"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "यदि आप अभी छोड़ते हैं, तो आपके परिवर्तन सहेजे नहीं जाएंगे। अपडेट को बाद में इंस्टॉल करें ताकि आप रुक सकें और अपने परिवर्तन सहेज सकें।"
-  },
-  "installLater": {
-    "message": "बाद में इंस्टॉल करें"
-  },
-  "continueWithInstall": {
-    "message": "इंस्टॉल के साथ जारी रखें"
   },
   "clone": {
     "message": "क्लोन करें"

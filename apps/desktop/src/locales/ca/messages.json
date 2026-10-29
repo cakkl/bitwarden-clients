@@ -2162,9 +2162,6 @@
     "message": "Copia",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Cerca actualitzacions"
-  },
   "version": {
     "message": "Versió $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Reinicia per actualitzar"
-  },
-  "restartToUpdateDesc": {
-    "message": "La versió $VERSION_NUM$ està a punt per instal·lar-se. Heu de reiniciar l'aplicació per completar la instal·lació. Voleu reiniciar i actualitzar ara?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Actualització disponible"
-  },
-  "updateAvailableDesc": {
-    "message": "S'ha trobat una actualització. Voleu descarregar-la ara?"
-  },
   "restart": {
     "message": "Reinicia"
   },
   "later": {
     "message": "Més tard"
-  },
-  "noUpdatesAvailable": {
-    "message": "No hi ha actualitzacions disponibles actualment. Esteu utilitzant l'última versió."
-  },
-  "updateError": {
-    "message": "Error d'actualizació"
   },
   "unknown": {
     "message": "Desconegut"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Hi ha canvis sense guardar"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Si surts ara, els teus canvis no es desaran. Instal·la l'actualització més tard per poder quedar-te i desar els canvis."
-  },
-  "installLater": {
-    "message": "Instal·la més tard"
-  },
-  "continueWithInstall": {
-    "message": "Continua amb la instal·lació"
   },
   "clone": {
     "message": "Clona"

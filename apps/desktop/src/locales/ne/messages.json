@@ -2162,9 +2162,6 @@
     "message": "प्रतिलिपि गर्नुहोस्",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "अद्यावधिकहरू जाँच गर्नुहोस्…"
-  },
   "version": {
     "message": "संस्करण $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "अद्यावधिक गर्न पुन: सुरु गर्नुहोस्"
-  },
-  "restartToUpdateDesc": {
-    "message": "संस्करण $VERSION_NUM$ स्थापना गर्न तयार छ। स्थापना पूरा गर्न तपाईंले अनुप्रयोग पुन: सुरु गर्नुपर्छ। के तपाईं अब पुन: सुरु गरी अद्यावधिक गर्न चाहनुहुन्छ?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "अद्यावधिक उपलब्ध छ"
-  },
-  "updateAvailableDesc": {
-    "message": "एउटा अद्यावधिक फेला पर्यो। के तपाईं यसलाई अहिले डाउनलोड गर्न चाहनुहुन्छ?"
-  },
   "restart": {
     "message": "पुन: सुरु गर्नुहोस्"
   },
   "later": {
     "message": "पछि"
-  },
-  "noUpdatesAvailable": {
-    "message": "हाल कुनै अद्यावधिकहरू उपलब्ध छैनन्। तपाईं नवीनतम संस्करण प्रयोग गर्दै हुनुहुन्छ।"
-  },
-  "updateError": {
-    "message": "अद्यावधिक त्रुटि"
   },
   "unknown": {
     "message": "अज्ञात"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "नसुरक्षित परिवर्तनहरू"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "यदि तपाईं अहिले छोड्नुहुन्छ भने, तपाईंका परिवर्तनहरू सुरक्षित गरिनेछैनन्। ताकि तपाईं बसी आफ्नो परिवर्तनहरू सुरक्षित गर्न सक्नुहोस्, अद्यावधिक पछि स्थापना गर्नुहोस्।"
-  },
-  "installLater": {
-    "message": "पछि स्थापना गर्नुहोस्"
-  },
-  "continueWithInstall": {
-    "message": "स्थापनाको साथ जारी राख्नुहोस्"
   },
   "clone": {
     "message": "क्लोन गर्नुहोस्"

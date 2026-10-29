@@ -2162,9 +2162,6 @@
     "message": "ចម្លង",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "ពិនិត្យរកការអាប់ដេត..."
-  },
   "version": {
     "message": "កំណែ $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "ចាប់ផ្តើមឡើងវិញដើម្បីអាប់ដេត"
-  },
-  "restartToUpdateDesc": {
-    "message": "កំណែ $VERSION_NUM$ បានត្រៀមរួចរាល់សម្រាប់ដំឡើង។ អ្នកត្រូវតែចាប់ផ្តើមកម្មវិធីឡើងវិញដើម្បីបញ្ចប់ការដំឡើង។ តើអ្នកចង់ចាប់ផ្តើមឡើងវិញ និងអាប់ដេតឥឡូវនេះទេ?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "មានការអាប់ដេត"
-  },
-  "updateAvailableDesc": {
-    "message": "បានរកឃើញការអាប់ដេត។ តើអ្នកចង់ទាញយកវាឥឡូវនេះទេ?"
-  },
   "restart": {
     "message": "ចាប់ផ្តើមឡើងវិញ"
   },
   "later": {
     "message": "ក្រោយមក"
-  },
-  "noUpdatesAvailable": {
-    "message": "បច្ចុប្បន្នមិនមានការអាប់ដេតទេ។ អ្នកកំពុងប្រើកំណែចុងក្រោយបំផុត។"
-  },
-  "updateError": {
-    "message": "កំហុសក្នុងការអាប់ដេត"
   },
   "unknown": {
     "message": "មិនស្គាល់"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "ការផ្លាស់ប្តូរដែលមិនទាន់រក្សាទុក"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "ប្រសិនបើអ្នកចាកចេញឥឡូវនេះ ការផ្លាស់ប្តូររបស់អ្នកនឹងមិនត្រូវបានរក្សាទុកទេ។ ដំឡើងការអាប់ដេតនៅពេលក្រោយ ដូច្នេះអ្នកអាចស្នាក់នៅ និងរក្សាទុកការផ្លាស់ប្តូររបស់អ្នក។"
-  },
-  "installLater": {
-    "message": "ដំឡើងនៅពេលក្រោយ"
-  },
-  "continueWithInstall": {
-    "message": "បន្តជាមួយការដំឡើង"
   },
   "clone": {
     "message": "ស្ទួន"

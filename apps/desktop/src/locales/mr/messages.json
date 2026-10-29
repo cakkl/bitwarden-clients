@@ -2162,9 +2162,6 @@
     "message": "कॉपी करा",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "अद्ययावत तपासा…"
-  },
   "version": {
     "message": "आवृत्ती $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "अद्ययावत करण्यासाठी पुन्हा सुरू करा"
-  },
-  "restartToUpdateDesc": {
-    "message": "आवृत्ती $VERSION_NUM$ स्थापित करण्यासाठी तयार आहे. स्थापना पूर्ण करण्यासाठी तुम्ही अनुप्रयोग पुन्हा सुरू करणे आवश्यक आहे. तुम्हाला आता पुन्हा सुरू करून अद्ययावत करायचे आहे का?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "अद्ययावत उपलब्ध"
-  },
-  "updateAvailableDesc": {
-    "message": "एक अद्ययावत सापडले. तुम्हाला ते आता डाउनलोड करायचे आहे का?"
-  },
   "restart": {
     "message": "पुन्हा सुरू करा"
   },
   "later": {
     "message": "नंतर"
-  },
-  "noUpdatesAvailable": {
-    "message": "सध्या कोणतीही अद्ययावत उपलब्ध नाहीत. तुम्ही नवीनतम आवृत्ती वापरत आहात."
-  },
-  "updateError": {
-    "message": "अद्ययावत त्रुटी"
   },
   "unknown": {
     "message": "अज्ञात"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "न जतन केलेले बदल"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "जर तुम्ही आता निघालात, तर तुमचे बदल जतन केले जाणार नाहीत. तुम्ही थांबून तुमचे बदल जतन करू शकता म्हणून नंतर अद्ययावत स्थापित करा."
-  },
-  "installLater": {
-    "message": "नंतर स्थापित करा"
-  },
-  "continueWithInstall": {
-    "message": "स्थापनेसह पुढे जा"
   },
   "clone": {
     "message": "क्लोन करा"

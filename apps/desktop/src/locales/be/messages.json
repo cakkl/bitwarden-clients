@@ -2162,9 +2162,6 @@
     "message": "Скапіяваць",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Праверыць абнаўленні"
-  },
   "version": {
     "message": "Версія $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Перазапуск для абнаўлення"
-  },
-  "restartToUpdateDesc": {
-    "message": "Версія $VERSION_NUM$ гатова да ўсталявання. Вы павінны перазапусціць праграму, каб завяршыць працэс усталявання. Зрабіць гэта зараз?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Даступна абнаўленне"
-  },
-  "updateAvailableDesc": {
-    "message": "Знойдзена абнаўленне. Спампаваць яго зараз?"
-  },
   "restart": {
     "message": "Перазапусціць"
   },
   "later": {
     "message": "Пазней"
-  },
-  "noUpdatesAvailable": {
-    "message": "Зараз абнаўленняў няма. Вы выкарыстоўваеце апошнюю версію."
-  },
-  "updateError": {
-    "message": "Памылка абнаўлення"
   },
   "unknown": {
     "message": "Невядома"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Незахаваныя змены"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Калі вы пойдзеце зараз, вашы змены не будуць захаваны. Усталюйце абнаўленне пазней, каб застацца і захаваць змены."
-  },
-  "installLater": {
-    "message": "Усталяваць пазней"
-  },
-  "continueWithInstall": {
-    "message": "Працягнуць устаноўку"
   },
   "clone": {
     "message": "Кланіраваць"

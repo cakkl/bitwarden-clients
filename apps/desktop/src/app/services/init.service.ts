@@ -35,8 +35,6 @@ import { VersionService } from "../../platform/services/version.service";
 import { BiometricMessageHandlerService } from "../../services/biometric-message-handler.service";
 import { NativeMessagingService } from "../../services/native-messaging.service";
 
-import { UpdateRestartService } from "./update-restart.service";
-
 @Injectable()
 export class InitService {
   constructor(
@@ -68,7 +66,6 @@ export class InitService {
     @Inject(DOCUMENT) private document: Document,
     private readonly migrationRunner: MigrationRunner,
     private serverCommunicationConfigService: ServerCommunicationConfigService,
-    private updateRestartService: UpdateRestartService,
     private logService: LogService,
     private automationDriver: AutomationDriver,
   ) {}
@@ -111,7 +108,6 @@ export class InitService {
       this.themingService.applyThemeChangesTo(this.document);
 
       this.versionService.init();
-      this.updateRestartService.init();
 
       const containerService = new ContainerService(
         this.keyService,

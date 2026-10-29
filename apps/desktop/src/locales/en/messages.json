@@ -2165,9 +2165,6 @@
     "message": "Copy",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Check for updates…"
-  },
   "version": {
     "message": "Version $VERSION_NUM$",
     "placeholders": {
@@ -2177,35 +2174,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Restart to update"
-  },
-  "restartToUpdateDesc": {
-    "message": "Version $VERSION_NUM$ is ready to install. You must restart the application to complete the installation. Do you want to restart and update now?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Update available"
-  },
-  "updateAvailableDesc": {
-    "message": "An update was found. Do you want to download it now?"
-  },
   "restart": {
     "message": "Restart"
   },
   "later": {
     "message": "Later"
-  },
-  "noUpdatesAvailable": {
-    "message": "No updates are currently available. You are using the latest version."
-  },
-  "updateError": {
-    "message": "Update error"
   },
   "unknown": {
     "message": "Unknown"
@@ -2865,15 +2838,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Unsaved changes"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "If you leave now, your changes will not be saved. Install the update later so you can stay and save your changes."
-  },
-  "installLater": {
-    "message": "Install later"
-  },
-  "continueWithInstall": {
-    "message": "Continue with install"
   },
   "clone": {
     "message": "Clone"

@@ -2162,9 +2162,6 @@
     "message": "Kopiatu",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Egiaztatu eguneraketarik dagoen…"
-  },
   "version": {
     "message": "$VERSION_NUM$ bertsioa",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Berrabiarazi eguneratzeko"
-  },
-  "restartToUpdateDesc": {
-    "message": "$VERSION_NUM$ bertsioa instalatzeko prest dago. Aplikazioa berrabiarazi behar duzu instalazioa osatzeko. Orain berrabiarazi eta eguneratu nahi duzu?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Eguneraketa eskuragarri"
-  },
-  "updateAvailableDesc": {
-    "message": "Eguneraketa bat aurkitu da. Orain deskargatu nahi duzu?"
-  },
   "restart": {
     "message": "Berrabiarazi"
   },
   "later": {
     "message": "Geroago"
-  },
-  "noUpdatesAvailable": {
-    "message": "Ez dago eguneratzerik erabilgarri. Azken bertsioa erabiltzen ari zara."
-  },
-  "updateError": {
-    "message": "Eguneraketa akatsa"
   },
   "unknown": {
     "message": "Ezezaguna"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Gorde gabeko aldaketak"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Orain irteten baduzu, zure aldaketak ez dira gordeko. Instalatu eguneraketa geroago, zure aldaketak gordetzeko geratu ahal izateko."
-  },
-  "installLater": {
-    "message": "Instalatu geroago"
-  },
-  "continueWithInstall": {
-    "message": "Jarraitu instalazioarekin"
   },
   "clone": {
     "message": "Klonatu"

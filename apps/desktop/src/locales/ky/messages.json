@@ -2162,9 +2162,6 @@
     "message": "Көчүрүү",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Жаңыртууларды текшерүү…"
-  },
   "version": {
     "message": "Версия $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Жаңыртуу үчүн кайра ишке киргизүү"
-  },
-  "restartToUpdateDesc": {
-    "message": "$VERSION_NUM$ версиясы орнотууга даяр. Орнотууну аяктоо үчүн колдонмону кайра ишке киргизүү керек. Азыр кайра ишке киргизип, жаңырткыңыз келеби?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Жаңыртуу бар"
-  },
-  "updateAvailableDesc": {
-    "message": "Жаңыртуу табылды. Азыр жүктөп аласызбы?"
-  },
   "restart": {
     "message": "Кайра ишке киргизүү"
   },
   "later": {
     "message": "Кийин"
-  },
-  "noUpdatesAvailable": {
-    "message": "Учурда жаңыртуулар жок. Сиз эң акыркы версияны колдонуп жатасыз."
-  },
-  "updateError": {
-    "message": "Жаңыртуу катасы"
   },
   "unknown": {
     "message": "Белгисиз"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Сакталбаган өзгөртүүлөр"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Эгер азыр кетсеңиз, өзгөртүүлөрүңүз сакталбайт. Өзгөртүүлөрүңүздү сактап калуу үчүн жаңыртууну кийин орнотуңуз."
-  },
-  "installLater": {
-    "message": "Кийин орнотуу"
-  },
-  "continueWithInstall": {
-    "message": "Орнотууну улантуу"
   },
   "clone": {
     "message": "Клондоо"

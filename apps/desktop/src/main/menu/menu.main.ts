@@ -8,7 +8,6 @@ import { MessagingService } from "@bitwarden/common/platform/abstractions/messag
 import { SafeShell } from "../../platform/main/safe-shell.main";
 import { VersionMain } from "../../platform/main/version.main";
 import { DesktopSettingsService } from "../../platform/services/desktop-settings.service";
-import { UpdaterMain } from "../updater.main";
 import { WindowMain } from "../window.main";
 
 import { MenuUpdateRequest } from "./menu.updater";
@@ -22,7 +21,6 @@ export class MenuMain {
     private messagingService: MessagingService,
     private environmentService: EnvironmentService,
     private windowMain: WindowMain,
-    private updaterMain: UpdaterMain,
     private desktopSettingsService: DesktopSettingsService,
     private versionMain: VersionMain,
     private shell: SafeShell,
@@ -43,7 +41,6 @@ export class MenuMain {
         this.i18nService,
         this.messagingService,
         this.desktopSettingsService,
-        this.updaterMain,
         this.windowMain,
         await this.getWebVaultUrl(),
         app.getVersion(),
