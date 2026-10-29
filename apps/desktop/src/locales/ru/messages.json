@@ -2219,9 +2219,6 @@
     "message": "Скопировать",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Проверка обновлений…"
-  },
   "version": {
     "message": "Версия $VERSION_NUM$",
     "placeholders": {
@@ -2231,35 +2228,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Перезапустить для обновления"
-  },
-  "restartToUpdateDesc": {
-    "message": "Версия $VERSION_NUM$ готова к установке. Для завершения установки необходимо перезапустить Bitwarden. Сделать это сейчас?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Доступно обновление"
-  },
-  "updateAvailableDesc": {
-    "message": "Найдено обновление. Загрузить его сейчас?"
-  },
   "restart": {
     "message": "Перезапустить"
   },
   "later": {
     "message": "Позже"
-  },
-  "noUpdatesAvailable": {
-    "message": "Обновлений нет. Вы используете последнюю версию."
-  },
-  "updateError": {
-    "message": "Ошибка обновления"
   },
   "unknown": {
     "message": "Неизвестно"
@@ -2916,15 +2889,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Несохраненные изменения"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Если вы остановитесь сейчас, ваши изменения не будут сохранены. Установите обновление позже, чтобы вы могли остаться и сохранить свои изменения."
-  },
-  "installLater": {
-    "message": "Установить позднее"
-  },
-  "continueWithInstall": {
-    "message": "Продолжить установку"
   },
   "clone": {
     "message": "Клонировать"

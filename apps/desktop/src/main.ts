@@ -66,7 +66,6 @@ import { SshApprovalWindow } from "./main/ssh-approval.window";
 import { SsoCookieMain } from "./main/sso-cookie.main";
 import { ChromiumImporterService } from "./main/tools/import/chromium-importer.service";
 import { TrayMain } from "./main/tray.main";
-import { UpdaterMain } from "./main/updater.main";
 import { WindowMain } from "./main/window.main";
 import { flagEnabled } from "./platform/flags";
 import { ClipboardMain } from "./platform/main/clipboard.main";
@@ -103,7 +102,6 @@ export class Main {
 
   windowMain: WindowMain;
   messagingMain: MessagingMain;
-  updaterMain: UpdaterMain;
   menuMain: MenuMain;
   powerMonitorMain: PowerMonitorMain;
   trayMain: TrayMain;
@@ -281,12 +279,6 @@ export class Main {
     );
 
     this.messagingMain = new MessagingMain(this, this.desktopSettingsService);
-    this.updaterMain = new UpdaterMain(
-      this.i18nService,
-      this.logService,
-      this.windowMain,
-      this.shell,
-    );
 
     const messageSubject = new Subject<Message<Record<string, unknown>>>();
     this.messagingService = MessageSender.combine(
@@ -320,7 +312,6 @@ export class Main {
       this.messagingService,
       this.environmentService,
       this.windowMain,
-      this.updaterMain,
       this.desktopSettingsService,
       this.versionMain,
       this.shell,
@@ -463,7 +454,6 @@ export class Main {
         }
 
         this.powerMonitorMain.init();
-        await this.updaterMain.init();
 
         const [ddgIntegrationEnabled] = await Promise.all([
           firstValueFrom(this.desktopAutofillSettingsService.enableDuckDuckGoBrowserIntegration$),
