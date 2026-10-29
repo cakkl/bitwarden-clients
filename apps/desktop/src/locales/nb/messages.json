@@ -2162,9 +2162,6 @@
     "message": "Kopier",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Se etter oppdateringer"
-  },
   "version": {
     "message": "Versjon $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Start på nytt for å oppdatere"
-  },
-  "restartToUpdateDesc": {
-    "message": "Versjon $VERSION_NUM$ er klar til å installeres. Du må starte appen på nytt for å fullføre installasjonen. Vil du starte Bitwarden på nytt nå og oppdatere den?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Oppdatering tilgjengelig"
-  },
-  "updateAvailableDesc": {
-    "message": "En oppdatering ble funnet. Vil du laste den ned nå?"
-  },
   "restart": {
     "message": "Start på nytt"
   },
   "later": {
     "message": "Senere"
-  },
-  "noUpdatesAvailable": {
-    "message": "Ingen oppdateringer er tilgjengelig for øyeblikket. Du bruker den seneste versjonen."
-  },
-  "updateError": {
-    "message": "Feil ved oppdatering"
   },
   "unknown": {
     "message": "Ukjent"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Ikke lagrede endringer"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Hvis du forlater nå, vil ikke endringene dine bli lagret. Installer oppdateringen senere slik at du kan bli og lagre endringene."
-  },
-  "installLater": {
-    "message": "Installer senere"
-  },
-  "continueWithInstall": {
-    "message": "Fortsett med installasjon"
   },
   "clone": {
     "message": "Klon"

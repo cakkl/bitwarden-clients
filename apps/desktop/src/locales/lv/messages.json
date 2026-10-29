@@ -2162,9 +2162,6 @@
     "message": "Ievietot starpliktuvē",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Pārbaudīt, vai ir pieejami atjauninājumi"
-  },
   "version": {
     "message": "Laidiens $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Pārsāknēt, lai atjauninātu"
-  },
-  "restartToUpdateDesc": {
-    "message": "Versija $VERSION_NUM$ ir gatava uzstādīšanai. Lietotne ir jāpalaiž no jauna, lai pabeigtu uzstādīšanu. Vai palaist no jauna un atjaunināt tagad?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Pieejams atjauninājums"
-  },
-  "updateAvailableDesc": {
-    "message": "Atrasts atjauninājums. Vai lejupielādēt to?"
-  },
   "restart": {
     "message": "Pārsāknēt"
   },
   "later": {
     "message": "Vēlāk"
-  },
-  "noUpdatesAvailable": {
-    "message": "Atjauninājumi pašlaik nav pieejami. Tiek izmantots jaunākais laidiens."
-  },
-  "updateError": {
-    "message": "Atjaunināšanas kļūda"
   },
   "unknown": {
     "message": "Nezināms"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Nesaglabātas izmaiņas"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Ja aiziesit tagad, jūsu izmaiņas netiks saglabātas. Instalējiet atjauninājumu vēlāk, lai varētu palikt un saglabāt izmaiņas."
-  },
-  "installLater": {
-    "message": "Instalēt vēlāk"
-  },
-  "continueWithInstall": {
-    "message": "Turpināt instalēšanu"
   },
   "clone": {
     "message": "Pavairot"

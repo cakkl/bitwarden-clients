@@ -2162,9 +2162,6 @@
     "message": "অনুলিপি",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "হালনাগাদের জন্য পরীক্ষা করুন"
-  },
   "version": {
     "message": "সংস্করণ $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "হালনাগাদ করতে রিস্টার্ট করুন"
-  },
-  "restartToUpdateDesc": {
-    "message": "সংস্করণ $VERSION_NUM$ ইন্সটল করার জন্য প্রস্তুত। ইনস্টলেশনটি শেষ করতে আপনাকে অবশ্যই অ্যাপ্লিকেশনটি পুনরায় চালু করতে হবে। আপনি কি এখনই পুনরায় চালু এবং আপডেট করতে চান?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "হালনাগাদ উপলব্ধ"
-  },
-  "updateAvailableDesc": {
-    "message": "একটি হালনাগাদপাওয়া গেছে। আপনি কি এখনই এটি ডাউনলোড করতে চান?"
-  },
   "restart": {
     "message": "পুনরায় চালু করুন"
   },
   "later": {
     "message": "পরে"
-  },
-  "noUpdatesAvailable": {
-    "message": "বর্তমানে কোন হালনাগাদ নেই। আপনি সর্বশেষতম সংস্করণ ব্যবহার করছেন।"
-  },
-  "updateError": {
-    "message": "আপডেট ত্রুটি"
   },
   "unknown": {
     "message": "অজানা"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "অসংরক্ষিত পরিবর্তন"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "যদি আপনি এখন চলে যান, আপনার পরিবর্তনগুলি সংরক্ষিত হবে না। পরে আপডেট ইনস্টল করুন যাতে আপনি থাকতে পারেন এবং আপনার পরিবর্তনগুলি সংরক্ষণ করতে পারেন।"
-  },
-  "installLater": {
-    "message": "পরে ইনস্টল করুন"
-  },
-  "continueWithInstall": {
-    "message": "ইনস্টলেশন চালিয়ে যান"
   },
   "clone": {
     "message": "নকল"

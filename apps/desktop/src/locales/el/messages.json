@@ -2162,9 +2162,6 @@
     "message": "Αντιγραφή",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Έλεγχος για ενημερώσεις…"
-  },
   "version": {
     "message": "Έκδοση $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Επανεκκίνηση για ενημέρωση"
-  },
-  "restartToUpdateDesc": {
-    "message": "Η έκδοση $VERSION_NUM$ είναι έτοιμη για εγκατάσταση. Θα πρέπει να επανεκκινήσετε την εφαρμογή για να ολοκληρωθεί η εγκατάσταση. Θέλετε να κάνετε επανεκκίνηση και ενημέρωση τώρα;",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Διαθέσιμη ενημέρωση"
-  },
-  "updateAvailableDesc": {
-    "message": "Βρέθηκε μια ενημέρωση. Θέλετε να την κατεβάσετε τώρα;"
-  },
   "restart": {
     "message": "Επανεκκίνηση"
   },
   "later": {
     "message": "Αργότερα"
-  },
-  "noUpdatesAvailable": {
-    "message": "Δεν υπάρχουν προς το παρόν διαθέσιμες ενημερώσεις. Χρησιμοποιείτε την τελευταία έκδοση."
-  },
-  "updateError": {
-    "message": "Σφάλμα ενημέρωσης"
   },
   "unknown": {
     "message": "Άγνωστο"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Μη αποθηκευμένες αλλαγές"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Εάν φύγετε τώρα, οι αλλαγές σας δεν θα αποθηκευτούν. Εγκαταστήστε την ενημέρωση αργότερα, ώστε να μπορέσετε να παραμείνετε και να αποθηκεύσετε τις αλλαγές σας."
-  },
-  "installLater": {
-    "message": "Εγκατάσταση αργότερα"
-  },
-  "continueWithInstall": {
-    "message": "Συνέχεια με εγκατάσταση"
   },
   "clone": {
     "message": "Κλώνος"

@@ -2162,9 +2162,6 @@
     "message": "Kopírovat",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Zkontrolovat aktualizace…"
-  },
   "version": {
     "message": "Verze $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Restartovat pro aktualizaci"
-  },
-  "restartToUpdateDesc": {
-    "message": "Verze $VERSION_NUM$ je připravena k instalaci. Pro dokončení je potřeba restartovat aplikaci Bitwarden. Chcete nyní provést restart a aktualizaci?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Je dostupná aktualizace"
-  },
-  "updateAvailableDesc": {
-    "message": "Byla nalezena aktualizace. Chcete ji nyní stáhnout?"
-  },
   "restart": {
     "message": "Restartovat"
   },
   "later": {
     "message": "Později"
-  },
-  "noUpdatesAvailable": {
-    "message": "Nyní nejsou k dispozici žádné aktualizace. Používáte nejnovější verzi."
-  },
-  "updateError": {
-    "message": "Chyba aktualizace"
   },
   "unknown": {
     "message": "Neznámá"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Neuložené změny"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Pokud nyní odejdete, Vaše změny nebudou uloženy. Nainstalujte aktualizaci později, abyste mohli zůstat a uložit změny."
-  },
-  "installLater": {
-    "message": "Nainstalovat později"
-  },
-  "continueWithInstall": {
-    "message": "Pokračovat s instalací"
   },
   "clone": {
     "message": "Duplikovat"

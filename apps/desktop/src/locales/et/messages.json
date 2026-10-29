@@ -2162,9 +2162,6 @@
     "message": "Kopeeri",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Otsi värskendusi"
-  },
   "version": {
     "message": "Versioon $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Vajalik on rakenduse taaskäivitamine"
-  },
-  "restartToUpdateDesc": {
-    "message": "Versioon $VERSION_NUM$ on paigaldamiseks valmis. Paigaldamise lõpetamiseks on vajalik Bitwarden taaskäivitada. Soovid seda kohe teha?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Saadaval on värskendus"
-  },
-  "updateAvailableDesc": {
-    "message": "Soovid selle kohe alla laadida?"
-  },
   "restart": {
     "message": "Taaskäivita"
   },
   "later": {
     "message": "Hiljem"
-  },
-  "noUpdatesAvailable": {
-    "message": "Värskendusi ei ole saadaval. Kasutusel on viimane versioon."
-  },
-  "updateError": {
-    "message": "Viga uuendamisel"
   },
   "unknown": {
     "message": "Tundmatu"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Salvestamata muudatused"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Kui lahkute praegu, ei salvestata teie muudatusi. Installige uuendus hiljem, et saaksite jääda ja oma muudatused salvestada."
-  },
-  "installLater": {
-    "message": "Installi hiljem"
-  },
-  "continueWithInstall": {
-    "message": "Jätka installimisega"
   },
   "clone": {
     "message": "Klooni"

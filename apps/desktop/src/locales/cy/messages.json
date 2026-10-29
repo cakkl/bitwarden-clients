@@ -2162,9 +2162,6 @@
     "message": "Copïo",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Gwirio am ddiweddariadau…"
-  },
   "version": {
     "message": "Fersiwn $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Ailgychwyn i ddiweddaru"
-  },
-  "restartToUpdateDesc": {
-    "message": "Mae fersiwn $VERSION_NUM$ yn barod i'w gosod. Rhaid i chi ailgychwyn y cais i gwblhau'r gosodiad. Ydych chi am ailgychwyn a diweddaru nawr?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Diweddariad ar gael"
-  },
-  "updateAvailableDesc": {
-    "message": "Cafwyd diweddariad. Ydych chi am ei lawrlwytho nawr?"
-  },
   "restart": {
     "message": "Ailgychwyn"
   },
   "later": {
     "message": "Yn hwyrach"
-  },
-  "noUpdatesAvailable": {
-    "message": "Nid oes unrhyw ddiweddariadau ar gael ar hyn o bryd. Rydych yn defnyddio'r fersiwn diweddaraf."
-  },
-  "updateError": {
-    "message": "Gwall diweddaru"
   },
   "unknown": {
     "message": "Anhysbys"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Newidiadau heb eu cadw"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Os byddwch yn gadael nawr, ni fydd eich newidiadau'n cael eu cadw. Gosodwch y diweddariad yn nes ymlaen fel y gallwch aros a chadw'ch newidiadau."
-  },
-  "installLater": {
-    "message": "Gosod yn nes ymlaen"
-  },
-  "continueWithInstall": {
-    "message": "Parhau â gosod"
   },
   "clone": {
     "message": "Clonio"

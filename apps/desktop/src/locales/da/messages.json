@@ -2162,9 +2162,6 @@
     "message": "Kopiér",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Søg efter opdateringer…"
-  },
   "version": {
     "message": "Version $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Genstart for at opdatere"
-  },
-  "restartToUpdateDesc": {
-    "message": "Version $VERSION_NUM$ er klar til installation. Applikationen skal genstartes for at færdiggøre installationen. Genstart og opdatér nu?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Opdatering tilgængelig"
-  },
-  "updateAvailableDesc": {
-    "message": "En opdatering er fundet. Download den nu?"
-  },
   "restart": {
     "message": "Genstart"
   },
   "later": {
     "message": "Senere"
-  },
-  "noUpdatesAvailable": {
-    "message": "Ingen opdateringer tilgængelige pt. Seneste version anvendes."
-  },
-  "updateError": {
-    "message": "Opdateringsfejl"
   },
   "unknown": {
     "message": "Ukendt"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Ikke-gemte ændringer"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Hvis du forlader nu, bliver dine ændringer ikke gemt. Installer opdateringen senere, så du kan blive og gemme dine ændringer."
-  },
-  "installLater": {
-    "message": "Installér senere"
-  },
-  "continueWithInstall": {
-    "message": "Fortsæt med installation"
   },
   "clone": {
     "message": "Klon"

@@ -2162,9 +2162,6 @@
     "message": "Kopier",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Sjå etter oppdateringar…"
-  },
   "version": {
     "message": "Versjon $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Restart for å oppdatere"
-  },
-  "restartToUpdateDesc": {
-    "message": "Versjon $VERSION_NUM$ er klar for å bli installert. Du må starte programmet på nytt for å fullføre oppdateringa. Vil du starte på nytt og oppdatere no?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Ei oppdatering er tilgjengeleg"
-  },
-  "updateAvailableDesc": {
-    "message": "Ei oppdatering blei funnen. Vil du laste den ned no?"
-  },
   "restart": {
     "message": "Restart"
   },
   "later": {
     "message": "Seinare"
-  },
-  "noUpdatesAvailable": {
-    "message": "Det er ingen oppdateringar tilgjengeleg for augeblikket. Du bruker den siste versjonen."
-  },
-  "updateError": {
-    "message": "Feil under oppdatering"
   },
   "unknown": {
     "message": "Ukjent"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Ulagerte endringar"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Viss du går no, vert ikkje endringane dine lagra. Installer oppdateringa seinare, slik at du kan verte og lagre endringane."
-  },
-  "installLater": {
-    "message": "Installer seinare"
-  },
-  "continueWithInstall": {
-    "message": "Hald fram med installasjon"
   },
   "clone": {
     "message": "Klona"

@@ -2162,9 +2162,6 @@
     "message": "நகலெடு",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "புதுப்பிப்புகளைச் சரிபார்க்கவும்…"
-  },
   "version": {
     "message": "பதிப்பு $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "புதுப்பிக்க மறுதொடக்கம் செய்யவும்"
-  },
-  "restartToUpdateDesc": {
-    "message": "பதிப்பு $VERSION_NUM$ நிறுவத் தயாராக உள்ளது. நிறுவலை முடிக்க நீங்கள் செயலியை மறுதொடக்கம் செய்ய வேண்டும். இப்போது மறுதொடக்கம் செய்து புதுப்பிக்க விரும்புகிறீர்களா?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "புதுப்பிப்பு உள்ளது"
-  },
-  "updateAvailableDesc": {
-    "message": "ஒரு புதுப்பிப்பு கண்டுபிடிக்கப்பட்டது. இப்போது அதை பதிவிறக்க விரும்புகிறீர்களா?"
-  },
   "restart": {
     "message": "மறுதொடக்கம்"
   },
   "later": {
     "message": "பின்னர்"
-  },
-  "noUpdatesAvailable": {
-    "message": "தற்போது புதுப்பிப்புகள் எதுவும் கிடைக்கவில்லை. நீங்கள் சமீபத்திய பதிப்பைப் பயன்படுத்துகிறீர்கள்."
-  },
-  "updateError": {
-    "message": "புதுப்பிப்பு பிழை"
   },
   "unknown": {
     "message": "அறியப்படாதது"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "சேமிக்கப்படாத மாற்றங்கள்"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "நீங்கள் இப்போது வெளியேறினால், உங்கள் மாற்றங்கள் சேமிக்கப்படாது. நீங்கள் இங்கேயே இருந்து உங்கள் மாற்றங்களைச் சேமிக்க புதுப்பிப்பைப் பின்னர் நிறுவவும்."
-  },
-  "installLater": {
-    "message": "பின்னர் நிறுவவும்"
-  },
-  "continueWithInstall": {
-    "message": "நிறுவலைத் தொடரவும்"
   },
   "clone": {
     "message": "குளோன்"

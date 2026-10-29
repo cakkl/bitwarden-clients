@@ -2162,9 +2162,6 @@
     "message": "คัดลอก",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "ตรวจสอบการอัปเดต"
-  },
   "version": {
     "message": "รุ่น $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Restart To Update"
-  },
-  "restartToUpdateDesc": {
-    "message": "Version $VERSION_NUM$ is ready to install. You must restart Bitwarden to complete the installation. Do you want to restart and update now?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Update Available"
-  },
-  "updateAvailableDesc": {
-    "message": "ตรวจพบการอัปเดต คุณต้องการดาวโหลดตอนนี้เลยไหม?"
-  },
   "restart": {
     "message": "เริ่มต้นใหม่"
   },
   "later": {
     "message": "ภายหลัง"
-  },
-  "noUpdatesAvailable": {
-    "message": "โปรแกรมไม่มีการปรับปรุงอยู่ในขณะนี้ คุณกำลังใช้รุ่นล่าสุด"
-  },
-  "updateError": {
-    "message": "เกิดข้อผิดพลาดในการอัปเดต"
   },
   "unknown": {
     "message": "ไม่ทราบ"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "การเปลี่ยนแปลงที่ยังไม่ได้บันทึก"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "หากคุณออกตอนนี้ การเปลี่ยนแปลงของคุณจะไม่ถูกบันทึก ติดตั้งการอัปเดตในภายหลังเพื่อให้คุณอยู่และบันทึกการเปลี่ยนแปลงได้"
-  },
-  "installLater": {
-    "message": "ติดตั้งภายหลัง"
-  },
-  "continueWithInstall": {
-    "message": "ดำเนินการติดตั้งต่อ"
   },
   "clone": {
     "message": "โคลน"

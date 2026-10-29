@@ -2162,9 +2162,6 @@
     "message": "コピー",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "更新を確認"
-  },
   "version": {
     "message": "バージョン $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "再起動して更新"
-  },
-  "restartToUpdateDesc": {
-    "message": "バージョン $VERSION_NUM$ をインストールする準備ができました。インストールを完了するにはアプリを再起動する必要があります。再起動して更新しますか？",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "更新があります"
-  },
-  "updateAvailableDesc": {
-    "message": "更新が見つかりました。今すぐダウンロードしますか？"
-  },
   "restart": {
     "message": "再起動"
   },
   "later": {
     "message": "後で"
-  },
-  "noUpdatesAvailable": {
-    "message": "現在更新はありません。最新バージョンを使用しています。"
-  },
-  "updateError": {
-    "message": "更新エラー"
   },
   "unknown": {
     "message": "不明"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "変更が保存されていません"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "今離れると、変更は保存されません。後で更新をインストールして、ここに留まり変更を保存してください。"
-  },
-  "installLater": {
-    "message": "あとでインストール"
-  },
-  "continueWithInstall": {
-    "message": "インストールを続行"
   },
   "clone": {
     "message": "複製"

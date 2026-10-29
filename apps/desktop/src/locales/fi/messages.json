@@ -2162,9 +2162,6 @@
     "message": "Kopioi",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Tarkista päivitykset…"
-  },
   "version": {
     "message": "Versio $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Käynnistä Bitwarden uudelleen päivittääksesi sen"
-  },
-  "restartToUpdateDesc": {
-    "message": "Versio $VERSION_NUM$ on valmis asennettavaksi. Sovellus tulee käynnistää uudelleen, jotta asennus voidaan suorittaa loppuun. Haluatko käynnistää sovelluksen uudelleen ja päivittää nyt?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Päivitys on saatavilla"
-  },
-  "updateAvailableDesc": {
-    "message": "Päivitys löydetty. Haluatko ladata sen nyt?"
-  },
   "restart": {
     "message": "Käynnistä sovellus uudelleen"
   },
   "later": {
     "message": "Myöhemmin"
-  },
-  "noUpdatesAvailable": {
-    "message": "Päivityksiä ei ole saatavilla. Käytät viimeisintä versiota."
-  },
-  "updateError": {
-    "message": "Päivitysvirhe"
   },
   "unknown": {
     "message": "Tuntematon"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Tallentamattomia muutoksia"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Jos poistut nyt, muutoksiasi ei tallenneta. Asenna päivitys myöhemmin, jotta voit jäädä ja tallentaa muutoksesi."
-  },
-  "installLater": {
-    "message": "Asenna myöhemmin"
-  },
-  "continueWithInstall": {
-    "message": "Jatka asennusta"
   },
   "clone": {
     "message": "Kloonaa"

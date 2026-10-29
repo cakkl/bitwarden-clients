@@ -2162,9 +2162,6 @@
     "message": "Kopieren",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Nach Aktualisierungen suchen…"
-  },
   "version": {
     "message": "Version $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Neu starten, um zu aktualisieren"
-  },
-  "restartToUpdateDesc": {
-    "message": "Version $VERSION_NUM$ steht zur Installation bereit. Du musst Bitwarden neustarten, um die Installation abzuschließen. Möchtest du jetzt neustarten und updaten?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Aktualisierung verfügbar"
-  },
-  "updateAvailableDesc": {
-    "message": "Ein Update wurde gefunden. Möchtest du es jetzt herunterladen?"
-  },
   "restart": {
     "message": "Neustarten"
   },
   "later": {
     "message": "Später"
-  },
-  "noUpdatesAvailable": {
-    "message": "Derzeit gibt es keine Updates. Du verwendest die neueste Version."
-  },
-  "updateError": {
-    "message": "Aktualisierungsfehler"
   },
   "unknown": {
     "message": "Unbekannt"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Nicht gespeicherte Änderungen"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Wenn du jetzt gehst, werden deine Änderungen nicht gespeichert. Installiere die Aktualisierung später, damit du deine Änderungen speichern kannst."
-  },
-  "installLater": {
-    "message": "Später installieren"
-  },
-  "continueWithInstall": {
-    "message": "Mit der Installation fortfahren"
   },
   "clone": {
     "message": "Duplizieren"

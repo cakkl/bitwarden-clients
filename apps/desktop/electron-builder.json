@@ -24,13 +24,7 @@
     "!node_modules/@bitwarden/desktop-napi/package.json"
   ],
   "electronVersion": "43.5.0",
-  "generateUpdatesFilesForAllChannels": true,
-  "publish": {
-    "provider": "generic",
-    "url": "https://artifacts.bitwarden.com/desktop"
-  },
   "mac": {
-    "electronUpdaterCompatibility": ">=0.0.1",
     "category": "public.app-category.productivity",
     "darkModeSupport": true,
     "gatekeeperAssess": false,
@@ -93,8 +87,7 @@
     "target": ["dmg", "zip"]
   },
   "win": {
-    "electronUpdaterCompatibility": ">=0.0.1",
-    "target": ["portable", "nsis-web", "appx"],
+    "target": ["portable", "appx"],
     "signExts": [".dll", ".node"],
     "signtoolOptions": {
       "sign": "./sign.js",
@@ -184,15 +177,6 @@
       "ElectronTeamID": "LTZ2PFU5D6"
     },
     "provisioningProfile": "bitwarden_stable_desktop_appstore.provisionprofile"
-  },
-  "nsisWeb": {
-    "oneClick": false,
-    "perMachine": false,
-    "allowToChangeInstallationDirectory": false,
-    "artifactName": "${productName}-Installer-${version}.${ext}",
-    "uninstallDisplayName": "${productName}",
-    "deleteAppDataOnUninstall": true,
-    "include": "installer.nsh"
   },
   "portable": {
     "artifactName": "${productName}-Portable-${version}.${ext}"

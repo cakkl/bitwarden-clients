@@ -20,7 +20,7 @@
   },
   "scripts": {
     "postinstall": "electron-rebuild",
-    "start": "cross-env ELECTRON_IS_DEV=0 ELECTRON_NO_UPDATER=1 electron ./build",
+    "start": "cross-env ELECTRON_IS_DEV=0 electron ./build",
     "build-native-macos": "cd desktop_native && ./autofill_provider/build.sh && node build.js cross-platform",
     "build-native": "cd desktop_native && node build.js",
     "lint:rust": "node ../../scripts/lint-rust.mjs",

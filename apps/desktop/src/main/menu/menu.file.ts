@@ -5,7 +5,6 @@ import { MessagingService } from "@bitwarden/common/platform/abstractions/messag
 import { CipherType } from "@bitwarden/sdk-internal";
 
 import { isMac, isMacAppStore } from "../platform-utils.main";
-import { UpdaterMain } from "../updater.main";
 
 import { FirstMenu } from "./menu.first";
 import { MenuAccount } from "./menu.updater";
@@ -50,7 +49,6 @@ export class FileMenu extends FirstMenu implements IMenubarMenu {
   constructor(
     i18nService: I18nService,
     messagingService: MessagingService,
-    updater: UpdaterMain,
     window: BrowserWindow,
     accounts: { [userId: string]: MenuAccount },
     isLocked: boolean,
@@ -58,7 +56,7 @@ export class FileMenu extends FirstMenu implements IMenubarMenu {
     private restrictedCipherTypes: CipherType[],
     private pm32009NewItemTypes: boolean = false,
   ) {
-    super(i18nService, messagingService, updater, window, accounts, isLocked, isLockable);
+    super(i18nService, messagingService, window, accounts, isLocked, isLockable);
   }
 
   private get addNewLogin(): MenuItemConstructorOptions {

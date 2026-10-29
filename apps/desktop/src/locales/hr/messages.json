@@ -2162,9 +2162,6 @@
     "message": "Kopiraj",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Provjeri ažuriranja"
-  },
   "version": {
     "message": "Verzija $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Ponovo pokreni za ažuriranje"
-  },
-  "restartToUpdateDesc": {
-    "message": "Verzija $VERSION_NUM$ je spremna za instalaciju. Moraš ponovno pokrenuti Bitwarden za dovršetak instalacije. Želiš li ponovo pokrenuti i ažurirati?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Dostupna su ažuriranja"
-  },
-  "updateAvailableDesc": {
-    "message": "Pronađeno je ažuriranje. Želiš li ga sada preuzeti?"
-  },
   "restart": {
     "message": "Ponovno pokreni"
   },
   "later": {
     "message": "Kasnije"
-  },
-  "noUpdatesAvailable": {
-    "message": "Trenutno nema ažuriranja. Već koristiš najnoviju verziju."
-  },
-  "updateError": {
-    "message": "Pogreška pri ažuriranju"
   },
   "unknown": {
     "message": "Nepoznato"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Nespremljene promjene"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Odeš li sada, tvoje promjene neće biti spremljene. Za ostanak i spremanje promjena, instaliraj ažuriranje kasnije."
-  },
-  "installLater": {
-    "message": "Instaliraj kasnije"
-  },
-  "continueWithInstall": {
-    "message": "Nastavi s instalacijom"
   },
   "clone": {
     "message": "Kloniraj"

@@ -2162,9 +2162,6 @@
     "message": "Kopyala",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Güncəlləmələri yoxla…"
-  },
   "version": {
     "message": "Versiya $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Güncəlləmək üçün yenidən başlat"
-  },
-  "restartToUpdateDesc": {
-    "message": "$VERSION_NUM$ versiyası quraşdırılmağa hazırdır. Quraşdırmanı tamamlamaq üçün tətbiqi yenidən başlatmalısınız. İndi yenidən başladıb güncəlləmək istəyirsiniz?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Güncəlləmə mövcuddur"
-  },
-  "updateAvailableDesc": {
-    "message": "Bir güncəlləmə tapıldı. İndi endirmək istəyirsiniz?"
-  },
   "restart": {
     "message": "Yenidən başlat"
   },
   "later": {
     "message": "Sonra"
-  },
-  "noUpdatesAvailable": {
-    "message": "Hazırda heç bir güncəlləmə yoxdur. Ən son versiyanı istifadə edirsiniz."
-  },
-  "updateError": {
-    "message": "Güncəlləmə xətası"
   },
   "unknown": {
     "message": "Bilinməyən"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Saxlanılmamış dəyişikliklər"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "İndi tərk etsəniz, dəyişiklikləriniz saxlanılmayacaq. Dəyişikliklərinizi saxlamaq üçün güncəlləməni daha sonra quraşdırın."
-  },
-  "installLater": {
-    "message": "Daha sonra quraşdır"
-  },
-  "continueWithInstall": {
-    "message": "Quraşdırmağa davam"
   },
   "clone": {
     "message": "Klonla"

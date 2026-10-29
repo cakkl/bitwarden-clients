@@ -2162,9 +2162,6 @@
     "message": "העתק",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "בדוק אם קיימים עדכונים…"
-  },
   "version": {
     "message": "גירסה $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "הפעל מחדש כדי לעדכן"
-  },
-  "restartToUpdateDesc": {
-    "message": "גירסה מספר $VERSION_NUM$ מוכנה להתקנה. יש להפעיל מחדש את התוכנה כדי להשלים את ההתקנה. האם ברצונך להפעיל מחדש ולעדכן כעת?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "עדכון זמין"
-  },
-  "updateAvailableDesc": {
-    "message": "עדכון חדש נמצא. האם ברצונך להורידו כעת?"
-  },
   "restart": {
     "message": "הפעל מחדש"
   },
   "later": {
     "message": "מאוחר יותר"
-  },
-  "noUpdatesAvailable": {
-    "message": "אין עדכונים חדשים זמינים כעת. הינך משתמש בגירסה האחרונה."
-  },
-  "updateError": {
-    "message": "שגיאת עדכון"
   },
   "unknown": {
     "message": "לא ידועה"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "שינויים שלא נשמרו"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "אם תעזוב כעת, השינויים שלך לא יישמרו. התקן את העדכון מאוחר יותר כדי שתוכל להישאר ולשמור את השינויים."
-  },
-  "installLater": {
-    "message": "התקן מאוחר יותר"
-  },
-  "continueWithInstall": {
-    "message": "המשך בהתקנה"
   },
   "clone": {
     "message": "שכפול"

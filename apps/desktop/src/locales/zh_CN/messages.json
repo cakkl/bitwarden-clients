@@ -2162,9 +2162,6 @@
     "message": "复制",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "检查更新…"
-  },
   "version": {
     "message": "版本 $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "重启以更新"
-  },
-  "restartToUpdateDesc": {
-    "message": "版本 $VERSION_NUM$ 已准备好安装。您必须重启应用程序以完成安装。要立即重启并更新吗？",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "有可用的更新"
-  },
-  "updateAvailableDesc": {
-    "message": "发现更新。要立即下载吗？"
-  },
   "restart": {
     "message": "重启"
   },
   "later": {
     "message": "稍后"
-  },
-  "noUpdatesAvailable": {
-    "message": "当前没有可用的更新。您使用的是最新版本。"
-  },
-  "updateError": {
-    "message": "更新时出错"
   },
   "unknown": {
     "message": "未知"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "更改未保存"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "如果您现在离开，您的更改将不会被保存。稍后安装更新，以便您可以继续操作并保存您的更改。"
-  },
-  "installLater": {
-    "message": "稍后安装"
-  },
-  "continueWithInstall": {
-    "message": "继续安装"
   },
   "clone": {
     "message": "克隆"

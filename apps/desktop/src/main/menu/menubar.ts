@@ -9,7 +9,6 @@ import { SafeShell } from "../../platform/main/safe-shell.main";
 import { VersionMain } from "../../platform/main/version.main";
 import { DesktopSettingsService } from "../../platform/services/desktop-settings.service";
 import { isMac } from "../platform-utils.main";
-import { UpdaterMain } from "../updater.main";
 import { WindowMain } from "../window.main";
 
 import { AboutMenu } from "./menu.about";
@@ -53,7 +52,6 @@ export class Menubar {
     i18nService: I18nService,
     messagingService: MessagingService,
     desktopSettingsService: DesktopSettingsService,
-    updaterMain: UpdaterMain,
     windowMain: WindowMain,
     webVaultUrl: string,
     appVersion: string,
@@ -90,7 +88,6 @@ export class Menubar {
       new FileMenu(
         i18nService,
         messagingService,
-        updaterMain,
         windowMain.win,
         updateRequest?.accounts,
         isLocked,
@@ -119,7 +116,7 @@ export class Menubar {
         desktopSettingsService,
         webVaultUrl,
         hardwareAccelerationEnabled,
-        new AboutMenu(i18nService, appVersion, windowMain.win, updaterMain, versionMain),
+        new AboutMenu(i18nService, appVersion, windowMain.win, versionMain),
         shell,
       ),
     ];
@@ -130,7 +127,6 @@ export class Menubar {
           new BitwardenMenu(
             i18nService,
             messagingService,
-            updaterMain,
             windowMain.win,
             updateRequest?.accounts,
             isLocked,

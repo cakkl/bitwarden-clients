@@ -2162,9 +2162,6 @@
     "message": "Salin",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Periksa Pembaruan"
-  },
   "version": {
     "message": "Versi $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Mulai ulang untuk Perbarui"
-  },
-  "restartToUpdateDesc": {
-    "message": "Version $VERSION_NUM$ is ready to install. You must restart Bitwarden to complete the installation. Do you want to restart and update now?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Pembaruan Tersedia"
-  },
-  "updateAvailableDesc": {
-    "message": "Pembaruan telah di temukan. Apakah anda ingin mengunduhnya sekarang?"
-  },
   "restart": {
     "message": "Mulai Ulang"
   },
   "later": {
     "message": "Nanti"
-  },
-  "noUpdatesAvailable": {
-    "message": "Tidak ada update saat ini. Kamu menggunakan versi terbaru."
-  },
-  "updateError": {
-    "message": "Kesalahan pada Pembaruan"
   },
   "unknown": {
     "message": "Tidak diketahui"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Perubahan Tidak Disimpan"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Jika Anda keluar sekarang, perubahan Anda tidak akan disimpan. Pasang pembaruan nanti agar Anda dapat tetap tinggal dan menyimpan perubahan Anda."
-  },
-  "installLater": {
-    "message": "Pasang nanti"
-  },
-  "continueWithInstall": {
-    "message": "Lanjutkan pemasangan"
   },
   "clone": {
     "message": "Klon"

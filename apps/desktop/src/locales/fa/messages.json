@@ -2162,9 +2162,6 @@
     "message": "کپی",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "بررسی برای به‌روزرسانی‌ها…"
-  },
   "version": {
     "message": "نسخه $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "برای به‌روزرسانی، مجدداً راه‌اندازی کن"
-  },
-  "restartToUpdateDesc": {
-    "message": "نسخه $VERSION_NUM$ آماده نصب است. برای تکمیل نصب باید Bitwarden را مجددا راه‌اندازی کنید. آیا تمایل به راه‌اندازی مجدد و به‌روزرسانی دارید؟",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "به‌روزرسانی در دسترس است"
-  },
-  "updateAvailableDesc": {
-    "message": "یک به‌روزرسانی یافت شد. مایل به بارگیری و نصب آن هستید؟"
-  },
   "restart": {
     "message": "راه‌اندازی مجدد"
   },
   "later": {
     "message": "بعداً"
-  },
-  "noUpdatesAvailable": {
-    "message": "در حال حاضر هیچ به‌روزرسانی در دسترس نمی‌باشد. شما در حال استفاده از آخرین نسخه هستید."
-  },
-  "updateError": {
-    "message": "خطا در به‌روزرسانی"
   },
   "unknown": {
     "message": "ناشناخته"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "تغییرات ذخیره نشده"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "اگر الان بروید، تغییرات شما ذخیره نخواهند شد. به‌روزرسانی را بعداً نصب کنید تا بتوانید بمانید و تغییرات خود را ذخیره کنید."
-  },
-  "installLater": {
-    "message": "بعدا نصب کنید"
-  },
-  "continueWithInstall": {
-    "message": "Continue with install"
   },
   "clone": {
     "message": "شبیه‌سازی"

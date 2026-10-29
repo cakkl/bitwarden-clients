@@ -2162,9 +2162,6 @@
     "message": "Copiere",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Verifica actualizări…"
-  },
   "version": {
     "message": "Versiunea $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Reporniți pentru actualizare"
-  },
-  "restartToUpdateDesc": {
-    "message": "Versiunea $VERSION_NUM$ este gata pentru instalare. Trebuie să reporniți Bitwarden pentru a finaliza instalarea. Doriți să reporniți și să actualizați acum?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Actualizare disponibilă"
-  },
-  "updateAvailableDesc": {
-    "message": "A fost găsit un update. Doriți să îl descărcați acum?"
-  },
   "restart": {
     "message": "Repornire"
   },
   "later": {
     "message": "Mai târziu"
-  },
-  "noUpdatesAvailable": {
-    "message": "În prezent nu sunt disponibile actualizări. Folosiți cea mai recentă versiune."
-  },
-  "updateError": {
-    "message": "Eroare la actualizare"
   },
   "unknown": {
     "message": "Necunoscut"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Modificări nesalvate"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Dacă pleci acum, modificările tale nu vor fi salvate. Instalează actualizarea mai târziu pentru a rămâne și a-ți salva modificările."
-  },
-  "installLater": {
-    "message": "Instalează mai târziu"
-  },
-  "continueWithInstall": {
-    "message": "Continuă cu instalarea"
   },
   "clone": {
     "message": "Clonare"

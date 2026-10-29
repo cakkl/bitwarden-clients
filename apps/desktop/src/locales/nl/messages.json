@@ -2162,9 +2162,6 @@
     "message": "Kopiëren",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Controleren op updates…"
-  },
   "version": {
     "message": "Versie $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Herstart Bitwarden om bij te werken"
-  },
-  "restartToUpdateDesc": {
-    "message": "Versie $VERSION_NUM$ is klaar voor installatie. Je moet Bitwarden opnieuw opstarten om de installatie af te ronden. Wil je nu opnieuw opstarten en bijwerken?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Update beschikbaar"
-  },
-  "updateAvailableDesc": {
-    "message": "Er is een update gevonden. Wil je deze nu downloaden?"
-  },
   "restart": {
     "message": "Applicatie herstarten"
   },
   "later": {
     "message": "Later"
-  },
-  "noUpdatesAvailable": {
-    "message": "Er zijn momenteel geen updates beschikbaar. Je gebruikt de laatste versie."
-  },
-  "updateError": {
-    "message": "Fout bij het bijwerken"
   },
   "unknown": {
     "message": "Onbekend"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Niet-opgeslagen wijzigingen"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Als je nu vertrekt, worden de wijzigingen niet opgeslagen. Installeer de update later zodat je kunt blijven en je wijzigingen kunt opslaan."
-  },
-  "installLater": {
-    "message": "Later installeren"
-  },
-  "continueWithInstall": {
-    "message": "Doorgaan met installeren"
   },
   "clone": {
     "message": "Dupliceren"

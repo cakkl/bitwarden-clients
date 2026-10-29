@@ -1,10 +1,7 @@
-import { BrowserWindow, dialog, MenuItem } from "electron";
+import { BrowserWindow, dialog } from "electron";
 
 import { I18nService } from "@bitwarden/common/platform/abstractions/i18n.service";
 import { MessagingService } from "@bitwarden/common/platform/abstractions/messaging.service";
-
-import * as utils from "../platform-utils.main";
-import { UpdaterMain } from "../updater.main";
 
 import { FirstMenu } from "./menu.first";
 import { MenuAccount } from "./menu.updater";
@@ -12,13 +9,6 @@ import { MenuAccount } from "./menu.updater";
 jest.mock("electron", () => ({
   BrowserWindow: jest.fn(),
   dialog: { showMessageBox: jest.fn() },
-  MenuItem: jest.fn(),
-}));
-
-jest.mock("../platform-utils.main", () => ({
-  isMacAppStore: jest.fn().mockReturnValue(false),
-  isWindowsStore: jest.fn().mockReturnValue(false),
-  isSnapStore: jest.fn().mockReturnValue(false),
 }));
 
 function makeAccount(overrides: Partial<MenuAccount> = {}): MenuAccount {
@@ -41,17 +31,8 @@ function makeMenu(
 ): FirstMenu {
   const i18nService = { t: (s: string) => s } as unknown as I18nService;
   const messagingService = { send: jest.fn() } as unknown as MessagingService;
-  const updater = { checkForUpdate: jest.fn() } as unknown as UpdaterMain;
   const window = {} as BrowserWindow;
-  return new FirstMenu(
-    i18nService,
-    messagingService,
-    updater,
-    window,
-    accounts,
-    isLocked,
-    isLockable,
-  );
+  return new FirstMenu(i18nService, messagingService, window, accounts, isLocked, isLockable);
 }
 
 describe("FirstMenu", () => {
@@ -117,50 +98,6 @@ describe("FirstMenu", () => {
     it("returns true when at least one account is authenticated", () => {
       const menu = makeMenu({ user1: makeAccount({ isAuthenticated: true }) });
       expect((menu as any).hasAuthenticatedAccounts).toBe(true);
-    });
-  });
-
-  describe("checkForUpdates", () => {
-    const mockedIsMacAppStore = jest.mocked(utils.isMacAppStore);
-    const mockedIsWindowsStore = jest.mocked(utils.isWindowsStore);
-    const mockedIsSnapStore = jest.mocked(utils.isSnapStore);
-
-    it("is visible when not in any app store", () => {
-      mockedIsMacAppStore.mockReturnValue(false);
-      mockedIsWindowsStore.mockReturnValue(false);
-      mockedIsSnapStore.mockReturnValue(false);
-      const menu = makeMenu();
-      expect((menu as any).checkForUpdates.visible).toBe(true);
-    });
-
-    it("is not visible in mac app store", () => {
-      mockedIsMacAppStore.mockReturnValue(true);
-      mockedIsWindowsStore.mockReturnValue(false);
-      mockedIsSnapStore.mockReturnValue(false);
-      const menu = makeMenu();
-      expect((menu as any).checkForUpdates.visible).toBe(false);
-    });
-
-    it("is not visible in windows store", () => {
-      mockedIsMacAppStore.mockReturnValue(false);
-      mockedIsWindowsStore.mockReturnValue(true);
-      mockedIsSnapStore.mockReturnValue(false);
-      const menu = makeMenu();
-      expect((menu as any).checkForUpdates.visible).toBe(false);
-    });
-
-    it("is not visible in snap store", () => {
-      mockedIsMacAppStore.mockReturnValue(false);
-      mockedIsWindowsStore.mockReturnValue(false);
-      mockedIsSnapStore.mockReturnValue(true);
-      const menu = makeMenu();
-      expect((menu as any).checkForUpdates.visible).toBe(false);
-    });
-
-    afterEach(() => {
-      mockedIsMacAppStore.mockReturnValue(false);
-      mockedIsWindowsStore.mockReturnValue(false);
-      mockedIsSnapStore.mockReturnValue(false);
     });
   });
 
@@ -329,20 +266,6 @@ describe("FirstMenu", () => {
       await submenu[0].click();
 
       expect(messagingService.send).not.toHaveBeenCalled();
-    });
-  });
-
-  describe("checkForUpdate", () => {
-    it("calls updater.checkForUpdate and re-enables the menu item", async () => {
-      const menu = makeMenu();
-      const updater = (menu as any)._updater as jest.Mocked<UpdaterMain>;
-      updater.checkForUpdate = jest.fn().mockResolvedValue(undefined);
-
-      const menuItem = { enabled: true } as MenuItem;
-      await (menu as any).checkForUpdate(menuItem);
-
-      expect(updater.checkForUpdate).toHaveBeenCalledWith(true);
-      expect(menuItem.enabled).toBe(true);
     });
   });
 

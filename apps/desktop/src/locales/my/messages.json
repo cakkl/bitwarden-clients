@@ -2162,9 +2162,6 @@
     "message": "ကူးယူရန်",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "အပ်ဒိတ်များကို စစ်ဆေးရန်…"
-  },
   "version": {
     "message": "ဗားရှင်း $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "အပ်ဒိတ်လုပ်ရန် ပြန်လည်စတင်ပါ"
-  },
-  "restartToUpdateDesc": {
-    "message": "ဗားရှင်း $VERSION_NUM$ ကို ထည့်သွင်းရန် အဆင်သင့်ဖြစ်နေပါပြီ။ တပ်ဆင်မှုကို အပြီးသတ်ရန် သင်သည် အပလီကေးရှင်းကို ပြန်လည်စတင်ရမည်။ ယခု ပြန်လည်စတင်ပြီး အပ်ဒိတ်လုပ်လိုပါသလား။",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "အပ်ဒိတ်ရနိုင်သည်"
-  },
-  "updateAvailableDesc": {
-    "message": "အပ်ဒိတ်တစ်ခုကို တွေ့ရှိခဲ့သည်။ ယခု ဒေါင်းလုဒ်လုပ်လိုပါသလား။"
-  },
   "restart": {
     "message": "ပြန်လည်စတင်ရန်"
   },
   "later": {
     "message": "နောက်မှ"
-  },
-  "noUpdatesAvailable": {
-    "message": "လက်ရှိတွင် အပ်ဒိတ်များမရှိပါ။ သင်သည် နောက်ဆုံးဗားရှင်းကို အသုံးပြုနေသည်။"
-  },
-  "updateError": {
-    "message": "အပ်ဒိတ်အမှား"
   },
   "unknown": {
     "message": "မသိရှိရ"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "မသိမ်းဆည်းရသေးသော ပြောင်းလဲမှုများ"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "ယခုထွက်ပါက သင့်ပြောင်းလဲမှုများကို သိမ်းဆည်းမည်မဟုတ်ပါ။ နောက်မှ အပ်ဒိတ်ကို တပ်ဆင်ပါ သို့မှသာ သင်တည်းခိုပြီး သင့်ပြောင်းလဲမှုများကို သိမ်းဆည်းနိုင်မည်။"
-  },
-  "installLater": {
-    "message": "နောက်မှတပ်ဆင်ရန်"
-  },
-  "continueWithInstall": {
-    "message": "တပ်ဆင်မှုကို ဆက်လုပ်ရန်"
   },
   "clone": {
     "message": "ပုံတူကူးရန်"

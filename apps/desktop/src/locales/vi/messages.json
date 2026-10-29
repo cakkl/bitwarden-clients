@@ -2162,9 +2162,6 @@
     "message": "Sao chép",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Kiểm tra cập nhật…"
-  },
   "version": {
     "message": "Phiên bản $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Khởi động lại để cập nhật"
-  },
-  "restartToUpdateDesc": {
-    "message": "Phiên bản $VERSION_NUM$ đã sẵn sàng để cài đặt. Bitwarden cần khởi động lại để hoàn tất quá trình cài đặt. Bạn có muốn khởi động lại và cập nhật bây giờ không?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Có bản cập nhật mới"
-  },
-  "updateAvailableDesc": {
-    "message": "Đã tìm thấy một bản cập nhật mới. Bạn có muốn tải xuống bây giờ không?"
-  },
   "restart": {
     "message": "Khởi động lại"
   },
   "later": {
     "message": "Để sau"
-  },
-  "noUpdatesAvailable": {
-    "message": "Hiện không có bản cập nhật nào. Bạn đang sử dụng phiên bản mới nhất."
-  },
-  "updateError": {
-    "message": "Cập nhật bị lỗi"
   },
   "unknown": {
     "message": "Không xác định"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Những thay đổi chưa được lưu"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Nếu bạn rời đi bây giờ, các thay đổi của bạn sẽ không được lưu. Hãy cài đặt bản cập nhật sau để bạn có thể ở lại và lưu các thay đổi của mình."
-  },
-  "installLater": {
-    "message": "Cài đặt sau"
-  },
-  "continueWithInstall": {
-    "message": "Tiếp tục cài đặt"
   },
   "clone": {
     "message": "Tạo bản sao"

@@ -2162,9 +2162,6 @@
     "message": "Копирај",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Провери доступна ажурирања…"
-  },
   "version": {
     "message": "Верзија $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Поново покренути за ажурирање"
-  },
-  "restartToUpdateDesc": {
-    "message": "Верзија $VERSION_NUM$ је спремна за инсталацију. Морате поново покренути апликацију да бисте довршили инсталацију. Да ли желите да поново покренете и ажурирате сада?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Ажурирање је доступно"
-  },
-  "updateAvailableDesc": {
-    "message": "Пронађено је ажурирање. Да ли желите да га преузмете сада?"
-  },
   "restart": {
     "message": "Поново покрени"
   },
   "later": {
     "message": "Касније"
-  },
-  "noUpdatesAvailable": {
-    "message": "Тренутно нису доступна ажурирања. Користите најновију верзију."
-  },
-  "updateError": {
-    "message": "Грешка при ажурирању"
   },
   "unknown": {
     "message": "Непознато"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Несачуване промене"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Ако сада изађете, ваше измене неће бити сачуване. Инсталирајте исправку касније како бисте остали и сачували своје измене."
-  },
-  "installLater": {
-    "message": "Инсталирај касније"
-  },
-  "continueWithInstall": {
-    "message": "Настави са инсталирањем"
   },
   "clone": {
     "message": "Клонирај"

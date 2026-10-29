@@ -2162,9 +2162,6 @@
     "message": "Kopijuoti",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Tikrinti, ar yra atnaujinimų…"
-  },
   "version": {
     "message": "Versija $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Norint atnaujinti, perkraukite"
-  },
-  "restartToUpdateDesc": {
-    "message": "Versija $VERSION_NUM$ yra paruošta diegimui. Privalote perkrauti aplikaciją norint užbaigti diegimą. Ar norite perkrauti ir atsinaujinti dabar?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Prieinamas atnaujinimas"
-  },
-  "updateAvailableDesc": {
-    "message": "Rastas atnaujinimas. Ar norite jį parsisiųsti dabar?"
-  },
   "restart": {
     "message": "Paleisti iš naujo"
   },
   "later": {
     "message": "Vėliau"
-  },
-  "noUpdatesAvailable": {
-    "message": "Nerasta jokių atnaujinimų. Naudojate naujausią versiją."
-  },
-  "updateError": {
-    "message": "Atnaujinimo klaida"
   },
   "unknown": {
     "message": "Nežinoma"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Neišsaugoti pakeitimai"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Jei dabar išeisite, jūsų pakeitimai nebus išsaugoti. Įdiekite naujinimą vėliau, kad galėtumėte likti ir išsaugoti pakeitimus."
-  },
-  "installLater": {
-    "message": "Įdiegti vėliau"
-  },
-  "continueWithInstall": {
-    "message": "Tęsti diegimą"
   },
   "clone": {
     "message": "Klonuoti"

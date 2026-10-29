@@ -2162,9 +2162,6 @@
     "message": "Копіювати",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Перевірити оновлення…"
-  },
   "version": {
     "message": "Версія $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Перезапустити для оновлення"
-  },
-  "restartToUpdateDesc": {
-    "message": "Версія $VERSION_NUM$ готова до встановлення. Для завершення встановлення необхідно перезапустити програму. Хочете зробити це зараз?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Доступне оновлення"
-  },
-  "updateAvailableDesc": {
-    "message": "Знайдено оновлення. Хочете завантажити його зараз?"
-  },
   "restart": {
     "message": "Перезапустити"
   },
   "later": {
     "message": "Пізніше"
-  },
-  "noUpdatesAvailable": {
-    "message": "Оновлення наразі відсутні. Ви використовуєте найновішу версію."
-  },
-  "updateError": {
-    "message": "Помилка оновлення"
   },
   "unknown": {
     "message": "Невідомо"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Незбережені зміни"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Якщо ви вийдете зараз, ваші зміни не буде збережено. Встановіть оновлення пізніше, щоб залишитися та зберегти зміни."
-  },
-  "installLater": {
-    "message": "Встановити пізніше"
-  },
-  "continueWithInstall": {
-    "message": "Продовжити встановлення"
   },
   "clone": {
     "message": "Клонувати"

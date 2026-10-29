@@ -2162,9 +2162,6 @@
     "message": "Kopieer",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Gaan na vir bywerkings…"
-  },
   "version": {
     "message": "Weergawe $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Herbegin om by te werk"
-  },
-  "restartToUpdateDesc": {
-    "message": "Weergawe $VERSION_NUM$ is gereed vir installasie. U moet die toepassing herbegin om die installasie te voltooi. Wil u nou herbegin en bywerk?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Bywerking Beskikbaar"
-  },
-  "updateAvailableDesc": {
-    "message": "’n Bywerking is gevind. Wil u dit nou aflaai?"
-  },
   "restart": {
     "message": "Herbegin"
   },
   "later": {
     "message": "Later"
-  },
-  "noUpdatesAvailable": {
-    "message": "Geen bywerkings is tans beskikbaar nie. U gebruik die nuutste weergawe."
-  },
-  "updateError": {
-    "message": "Bywerkfout"
   },
   "unknown": {
     "message": "Onbekend"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Onbewaarde Veranderinge"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "As jy nou vertrek, sal jou veranderinge nie gestoor word nie. Installeer die bywerking later sodat jy kan bly en jou veranderinge kan stoor."
-  },
-  "installLater": {
-    "message": "Installeer later"
-  },
-  "continueWithInstall": {
-    "message": "Gaan voort met installasie"
   },
   "clone": {
     "message": "Kloon"

@@ -2162,9 +2162,6 @@
     "message": "පිටපත්",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "යාවත්කාලීන සඳහා පරීක්ෂා කරන්න…"
-  },
   "version": {
     "message": "අනුවාදය $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "යාවත්කාලීන කිරීමට නැවත ආරම්භ කරන්න"
-  },
-  "restartToUpdateDesc": {
-    "message": "$VERSION_NUM$ අනුවාදය ස්ථාපනය කිරීමට සූදානම්ය. ස්ථාපනය සම්පූර්ණ කිරීමට ඔබ යෙදුම නැවත ආරම්භ කළ යුතුය. ඔබට දැන් නැවත ආරම්භ කර යාවත්කාලීන කිරීමට අවශ්‍යද?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "යාවත්කාලීනයක් තිබේ"
-  },
-  "updateAvailableDesc": {
-    "message": "යාවත්කාලීනයක් හමු විය. ඔබට එය දැන් බාගත කිරීමට අවශ්‍යද?"
-  },
   "restart": {
     "message": "නැවත ආරම්භ කරන්න"
   },
   "later": {
     "message": "පසුව"
-  },
-  "noUpdatesAvailable": {
-    "message": "දැනට යාවත්කාලීන නොමැත. ඔබ නවතම අනුවාදය භාවිතා කරයි."
-  },
-  "updateError": {
-    "message": "යාවත්කාලීන දෝෂය"
   },
   "unknown": {
     "message": "නොදන්නා"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "නොසුරකින ලද වෙනස්කම්"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "ඔබ දැන් පිටව ගියහොත්, ඔබගේ වෙනස්කම් සුරැකෙන්නේ නැත. ඔබට රැඳී සිට ඔබගේ වෙනස්කම් සුරැකිය හැකි වන පරිදි යාවත්කාලීනය පසුව ස්ථාපනය කරන්න."
-  },
-  "installLater": {
-    "message": "පසුව ස්ථාපනය කරන්න"
-  },
-  "continueWithInstall": {
-    "message": "ස්ථාපනය සමඟ ඉදිරියට යන්න"
   },
   "clone": {
     "message": "පිටපත් කරන්න"

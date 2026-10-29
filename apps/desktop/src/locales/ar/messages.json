@@ -2162,9 +2162,6 @@
     "message": "نسخ",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "تحقق من التحديثات…"
-  },
   "version": {
     "message": "الإصدار $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "إعادة التشغيل للتحديث"
-  },
-  "restartToUpdateDesc": {
-    "message": "الإصدار $VERSION_NUM$ جاهز للتثبيت. يجب إعادة تشغيل التطبيق لإكمال عملية التثبيت. هل تريد إعادة التشغيل والتحديث الآن؟",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "تحديث متاح"
-  },
-  "updateAvailableDesc": {
-    "message": "تم العثور على تحديث. هل تريد تنزيله الآن؟"
-  },
   "restart": {
     "message": "إعادة التشغيل"
   },
   "later": {
     "message": "لاحقا"
-  },
-  "noUpdatesAvailable": {
-    "message": "لا توجد تحديثات متاحة حاليا. أنت تستخدم أحدث إصدار."
-  },
-  "updateError": {
-    "message": "خطأ في التحديث"
   },
   "unknown": {
     "message": "غير معروف"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "التغييرات غير المحفوظة"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "← إذا غادرت الآن، فلن يتم حفظ التعديلات. ثبت التحديث لاحقا لتتمكن من البقاء وحفظ التعديلات."
-  },
-  "installLater": {
-    "message": "التثبيت لاحقا"
-  },
-  "continueWithInstall": {
-    "message": "متابعة التثبيت"
   },
   "clone": {
     "message": "استنساخ"

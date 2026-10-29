@@ -2162,9 +2162,6 @@
     "message": "Kopii",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "En kontrolado de ĝisdatigoj..."
-  },
   "version": {
     "message": "Versio $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Relanĉi por ĝisdatigi"
-  },
-  "restartToUpdateDesc": {
-    "message": "La versio $VERSION_NUM$ estas preta por instali. Vi devas relanĉi la aplikaĵon por plenumi la instalon. Ĉu vi volas nun relanĉi kaj ĝisdatigi?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Disponeblas ĝisdatigo"
-  },
-  "updateAvailableDesc": {
-    "message": "Ĝisdatigo estis trovita. Ĉu vi volas elŝuti ĝin nun?"
-  },
   "restart": {
     "message": "Relanĉi"
   },
   "later": {
     "message": "Poste"
-  },
-  "noUpdatesAvailable": {
-    "message": "Neniu ĝisdatigo nun disponeblas. Vi nun uzas la plej novan version."
-  },
-  "updateError": {
-    "message": "Eraro en ĝisdatigo"
   },
   "unknown": {
     "message": "Nekonata"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Nekonserviĝis la ŝanĝoj"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Se vi foriros nun, viaj ŝanĝoj ne estos konservitaj. Instalu la ĝisdatigon poste por ke vi povu resti kaj konservi viajn ŝanĝojn."
-  },
-  "installLater": {
-    "message": "Instali poste"
-  },
-  "continueWithInstall": {
-    "message": "Daŭrigi kun instalado"
   },
   "clone": {
     "message": "Kloni"

@@ -2162,9 +2162,6 @@
     "message": "Másolás",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Frissítések ellenőrzése"
-  },
   "version": {
     "message": "Verzió: $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Újraindítás a frissítéshez"
-  },
-  "restartToUpdateDesc": {
-    "message": "Az új $VERSION_NUM$ verzió készen áll a telepítéshez. A telepítés befejezéséhez újra kell indítani az alkalmazást. Szeretnénk most az újraindítást és a frissítést?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Frissítés érhető el"
-  },
-  "updateAvailableDesc": {
-    "message": "Egy frissítés jelent meg. Szeretnénk most letölteni?"
-  },
   "restart": {
     "message": "Újraindítás"
   },
   "later": {
     "message": "Később"
-  },
-  "noUpdatesAvailable": {
-    "message": "Jelenleg nem található frissítés. A legfrissebb verzió van használatban."
-  },
-  "updateError": {
-    "message": "Frissítési hiba történt."
   },
   "unknown": {
     "message": "Ismeretlen"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Mentetlen változtatások"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Ha most elmegyünk, a módosítások nem kerülnek mentésre. Telepítsük a frissítést később, így maradhatunk és menthetjük a módosításokat."
-  },
-  "installLater": {
-    "message": "Telepítés később"
-  },
-  "continueWithInstall": {
-    "message": "Folytatás telepítéssel"
   },
   "clone": {
     "message": "Klónozás"

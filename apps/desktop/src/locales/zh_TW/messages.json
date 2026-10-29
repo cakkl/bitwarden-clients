@@ -2162,9 +2162,6 @@
     "message": "複製",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "檢查更新…"
-  },
   "version": {
     "message": "版本 $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "重新啟動以更新"
-  },
-  "restartToUpdateDesc": {
-    "message": "版本 $VERSION_NUM$ 已準備好安裝。您必須重新啟動此應用程式才能完成安裝。要立即重新啟動並更新嗎？",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "有可用的更新"
-  },
-  "updateAvailableDesc": {
-    "message": "發現新版本。您要現在下載嗎？"
-  },
   "restart": {
     "message": "重新啟動"
   },
   "later": {
     "message": "稍後"
-  },
-  "noUpdatesAvailable": {
-    "message": "沒有可用的更新，您目前使用的是最新版本。"
-  },
-  "updateError": {
-    "message": "更新時出錯"
   },
   "unknown": {
     "message": "不詳"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "有尚未儲存的變更"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "如果您現在離開，變更將不會被儲存。請稍後安裝更新，以便您可以留下並儲存變更。"
-  },
-  "installLater": {
-    "message": "稍後安裝"
-  },
-  "continueWithInstall": {
-    "message": "繼續安裝"
   },
   "clone": {
     "message": "克隆"

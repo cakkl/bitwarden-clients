@@ -25,13 +25,7 @@
     "!node_modules/@bitwarden/desktop-napi/package.json"
   ],
   "electronVersion": "41.7.2",
-  "generateUpdatesFilesForAllChannels": true,
-  "publish": {
-    "provider": "generic",
-    "url": "https://artifacts.bitwarden.com/desktop"
-  },
   "mac": {
-    "electronUpdaterCompatibility": ">=0.0.1",
     "category": "public.app-category.productivity",
     "darkModeSupport": true,
     "gatekeeperAssess": false,
@@ -119,9 +113,8 @@
     "artifactName": "Bitwarden-${version}-${arch}.${ext}"
   },
   "win": {
-    "electronUpdaterCompatibility": ">=0.0.1",
     "icon": "icon.beta.ico",
-    "target": ["portable", "nsis-web", "appx"],
+    "target": ["portable", "appx"],
     "signExts": [".dll", ".node"],
     "signtoolOptions": {
       "sign": "./sign.js",
@@ -155,15 +148,6 @@
         "to": "plugin_authenticator_logo_dark.svg"
       }
     ]
-  },
-  "nsisWeb": {
-    "oneClick": false,
-    "perMachine": false,
-    "allowToChangeInstallationDirectory": false,
-    "artifactName": "Bitwarden-Beta-Installer-${version}.${ext}",
-    "uninstallDisplayName": "${productName}",
-    "deleteAppDataOnUninstall": true,
-    "include": "installer.nsh"
   },
   "portable": {
     "artifactName": "Bitwarden-Beta-Portable-${version}.${ext}"

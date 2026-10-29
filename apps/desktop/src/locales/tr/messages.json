@@ -2162,9 +2162,6 @@
     "message": "Kopyala",
     "description": "Copy to clipboard"
   },
-  "checkForUpdates": {
-    "message": "Güncellemeleri denetle…"
-  },
   "version": {
     "message": "Sürüm $VERSION_NUM$",
     "placeholders": {
@@ -2174,35 +2171,11 @@
       }
     }
   },
-  "restartToUpdate": {
-    "message": "Güncellemek için yeniden başlat"
-  },
-  "restartToUpdateDesc": {
-    "message": "$VERSION_NUM$ sürümü yüklenmeye hazır. Yüklemeyi tamamlamak için uygulamayı yeniden başlatmanız gerekir. Uygulamayı yeniden başlatmak ve güncellemeyi yapmak istiyor musunuz?",
-    "placeholders": {
-      "version_num": {
-        "content": "$1",
-        "example": "1.2.3"
-      }
-    }
-  },
-  "updateAvailable": {
-    "message": "Güncelleme mevcut"
-  },
-  "updateAvailableDesc": {
-    "message": "Bir güncelleme bulundu. Şimdi yüklemek istiyor musunuz?"
-  },
   "restart": {
     "message": "Yeniden başlat"
   },
   "later": {
     "message": "Sonra"
-  },
-  "noUpdatesAvailable": {
-    "message": "Şu anda yüklenebilecek bir güncelleme yok. Son sürümü kullanıyorsunuz."
-  },
-  "updateError": {
-    "message": "Güncelleme hatası"
   },
   "unknown": {
     "message": "Bilinmiyor"
@@ -2859,15 +2832,6 @@
   },
   "unsavedChangesTitle": {
     "message": "Kaydedilmemiş değişiklikler"
-  },
-  "unsavedChangesUpdateBody": {
-    "message": "Şimdi ayrılırsanız, değişiklikleriniz kaydedilmeyecektir. Güncellemeyi daha sonra yükleyin, böylece kalabilir ve değişikliklerinizi kaydedebilirsiniz."
-  },
-  "installLater": {
-    "message": "Daha sonra yükle"
-  },
-  "continueWithInstall": {
-    "message": "Yüklemeye devam et"
   },
   "clone": {
     "message": "Klonla"
