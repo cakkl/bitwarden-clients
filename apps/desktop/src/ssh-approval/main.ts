@@ -89,7 +89,6 @@ function render(view: SshApprovalView): void {
 
   elements.keyMeta.hidden = view.keyFingerprint === "";
   elements.keyMeta.textContent = view.keyFingerprint;
-  elements.keyMeta.title = view.keyFingerprint;
 
   elements.forwardingWarning.hidden = !view.isAgentForwarding;
   elements.forwardingWarningText.textContent = view.forwardedLabel;
