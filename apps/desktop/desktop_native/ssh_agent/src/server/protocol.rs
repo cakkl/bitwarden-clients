@@ -260,7 +260,13 @@ pub(super) fn build_sign_response(sig: &Signature) -> Vec<u8> {
 /// Returns `Some(namespace)` if the data is an SSHSIG blob, or `None` for
 /// regular SSH authentication data.
 pub(super) fn detect_namespace(data: &[u8]) -> Option<SIGNamespace> {
-    // SSHSIG format: [6-byte magic "SSHSIG"][u32 version][string namespace]...
+    // The bytes handed to the agent are the SSHSIG preamble followed by the message hash:
+    //   [6-byte magic "SSHSIG"][string namespace][string reserved]
+    //   [string hash algorithm][string H(message)]
+    //
+    // There is no version field here. The version appears only in the signature file that
+    // `ssh-keygen` writes, not in what it asks the agent to sign, so the namespace starts
+    // immediately after the magic.
     // https://github.com/openssh/openssh-portable/blob/master/PROTOCOL.sshsig
     const SSHSIG_MAGIC: &[u8] = b"SSHSIG";
 
@@ -268,8 +274,8 @@ pub(super) fn detect_namespace(data: &[u8]) -> Option<SIGNamespace> {
         return None;
     }
 
-    // Skip magic (6 bytes) + version uint32 (4 bytes) = 10 bytes
-    let offset = 10;
+    // Skip the magic only; what follows is the length-prefixed namespace.
+    let offset = SSHSIG_MAGIC.len();
     if data.len() < offset + 4 {
         return Some(SIGNamespace::Unsupported);
     }
@@ -298,12 +304,27 @@ mod tests {
     const TEST_DATA: &[u8] = b"test data";
 
     fn make_sshsig_blob(namespace: &str) -> Vec<u8> {
+        // Mirrors the real preamble OpenSSH asks the agent to sign: no version field.
         let mut v = Vec::new();
         v.extend_from_slice(b"SSHSIG");
-        v.extend_from_slice(&1u32.to_be_bytes()); // version
         v.extend_from_slice(&(namespace.len() as u32).to_be_bytes());
         v.extend_from_slice(namespace.as_bytes());
+        v.extend_from_slice(&0u32.to_be_bytes()); // reserved
+        v.extend_from_slice(&6u32.to_be_bytes());
+        v.extend_from_slice(b"sha512");
+        v.extend_from_slice(&64u32.to_be_bytes());
+        v.extend_from_slice(&[0u8; 64]); // H(message)
         v
+    }
+
+    fn hex_decode(s: &str) -> Vec<u8> {
+        s.as_bytes()
+            .chunks(2)
+            .map(|pair| {
+                let text = std::str::from_utf8(pair).expect("ascii hex");
+                u8::from_str_radix(text, 16).expect("valid hex")
+            })
+            .collect()
     }
 
     #[test]
@@ -542,6 +563,15 @@ mod tests {
             detect_namespace(&make_sshsig_blob("git")),
             Some(SIGNamespace::Git)
         );
+    }
+
+    #[test]
+    fn detect_namespace_real_openssh_blob_returns_git() {
+        // Captured from Windows OpenSSH 9.5 via `ssh-keygen -Y sign -n git -U`, truncated to 32
+        // bytes: magic, then the namespace string directly. Guards the offsets against drifting
+        // back to assuming a version field.
+        let blob = hex_decode("53534853494700000003676974000000000000000673686135313200000040ef");
+        assert_eq!(detect_namespace(&blob), Some(SIGNamespace::Git));
     }
 
     #[test]
