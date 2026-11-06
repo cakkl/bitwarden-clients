@@ -9,6 +9,7 @@ import { NEVER, of } from "rxjs";
 
 import { LogService } from "@bitwarden/common/platform/abstractions/log.service";
 import { AbstractStorageService } from "@bitwarden/common/platform/abstractions/storage.service";
+import { window_focus } from "@bitwarden/desktop-napi";
 import { BiometricStateService } from "@bitwarden/key-management";
 
 import { SafeShell } from "../platform/main/safe-shell.main";
@@ -35,6 +36,9 @@ jest.mock("@bitwarden/desktop-napi", () => ({
     isolateProcess: jest.fn(),
     isCoreDumpingDisabled: jest.fn(),
     disableCoredumps: jest.fn(),
+  },
+  window_focus: {
+    forceForeground: jest.fn().mockResolvedValue(undefined),
   },
 }));
 
@@ -174,6 +178,32 @@ describe("WindowMain", () => {
       await sut.init(true);
 
       expect(createWindow).toHaveBeenCalledWith("full-app", true);
+    });
+
+    it("marks the app as quitting before before-quit awaits storage", async () => {
+      await sut.init(true);
+
+      const beforeQuit = (app.on as jest.Mock).mock.calls.find(
+        ([event]) => event === "before-quit",
+      )?.[1] as () => Promise<void>;
+      expect(beforeQuit).toBeDefined();
+
+      // Holding the reset open keeps before-quit suspended, which is the window in which a window's
+      // close handler runs. It reads isQuitting to tell a quit apart from a close to the tray.
+      let finishReset: () => void = () => {};
+      const biometrics = (sut as unknown as { biometricStateService: BiometricStateService })
+        .biometricStateService;
+      (biometrics.resetAllPromptCancelled as jest.Mock).mockReturnValue(
+        new Promise<void>((resolve) => {
+          finishReset = resolve;
+        }),
+      );
+
+      const pending = beforeQuit();
+      expect(sut.isQuitting).toBe(true);
+
+      finishReset();
+      await pending;
     });
 
     describe("while the startup window is still being created", () => {
@@ -398,32 +428,6 @@ describe("WindowMain", () => {
       expect(desktopSettingsService.setAlwaysOnTop).not.toHaveBeenCalled();
     });
 
-    it("marks the app as quitting before before-quit awaits storage", async () => {
-      await sut.init(true);
-
-      const beforeQuit = (app.on as jest.Mock).mock.calls.find(
-        ([event]) => event === "before-quit",
-      )?.[1] as () => Promise<void>;
-      expect(beforeQuit).toBeDefined();
-
-      // Holding the reset open keeps before-quit suspended, which is the window in which a window's
-      // close handler runs. It reads isQuitting to tell a quit apart from a close to the tray.
-      let finishReset: () => void = () => {};
-      const biometrics = (sut as unknown as { biometricStateService: BiometricStateService })
-        .biometricStateService;
-      (biometrics.resetAllPromptCancelled as jest.Mock).mockReturnValue(
-        new Promise<void>((resolve) => {
-          finishReset = resolve;
-        }),
-      );
-
-      const pending = beforeQuit();
-      expect(sut.isQuitting).toBe(true);
-
-      finishReset();
-      await pending;
-    });
-
     describe("showAndFocus", () => {
       // Raising the main window is how the SSH agent asks the user to unlock the vault, so every
       // step that makes the difference between "shown" and "actually in front" is asserted here.
@@ -438,6 +442,7 @@ describe("WindowMain", () => {
           setAlwaysOnTop: jest.fn(),
           moveTop: jest.fn(),
           focus: jest.fn(),
+          getNativeWindowHandle: jest.fn().mockReturnValue(Buffer.alloc(8, 1)),
           ...overrides,
         };
         (sut as any).win = win;
@@ -461,6 +466,16 @@ describe("WindowMain", () => {
         sut.showAndFocus();
 
         expect(win.setAlwaysOnTop).toHaveBeenNthCalledWith(1, true);
+      });
+
+      it("forces the window to the foreground on Windows", () => {
+        const win = makeWin();
+
+        sut.showAndFocus();
+
+        // `focus()` alone is refused for a background process on Windows, which leaves the
+        // keyboard focus in whatever window the user came from.
+        expect(window_focus.forceForeground).toHaveBeenCalledWith(win.getNativeWindowHandle());
       });
 
       it("leaves a window the user already pinned on top", () => {
