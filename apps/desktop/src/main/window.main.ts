@@ -13,7 +13,7 @@ import { LogService } from "@bitwarden/common/platform/abstractions/log.service"
 import { AbstractStorageService } from "@bitwarden/common/platform/abstractions/storage.service";
 import { ThemeTypes, Theme } from "@bitwarden/common/platform/enums";
 import { UrlType } from "@bitwarden/common/platform/misc/safe-urls";
-import { processisolations } from "@bitwarden/desktop-napi";
+import { processisolations, window_focus } from "@bitwarden/desktop-napi";
 import { BiometricStateService } from "@bitwarden/key-management";
 
 import { SafeShell } from "../platform/main/safe-shell.main";
@@ -334,7 +334,9 @@ export class WindowMain {
    * Brings the main window to the foreground.
    *
    * `show()` plus `focus()` is only a request: Windows and Linux refuse activation to a background
-   * process, and `show()` does not restore a minimised window.
+   * process, and `show()` does not restore a minimised window. The refusal is silent, so a prompt
+   * can be visible on top while keystrokes still go to the terminal it was raised from — where a
+   * typed master password would land.
    */
   showAndFocus() {
     if (this.win == null || this.win.isDestroyed()) {
@@ -354,8 +356,14 @@ export class WindowMain {
       this.win.setAlwaysOnTop(true);
     }
 
-    if (isWindows() || isLinux()) {
-      app.focus({ steal: true });
+    if (isWindows()) {
+      // `app.focus({ steal: true })` is macOS-only, and a bare `app.focus()` is refused for a
+      // background process, so go through the native window instead.
+      void window_focus
+        .forceForeground(this.win.getNativeWindowHandle())
+        .catch((e: unknown) => this.logService.warning("Failed to force window foreground", e));
+    } else if (isLinux()) {
+      app.focus();
     }
 
     this.win.moveTop();

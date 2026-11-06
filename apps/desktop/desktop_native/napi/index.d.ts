@@ -488,6 +488,16 @@ export declare namespace sshagent {
   }
 }
 
+export declare namespace window_focus {
+  /**
+   * Brings the window identified by `handle` to the foreground.
+   *
+   * `handle` is the `Buffer` from Electron's `getNativeWindowHandle()`; on Windows that is the
+   * window's `HWND`. A no-op elsewhere, where `focus()` already works.
+   */
+  export function forceForeground(handle: Buffer): Promise<void>
+}
+
 export declare namespace windows_registry {
   export function createKey(key: string, subkey: string, value: string): Promise<void>
   export function deleteKey(key: string, subkey: string): Promise<void>

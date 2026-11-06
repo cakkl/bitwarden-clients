@@ -107,3 +107,57 @@ pub(crate) fn restore_focus(hwnd: HWND) {
         let _ = SetFocus(Some(hwnd));
     }
 }
+
+/// Forces a window to the foreground despite the Windows foreground lock.
+///
+/// `SetForegroundWindow` is refused for a background process, so a prompt shown with `show()` +
+/// `focus()` can sit on top while the keyboard focus stays in the terminal it was raised from.
+/// Attaching to the foreground thread's input queue lifts that restriction.
+///
+/// Narrower than [`set_focus`] on purpose: no `SetCapture`, `EnableWindow` or
+/// `SwitchToThisWindow`, which each disturb input or app state.
+pub fn force_foreground(raw_handle: isize) {
+    let hwnd = HWND(raw_handle as *mut core::ffi::c_void);
+    if hwnd.0.is_null() {
+        return;
+    }
+
+    unsafe {
+        let mut old_timeout = 0;
+        let _ = SystemParametersInfoW(
+            SPI_GETFOREGROUNDLOCKTIMEOUT,
+            0,
+            Some(&mut old_timeout as *mut _ as *mut std::ffi::c_void),
+            windows::Win32::UI::WindowsAndMessaging::SYSTEM_PARAMETERS_INFO_UPDATE_FLAGS(0),
+        );
+        let _ = SystemParametersInfoW(
+            SPI_SETFOREGROUNDLOCKTIMEOUT,
+            0,
+            None,
+            SPIF_UPDATEINIFILE | SPIF_SENDCHANGE,
+        );
+        let _scopeguard = scopeguard::guard((), |_| {
+            let _ = SystemParametersInfoW(
+                SPI_SETFOREGROUNDLOCKTIMEOUT,
+                old_timeout,
+                None,
+                SPIF_UPDATEINIFILE | SPIF_SENDCHANGE,
+            );
+        });
+
+        let current_thread = GetCurrentThreadId();
+        let foreground_thread = GetWindowThreadProcessId(GetForegroundWindow(), None);
+        let attached = foreground_thread != 0 && foreground_thread != current_thread;
+        if attached {
+            let _ = AttachThreadInput(current_thread, foreground_thread, true);
+        }
+
+        let _ = SetForegroundWindow(hwnd);
+        let _ = BringWindowToTop(hwnd);
+        let _ = SetFocus(Some(hwnd));
+
+        if attached {
+            let _ = AttachThreadInput(current_thread, foreground_thread, false);
+        }
+    }
+}
